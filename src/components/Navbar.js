@@ -19,7 +19,7 @@ class Navbar extends Component {
     uport.attestCredentials({
       sub: this.props.uport.address,
       claim: {name: this.props.uport.name},
-      exp: new Date().getTime() + 2592000000,
+      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000,  // 30 days from now
       uriHandler: (log1, log2, log3) => { console.log(log1, log2, log3) }
     })
 
