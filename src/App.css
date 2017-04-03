@@ -87,3 +87,7 @@
   bottom: 0;
   right: 0;
 }
+
+#navbarsExampleDefault {
+  justify-content: flex-end !important;
+}
