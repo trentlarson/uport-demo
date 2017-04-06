@@ -1,6 +1,6 @@
 {
   "name": "crypto-x",
-  "version": "1.0.0-SNAPSHOT",
+  "version": "1.0.0",
   "private": true,
   "devDependencies": {
     "autoprefixer": "6.5.1",
