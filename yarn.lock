@@ -5218,7 +5218,7 @@ unpipe@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/unpipe/-/unpipe-1.0.0.tgz#b2bf4ee8514aae6165b4817829d21b2ef49904ec"
 
-uport-connect@0.5.5:
+uport-connect@^0.5.5:
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/uport-connect/-/uport-connect-0.5.5.tgz#44f5fd8a6a10a0d98833a15e9f4f9a8daa3a48ae"
   dependencies:
