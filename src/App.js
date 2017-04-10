@@ -6,60 +6,54 @@ import { bindActionCreators } from 'redux'
 // Actions
 import * as AppActions from './actions/AppActions'
 
-import { Connect, SimpleSigner } from 'uport-connect'
+// Functions
+import uport from './uportSetup'
 
 // Assets
 import chart from './chart.png'
-import './App.css'
 
 // Components
 import Navbar from './components/Navbar'
-
-const uport = new Connect('CryptoX', {
-  clientId: '0xe2fef711a5988fbe84b806d4817197f033dde050',
-  signer: SimpleSigner('4894506ba6ed1a2d21cb11331620784ad1ff9adf1676dc2720de5435dcf76ac2')
-})
 
 class App extends Component {
 
   constructor (props) {
     super(props)
-    this.signInbtnClick = this.signInbtnClick.bind(this)
+
     this.state = { modalOpen: false }
+
+    this.signInbtnClick = this.signInbtnClick.bind(this)
   }
 
   uportBtnClick () {
-    this.setState({
-      modalOpen: false
+    this.setState({ modalOpen: false })
+    uport.requestCredentials({
+      requested: ['name', 'phone', 'country'],
+      notifications: true
     })
-    uport
-      .requestCredentials({
-        requested: ['name', 'phone', 'country'],
-        notifications: true
-      })
-      .then((credentials) => {
-        this.props.actions.connectUport(credentials)
-        console.log(this.props, this.state)
-      })
+    .then((credentials) => {
+      // this.setState({ modalOpen: true })
+      this.props.actions.connectUport(credentials)
+      this.setState({ uport: credentials })
+    })
   }
 
   signInbtnClick () {
-    console.log('signInbtnClick')
-    this.setState({
-      modalOpen: true
-    })
+    this.setState({ modalOpen: true })
   }
 
   render () {
     return (
       <div className='App'>
+
         <div className='App-header'>
           <Navbar />
         </div>
+
         <div className='App-body'>
           <div className='App-body-intro'>
             {
-              !this.props.uport
+              !this.state.uport
                 ? (
                   <div>
                     <h4>Welcome to Crypto X</h4>
@@ -95,7 +89,7 @@ class App extends Component {
                       <input type='text' placeholder='Password' disabled />
                       <br />
                       <br />
-                      <button  className='form-btn' disabled>Sign In</button>
+                      <button className='form-btn' disabled>Sign In</button>
                     </form>
                   </div>
                 )
@@ -108,13 +102,13 @@ class App extends Component {
   }
 }
 
-function mapStateToProps (state, props) {
+const mapStateToProps = (state, props) => {
   return {
-    uport: state.App.uport,
+    uportState: state.App.uport,
     ui: state.App.ui
   }
 }
-function mapDispatchToProps (dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
     actions: bindActionCreators(AppActions, dispatch)
   }
