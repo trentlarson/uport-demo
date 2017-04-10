@@ -32,7 +32,9 @@ class App extends Component {
       notifications: true
     })
     .then((credentials) => {
+      // this.setState({ modalOpen: true })
       this.props.actions.connectUport(credentials)
+      this.setState({ uport: credentials })
     })
   }
 
@@ -51,7 +53,7 @@ class App extends Component {
         <div className='App-body'>
           <div className='App-body-intro'>
             {
-              !this.props.uport
+              !this.state.uport
                 ? (
                   <div>
                     <h4>Welcome to Crypto X</h4>
