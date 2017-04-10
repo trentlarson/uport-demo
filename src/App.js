@@ -27,7 +27,6 @@ class App extends Component {
 
   uportBtnClick () {
     this.setState({ modalOpen: false })
-
     uport.requestCredentials({
       requested: ['name', 'phone', 'country'],
       notifications: true
