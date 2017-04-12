@@ -19,9 +19,7 @@ class App extends Component {
 
   constructor (props) {
     super(props)
-
     this.state = { modalOpen: false }
-
     this.signInbtnClick = this.signInbtnClick.bind(this)
   }
 
@@ -32,15 +30,12 @@ class App extends Component {
       notifications: true
     })
     .then((credentials) => {
-      // this.setState({ modalOpen: true })
       this.props.actions.connectUport(credentials)
       this.setState({ uport: credentials })
     })
   }
 
-  signInbtnClick () {
-    this.setState({ modalOpen: true })
-  }
+  signInbtnClick () { this.setState({ modalOpen: true }) }
 
   render () {
     return (
@@ -48,6 +43,12 @@ class App extends Component {
 
         <div className='App-header'>
           <Navbar />
+        </div>
+
+        <div className='App-banner'>
+          <div className="warning-banner slideInDown animated">
+            <b>PLEASE BE ADVISED: This demo currently only works on the revived ROPSTEN network.</b>
+          </div>
         </div>
 
         <div className='App-body'>
