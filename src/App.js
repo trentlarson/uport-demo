@@ -34,13 +34,13 @@ class App extends Component {
       buySharesContract: buySharesContract,
       tx: null,
       error: null,
-      sharesTotal: 0,
+      sharesTotal: null,
       uport: null
     }
   }
 
   buySharesContractSetup () {
-    let buySharesContract = web3.eth.contract(['SOME CONTRACT JSON HERE'])
+    let buySharesContract = web3.eth.contract([{'constant': false, 'inputs': [{'name': 'share', 'type': 'uint256'}], 'name': 'updateShares', 'outputs': [], 'payable': false, 'type': 'function'}, {'constant': false, 'inputs': [{'name': 'addr', 'type': 'address'}], 'name': 'getShares', 'outputs': [{'name': '', 'type': 'uint256'}], 'payable': false, 'type': 'function'}])
     let buyShares = buySharesContract.at('0x000000000000000000000000000000000000')
     return buyShares
   }
@@ -111,11 +111,11 @@ class App extends Component {
     this.setState({ modalOpen: true })
   }
 
-  componentDidMount () {
-    this.getCurrentShares()
-  }
-
   render () {
+    if (this.state.uport !== null &&
+        this.state.sharesTotal !== null) {
+      this.getCurrentShares()
+    }
     return (
       <div className='App'>
 
