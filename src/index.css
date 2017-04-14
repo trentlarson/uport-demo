@@ -110,6 +110,9 @@ body {
   bottom: 0;
   right: 0;
 }
+#signInModal {
+  min-height: 370px;
+}
 
 #navbarsExampleDefault {
   padding-right: 0 !important;

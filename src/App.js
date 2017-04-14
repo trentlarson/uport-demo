@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from './actions/AppActions'
 
 // Functions
-import uport from './uportSetup'
+import { uport, web3 } from './uportSetup'
 
 // Assets
 import chart from './chart.png'
@@ -19,8 +19,80 @@ class App extends Component {
 
   constructor (props) {
     super(props)
-    this.state = { modalOpen: false }
     this.signInbtnClick = this.signInbtnClick.bind(this)
+
+    this.buySharesContractSetup = this.buySharesContractSetup.bind(this)
+    this.getCurrentShares = this.getCurrentShares.bind(this)
+    this.buyShares = this.buyShares.bind(this)
+
+    this.waitForMined = this.waitForMined.bind(this)
+
+    const buySharesContract = this.buySharesContractSetup()
+
+    this.state = {
+      modalOpen: false,
+      buySharesContract: buySharesContract,
+      tx: null,
+      error: null,
+      sharesTotal: 0,
+      uport: null
+    }
+  }
+
+  buySharesContractSetup () {
+    let buySharesContract = web3.eth.contract(['SOME CONTRACT JSON HERE'])
+    let buyShares = buySharesContract.at('0x000000000000000000000000000000000000')
+    return buyShares
+  }
+
+  getCurrentShares () {
+    const self = this
+    this.state
+        .buySharesContract
+        .getShares
+        .call(this.state.uport.address, function (error, sharesNumber) {
+          if (error) { throw error }
+          self.setState({sharesTotal: sharesNumber})
+        })
+  }
+
+  buyShares (e) {
+    e.preventDefault()
+    const self = this
+
+    let sharesNumber = this.refs.sharesInput.value
+
+    this.setState({
+      sharesTotal: '(updating to ' + sharesNumber + ')'
+    })
+
+    this.state.buySharesContract.buyShares(sharesNumber, function (err, txHash) {
+      console.log(err, txHash)
+      self.setState({tx: txHash})
+      self.waitForMined(txHash, { blockNumber: null })
+    })
+  }
+
+  waitForMined (txHash, response) {
+    let self = this
+    if (response.blockNumber) {
+      self.state
+          .buySharesContract
+          .getShares
+          .call(this.state.uport.address, function (error, response) {
+            console.log(error, response)
+            self.setState({sharesTotal: response})
+          })
+    } else {
+      console.log('not mined yet.')
+      setTimeout(function () { // check again in one sec.
+        web3.eth.getTransaction(txHash, function (error, response) {
+          console.log(error, response)
+          if (response === null) { response = { blockNumber: null } } // Some nodes do not return pending tx
+          self.waitForMined(txHash, response)
+        })
+      }, 1000)
+    }
   }
 
   uportBtnClick () {
@@ -35,7 +107,13 @@ class App extends Component {
     })
   }
 
-  signInbtnClick () { this.setState({ modalOpen: true }) }
+  signInbtnClick () {
+    this.setState({ modalOpen: true })
+  }
+
+  componentDidMount () {
+    this.getCurrentShares()
+  }
 
   render () {
     return (
@@ -46,7 +124,7 @@ class App extends Component {
         </div>
 
         <div className='App-banner'>
-          <div className="warning-banner slideInDown animated">
+          <div className='warning-banner slideInDown animated'>
             <b>PLEASE BE ADVISED: This demo currently only works on the revived ROPSTEN network.</b>
           </div>
         </div>
@@ -69,7 +147,58 @@ class App extends Component {
                       className='btn btn-primary btn-md ml-auto p-2'>SIGN IN</button>
                   </div>
                 )
-                : <img alt='chart' src={chart} style={{maxWidth: '100%'}} />
+                : (
+                  <div>
+                    <img alt='chart' src={chart} style={{maxWidth: '100%'}} />
+                    <div id='shares'>
+                      <div>
+                        <span>Your current shares of Company-X: </span>
+                        <b id='currentShares'>{this.state.sharesTotal}</b>
+                      </div>
+                      <form>
+                        <label>Shares to Buy: </label>
+                        <input
+                          id='sharesInput'
+                          ref='sharesInput'
+                          type='number'
+                          defaultValue='0' />
+                        <button
+                          className='btn'
+                          onClick={this.buyShares}>
+                          Buy Shares
+                        </button>
+                      </form>
+                    </div>
+                    {
+                      this.state.tx
+                        ? (
+                          <div id='success' style={{display: 'none'}}>
+                            <h3>Success! You have bought shares</h3>
+                            <p>
+                              <strong>Tx:</strong>
+                              <span id='tx'
+                                style={{display: 'inline-block', marginLeft: '10px'}} />
+                            </p>
+                          </div>
+                        )
+                        : null
+                    }
+                    {
+                      this.state.error
+                        ? (
+                          <div id='errorDiv'>
+                            <h3>Error! You have NOT bought shares.</h3>
+                            <p>
+                              <strong>Error:</strong>
+                              <span id='error'
+                                style={{display: 'inline-block', marginLeft: '10px'}} />
+                            </p>
+                          </div>
+                        )
+                        : null
+                    }
+                  </div>
+                )
             }
             {
               this.state.modalOpen

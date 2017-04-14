@@ -5,4 +5,5 @@ const uport = new Connect('CryptoX', {
   signer: SimpleSigner('4894506ba6ed1a2d21cb11331620784ad1ff9adf1676dc2720de5435dcf76ac2')
 })
 
-export default uport
+const web3 = uport.getWeb3()
+export { web3, uport }
