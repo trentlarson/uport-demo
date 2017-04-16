@@ -41,7 +41,7 @@ class App extends Component {
 
   buySharesContractSetup () {
     let buySharesContract = web3.eth.contract([{'constant': false, 'inputs': [{'name': 'share', 'type': 'uint256'}], 'name': 'updateShares', 'outputs': [], 'payable': false, 'type': 'function'}, {'constant': false, 'inputs': [{'name': 'addr', 'type': 'address'}], 'name': 'getShares', 'outputs': [{'name': '', 'type': 'uint256'}], 'payable': false, 'type': 'function'}])
-    let buyShares = buySharesContract.at('0x000000000000000000000000000000000000')
+    let buyShares = buySharesContract.at('0x432472827c271b795402cd385df9f425d0bf1cfe')
     return buyShares
   }
 
@@ -66,7 +66,7 @@ class App extends Component {
       sharesTotal: '(updating to ' + sharesNumber + ')'
     })
 
-    this.state.buySharesContract.buyShares(sharesNumber, function (err, txHash) {
+    this.state.buySharesContract.updateShares(sharesNumber, function (err, txHash) {
       console.log(err, txHash)
       self.setState({tx: txHash})
       self.waitForMined(txHash, { blockNumber: null })
