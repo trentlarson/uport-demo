@@ -52,6 +52,7 @@ class App extends Component {
         .getShares
         .call(this.state.uport.address, function (error, sharesNumber) {
           if (error) { throw error }
+          console.log({sharesNumber})
           self.setState({sharesTotal: sharesNumber})
         })
   }
@@ -63,14 +64,16 @@ class App extends Component {
     let sharesNumber = this.refs.sharesInput.value
 
     this.setState({
-      sharesTotal: '(updating to ' + sharesNumber + ')'
+      sharesTotal: sharesNumber
     })
 
-    this.state.buySharesContract.updateShares(sharesNumber, function (err, txHash) {
-      console.log(err, txHash)
-      self.setState({tx: txHash})
-      self.waitForMined(txHash, { blockNumber: null })
-    })
+    this.state
+        .buySharesContract
+        .updateShares(sharesNumber, function (err, txHash) {
+          console.log(err, txHash)
+          self.setState({tx: txHash})
+          self.waitForMined(txHash, { blockNumber: null })
+        })
   }
 
   waitForMined (txHash, response) {
@@ -112,8 +115,9 @@ class App extends Component {
   }
 
   render () {
-    if (this.state.uport !== null &&
-        this.state.sharesTotal !== null) {
+    console.log('uport', this.state.uport)
+    console.log('sharesTotal', this.state.sharesTotal)
+    if (this.state.uport !== null) {
       this.getCurrentShares()
     }
     return (
@@ -176,8 +180,7 @@ class App extends Component {
                             <h3>Success! You have bought shares</h3>
                             <p>
                               <strong>Tx:</strong>
-                              <span id='tx'
-                                style={{display: 'inline-block', marginLeft: '10px'}} />
+                              <span id='tx' style={{display: 'inline-block', marginLeft: '10px'}} />
                             </p>
                           </div>
                         )
@@ -190,8 +193,7 @@ class App extends Component {
                             <h3>Error! You have NOT bought shares.</h3>
                             <p>
                               <strong>Error:</strong>
-                              <span id='error'
-                                style={{display: 'inline-block', marginLeft: '10px'}} />
+                              <span id='error' style={{display: 'inline-block', marginLeft: '10px'}} />
                             </p>
                           </div>
                         )
