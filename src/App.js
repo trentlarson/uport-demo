@@ -125,7 +125,7 @@ class App extends Component {
 
         <div className='App-banner'>
           <div className='warning-banner slideInDown animated'>
-            <b>PLEASE BE ADVISED: This demo currently only works on the revived ROPSTEN network.</b>
+            <b>This demo currently only works on the revived ROPSTEN network.</b>
           </div>
         </div>
 

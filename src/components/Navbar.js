@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 // Actions
 import * as AppActions from '../actions/AppActions'
 
-import uport from '../uportSetup'
+import { uport } from '../uportSetup'
 
 class Navbar extends Component {
 
