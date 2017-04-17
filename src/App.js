@@ -52,8 +52,8 @@ class App extends Component {
         .getShares
         .call(this.state.uport.address, function (error, sharesNumber) {
           if (error) { throw error }
-          console.log({sharesNumber})
-          self.setState({sharesTotal: sharesNumber})
+          console.log(sharesNumber.toNumber())
+          self.setState({sharesTotal: sharesNumber.toNumber()})
         })
   }
 
@@ -83,8 +83,8 @@ class App extends Component {
           .buySharesContract
           .getShares
           .call(this.state.uport.address, function (error, response) {
-            console.log(error, response)
-            self.setState({sharesTotal: response})
+            console.log(error, response.toNumber())
+            self.setState({sharesTotal: response.toNumber()})
           })
     } else {
       console.log('not mined yet.')
