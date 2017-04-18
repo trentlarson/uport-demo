@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
+const mnid = require('mnid')
+
 // Actions
 import * as AppActions from './actions/AppActions'
 
@@ -40,17 +42,20 @@ class App extends Component {
   }
 
   buySharesContractSetup () {
-    let buySharesContract = web3.eth.contract([{'constant': false, 'inputs': [{'name': 'share', 'type': 'uint256'}], 'name': 'updateShares', 'outputs': [], 'payable': false, 'type': 'function'}, {'constant': false, 'inputs': [{'name': 'addr', 'type': 'address'}], 'name': 'getShares', 'outputs': [{'name': '', 'type': 'uint256'}], 'payable': false, 'type': 'function'}])
+    let buySharesContract = web3.eth.contract([{"constant":false,"inputs":[{"name":"share","type":"uint256"}],"name":"updateShares","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"addr","type":"address"}],"name":"getShares","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"}])
     let buyShares = buySharesContract.at('0x432472827c271b795402cd385df9f425d0bf1cfe')
     return buyShares
   }
 
   getCurrentShares () {
     const self = this
+    console.log(mnid)
+    let addr = mnid.decode(this.state.uport.address).address
+    console.log(addr)
     this.state
         .buySharesContract
         .getShares
-        .call(this.state.uport.address, function (error, sharesNumber) {
+        .call(addr, function (error, sharesNumber) {
           if (error) { throw error }
           console.log(sharesNumber.toNumber())
           self.setState({sharesTotal: sharesNumber.toNumber()})
@@ -79,10 +84,11 @@ class App extends Component {
   waitForMined (txHash, response) {
     let self = this
     if (response.blockNumber) {
+      let addr = mnid.decode(this.state.uport.address).address
       self.state
           .buySharesContract
           .getShares
-          .call(this.state.uport.address, function (error, response) {
+          .call(addr, function (error, response) {
             console.log(error, response.toNumber())
             self.setState({sharesTotal: response.toNumber()})
           })
