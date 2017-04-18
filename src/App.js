@@ -49,8 +49,10 @@ class App extends Component {
 
   getCurrentShares () {
     const self = this
-    console.log(mnid)
-    let addr = mnid.decode(this.state.uport.address).address
+    let addr = this.state.uport.address
+    if (mnid.isMNID(addr)) {
+        addr = mnid.decode(this.state.uport.address).address
+    }
     console.log(addr)
     this.state
         .buySharesContract
@@ -84,7 +86,10 @@ class App extends Component {
   waitForMined (txHash, response) {
     let self = this
     if (response.blockNumber) {
-      let addr = mnid.decode(this.state.uport.address).address
+      let addr = this.state.uport.address
+      if (mnid.isMNID(addr)) {
+          addr = mnid.decode(this.state.uport.address).address
+      }
       self.state
           .buySharesContract
           .getShares
