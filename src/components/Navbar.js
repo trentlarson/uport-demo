@@ -6,11 +6,7 @@ import { bindActionCreators } from 'redux'
 // Actions
 import * as AppActions from '../actions/AppActions'
 
-import { Connect, SimpleSigner } from 'uport-connect'
-const uport = new Connect('CryptoX', {
-  clientId: '0xe2fef711a5988fbe84b806d4817197f033dde050',
-  signer: SimpleSigner('4894506ba6ed1a2d21cb11331620784ad1ff9adf1676dc2720de5435dcf76ac2')
-})
+import { uport } from '../uportSetup'
 
 class Navbar extends Component {
 
@@ -23,8 +19,9 @@ class Navbar extends Component {
     uport.attestCredentials({
       sub: this.props.uport.address,
       claim: {name: this.props.uport.name},
-      exp: new Date().getTime() + 2592000000
-    }) // 30days
+      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000,  // 30 days from now
+      uriHandler: (log1, log2, log3) => { console.log(log1, log2, log3) }
+    })
 
     if (uport.pushToken) {
       window.alert('Your credentials were sent directly to your phone')
@@ -103,13 +100,9 @@ class Navbar extends Component {
 }
 
 function mapStateToProps (state, props) {
-  return {
-    uport: state.App.uport
-  }
+  return { uport: state.App.uport }
 }
 function mapDispatchToProps (dispatch) {
-  return {
-    actions: bindActionCreators(AppActions, dispatch)
-  }
+  return { actions: bindActionCreators(AppActions, dispatch) }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar)

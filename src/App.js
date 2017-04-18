@@ -3,63 +3,146 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
+const mnid = require('mnid')
+
 // Actions
 import * as AppActions from './actions/AppActions'
 
-import { Connect, SimpleSigner } from 'uport-connect'
+// Functions
+import { uport, web3 } from './uportSetup'
 
 // Assets
 import chart from './chart.png'
-import './App.css'
 
 // Components
 import Navbar from './components/Navbar'
-
-const uport = new Connect('CryptoX', {
-  clientId: '0xe2fef711a5988fbe84b806d4817197f033dde050',
-  signer: SimpleSigner('4894506ba6ed1a2d21cb11331620784ad1ff9adf1676dc2720de5435dcf76ac2')
-})
 
 class App extends Component {
 
   constructor (props) {
     super(props)
     this.signInbtnClick = this.signInbtnClick.bind(this)
-    this.state = { modalOpen: false }
+
+    this.buySharesContractSetup = this.buySharesContractSetup.bind(this)
+    this.getCurrentShares = this.getCurrentShares.bind(this)
+    this.buyShares = this.buyShares.bind(this)
+
+    this.waitForMined = this.waitForMined.bind(this)
+
+    const buySharesContract = this.buySharesContractSetup()
+
+    this.state = {
+      modalOpen: false,
+      buySharesContract: buySharesContract,
+      tx: null,
+      error: null,
+      sharesTotal: null,
+      uport: null
+    }
+  }
+
+  buySharesContractSetup () {
+    let buySharesContract = web3.eth.contract([{"constant":false,"inputs":[{"name":"share","type":"uint256"}],"name":"updateShares","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"addr","type":"address"}],"name":"getShares","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"}])
+    let buyShares = buySharesContract.at('0x432472827c271b795402cd385df9f425d0bf1cfe')
+    return buyShares
+  }
+
+  getCurrentShares () {
+    const self = this
+    console.log(mnid)
+    let addr = mnid.decode(this.state.uport.address).address
+    console.log(addr)
+    this.state
+        .buySharesContract
+        .getShares
+        .call(addr, function (error, sharesNumber) {
+          if (error) { throw error }
+          console.log(sharesNumber.toNumber())
+          self.setState({sharesTotal: sharesNumber.toNumber()})
+        })
+  }
+
+  buyShares (e) {
+    e.preventDefault()
+    const self = this
+
+    let sharesNumber = this.refs.sharesInput.value
+
+    this.setState({
+      sharesTotal: sharesNumber
+    })
+
+    this.state
+        .buySharesContract
+        .updateShares(sharesNumber, function (err, txHash) {
+          console.log(err, txHash)
+          self.setState({tx: txHash})
+          self.waitForMined(txHash, { blockNumber: null })
+        })
+  }
+
+  waitForMined (txHash, response) {
+    let self = this
+    if (response.blockNumber) {
+      let addr = mnid.decode(this.state.uport.address).address
+      self.state
+          .buySharesContract
+          .getShares
+          .call(addr, function (error, response) {
+            console.log(error, response.toNumber())
+            self.setState({sharesTotal: response.toNumber()})
+          })
+    } else {
+      console.log('not mined yet.')
+      setTimeout(function () { // check again in one sec.
+        web3.eth.getTransaction(txHash, function (error, response) {
+          console.log(error, response)
+          if (response === null) { response = { blockNumber: null } } // Some nodes do not return pending tx
+          self.waitForMined(txHash, response)
+        })
+      }, 1000)
+    }
   }
 
   uportBtnClick () {
-    this.setState({
-      modalOpen: false
+    this.setState({ modalOpen: false })
+    uport.requestCredentials({
+      requested: ['name', 'phone', 'country'],
+      notifications: true
     })
-    uport
-      .requestCredentials({
-        requested: ['name', 'phone', 'country'],
-        notifications: true
-      })
-      .then((credentials) => {
-        this.props.actions.connectUport(credentials)
-        console.log(this.props, this.state)
-      })
+    .then((credentials) => {
+      this.props.actions.connectUport(credentials)
+      this.setState({ uport: credentials })
+    })
   }
 
   signInbtnClick () {
-    console.log('signInbtnClick')
-    this.setState({
-      modalOpen: true
-    })
+    this.setState({ modalOpen: true })
   }
 
   render () {
+    console.log('uport', this.state.uport)
+    console.log('sharesTotal', this.state.sharesTotal)
+    if (this.state.uport !== null) {
+      this.getCurrentShares()
+    }
     return (
       <div className='App'>
+
         <div className='App-header'>
           <Navbar />
         </div>
+
+        <div className='App-banner'>
+          <div className='warning-banner slideInDown animated'>
+            <b>This demo currently only works on the revived ROPSTEN network.</b>
+          </div>
+        </div>
+
         <div className='App-body'>
           <div className='App-body-intro'>
             {
-              !this.props.uport
+              !this.state.uport
                 ? (
                   <div>
                     <h4>Welcome to Crypto X</h4>
@@ -74,7 +157,56 @@ class App extends Component {
                       className='btn btn-primary btn-md ml-auto p-2'>SIGN IN</button>
                   </div>
                 )
-                : <img alt='chart' src={chart} style={{maxWidth: '100%'}} />
+                : (
+                  <div>
+                    <img alt='chart' src={chart} style={{maxWidth: '100%'}} />
+                    <div id='shares'>
+                      <div>
+                        <span>Your current shares of Company-X: </span>
+                        <b id='currentShares'>{this.state.sharesTotal}</b>
+                      </div>
+                      <form>
+                        <label>Shares to Buy: </label>
+                        <input
+                          id='sharesInput'
+                          ref='sharesInput'
+                          type='number'
+                          defaultValue='0' />
+                        <button
+                          className='btn'
+                          onClick={this.buyShares}>
+                          Buy Shares
+                        </button>
+                      </form>
+                    </div>
+                    {
+                      this.state.tx
+                        ? (
+                          <div id='success' style={{display: 'none'}}>
+                            <h3>Success! You have bought shares</h3>
+                            <p>
+                              <strong>Tx:</strong>
+                              <span id='tx' style={{display: 'inline-block', marginLeft: '10px'}} />
+                            </p>
+                          </div>
+                        )
+                        : null
+                    }
+                    {
+                      this.state.error
+                        ? (
+                          <div id='errorDiv'>
+                            <h3>Error! You have NOT bought shares.</h3>
+                            <p>
+                              <strong>Error:</strong>
+                              <span id='error' style={{display: 'inline-block', marginLeft: '10px'}} />
+                            </p>
+                          </div>
+                        )
+                        : null
+                    }
+                  </div>
+                )
             }
             {
               this.state.modalOpen
@@ -95,7 +227,7 @@ class App extends Component {
                       <input type='text' placeholder='Password' disabled />
                       <br />
                       <br />
-                      <button  className='form-btn' disabled>Sign In</button>
+                      <button className='form-btn' disabled>Sign In</button>
                     </form>
                   </div>
                 )
@@ -108,13 +240,13 @@ class App extends Component {
   }
 }
 
-function mapStateToProps (state, props) {
+const mapStateToProps = (state, props) => {
   return {
-    uport: state.App.uport,
+    uportState: state.App.uport,
     ui: state.App.ui
   }
 }
-function mapDispatchToProps (dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
     actions: bindActionCreators(AppActions, dispatch)
   }
