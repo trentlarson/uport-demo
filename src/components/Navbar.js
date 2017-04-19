@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 // Actions
 import * as AppActions from '../actions/AppActions'
 
-import { uport } from '../uportSetup'
+import { uport } from '../utilities/uportSetup'
 
 class Navbar extends Component {
 
@@ -33,8 +33,7 @@ class Navbar extends Component {
       <nav className='navbar navbar-toggleable-md navbar-inverse d-flex flex-row'>
         <a className='navbar-brand p-2' href='#'><h3>Crypto-X</h3></a>
         <div
-          id='navbarsExampleDefault'
-          className='collapse navbar-collapse d-flex flex-row ml-auto p-2'
+          className='collapse navbar-collapse d-flex flex-row ml-auto p-2 navbar-loginArea'
           style={{padding: '0 !important'}}>
           {
             !this.props.uport
