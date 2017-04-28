@@ -18,6 +18,7 @@ class Welcome extends Component {
   }
 
   uportBtnClick () {
+    console.log('uportBtnClick')
     uport.requestCredentials({
       requested: ['name', 'phone', 'country'],
       notifications: true
@@ -28,12 +29,13 @@ class Welcome extends Component {
   }
 
   render () {
+    // console.log({props})
     return (
       <WelcomeWrap>
         <h4>Build a better DApp</h4>
         <h6>Identity and transaction infrastructure for Ethereum</h6>
         <ConnectUport
-          onClick={this.props.uportBtnClick}>
+          onClick={this.uportBtnClick}>
           Connect with uPort
         </ConnectUport>
       </WelcomeWrap>
@@ -42,7 +44,9 @@ class Welcome extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  return { }
+  return {
+    uport: state.App.uport
+  }
 }
 const mapDispatchToProps = (dispatch) => {
   return { actions: bindActionCreators(AppActions, dispatch) }

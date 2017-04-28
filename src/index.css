@@ -27,6 +27,19 @@ section {
   top: -10%;
 }
 
+a {
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+}
+a:hover {
+  color: #33C273;
+  text-decoration: underline;
+}
+a.external {
+  text-decoration: underline;
+}
+
 h4 {
   margin-top: 0;
   font-family: Avenir-Heavy;

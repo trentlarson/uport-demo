@@ -80,3 +80,25 @@ export const buySharesERROR = (data) => {
     data
   }
 }
+
+// //////////////////////////////////////////////
+// Complete Credentials Demo
+// //////////////////////////////////////////////
+
+export const credentialsDemoComplete = (data) => {
+  return {
+    type: 'CREDENTIALS_DEMO_COMPLETE',
+    data
+  }
+}
+
+// //////////////////////////////////////////////
+// Register App Area Complete
+// //////////////////////////////////////////////
+
+export const registerAppAreaComplete = (data) => {
+  return {
+    type: 'LOGOUT',
+    data
+  }
+}

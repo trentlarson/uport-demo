@@ -25,11 +25,14 @@ const DemoText = styled.span``
 
 const RightArea = styled.div``
 const UportAvatar = styled.img`
-  display: 'inline-block',
-  borderRadius: '50%',
-  width: '50px',
-  height: '50px',
-  border: '2px solid white'
+  display: inline-block;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border: 2px solid white;
+  position: absolute;
+  top: 70px;
+  right: 50px;
 `
 
 class AppNavbar extends Component {
@@ -40,7 +43,8 @@ class AppNavbar extends Component {
         <RightArea>
           <DemoText>Demo</DemoText>
           {
-            this.props.uport
+            this.props.uport !== null &&
+            this.props.uport !== undefined
               ? (
                 <UportAvatar
                   alt='user-img'
@@ -56,9 +60,9 @@ class AppNavbar extends Component {
   }
 }
 
-AppNavbar.propTypes = {
-  uport: React.PropTypes.object
-}
+// AppNavbar.propTypes = {
+//   uport: React.PropTypes.object
+// }
 
 function mapStateToProps (state, props) {
   return { uport: state.App.uport }

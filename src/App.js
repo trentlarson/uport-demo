@@ -1,6 +1,5 @@
 // Frameworks
-import React, { Component, PropTypes } from 'react'
-// import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -9,12 +8,12 @@ import * as AppActions from './actions/AppActions'
 import styled from 'styled-components'
 
 // Components
-// import AppNavbar from './components/AppNavbar'
-// import Welcome from './components/Welcome'
-// import SignTransaction from './components/SignTransaction'
-// import CollectCredentials from './components/CollectCredentials'
-// import RegisterYourApp from './components/RegisterYourApp'
-// import LogOut from './components/LogOut'
+import AppNavbar from './components/AppNavbar'
+import Welcome from './components/Welcome'
+import SignTransaction from './components/SignTransaction'
+import CollectCredentials from './components/CollectCredentials'
+import RegisterYourApp from './components/RegisterYourApp'
+import LogOut from './components/LogOut'
 
 const AppWrap = styled.div`
   display: flex;
@@ -36,25 +35,29 @@ class App extends Component {
   render () {
     return (
       <AppWrap>
-        {/* <AppNavbar /> */}
+        <AppNavbar />
         <AppBody>
-          {/* {
-            !this.props.uport
+          {
+            !this.props.uport &&
+            !this.props.signTransaction
               ? <Welcome />
               : null
-          } */}
-          {/* {
-            this.props.signTransaction
+          }
+          {
+            this.props.signTransaction &&
+            !this.props.collectCredentials
               ? <SignTransaction />
               : null
-          } */}
-          {/* {
-            this.props.collectCredentials
+          }
+          {
+            this.props.collectCredentials &&
+            !this.props.registerYourApp
               ? <CollectCredentials />
               : null
           }
           {
-            this.props.registerYourApp
+            this.props.registerYourApp &&
+            !this.props.logOut
               ? <RegisterYourApp />
               : null
           }
@@ -62,19 +65,11 @@ class App extends Component {
             this.props.logOut
               ? <LogOut />
               : null
-          } */}
+          }
         </AppBody>
       </AppWrap>
     )
   }
-}
-
-App.propTypes = {
-  uport: React.PropTypes.object,
-  signTransaction: React.PropTypes.bool,
-  collectCredentials: React.PropTypes.bool,
-  registerYourApp: React.PropTypes.bool,
-  logOut: React.PropTypes.bool
 }
 
 const mapStateToProps = (state, props) => {

@@ -15,42 +15,13 @@ import styled from 'styled-components'
 const SharesWrap = styled.section``
 const SharesArea = styled.div``
 const CurrentSharesArea = styled.div``
-const CurrentSharesNumber = styled.span``
+const CurrentSharesNumber = styled.span`
+  color: #33C273;
+  font-weight: bold;
+`
 const FormBuyshares = styled.form``
 const FormRow = styled.div``
 const BtnBuyShares = styled.button``
-
-// #shares {
-//   width: 320px;
-//   margin: 1rem auto;
-//   background: white;
-//   padding: 10px 15px;
-//   color: black;
-// }
-// #shares #shares-text {
-//   display: block;
-//   margin: auto;
-// }
-//
-// #shares #shares-text #currentShares {
-//   color: rgb(110, 212, 110);
-//   font-size: 1.5rem;
-//   position: relative;
-//   top: 1px;
-// }
-//
-// #sharesInput {
-//   margin-left: 10px;
-// }
-//
-// .btn-buy-shares {
-//   background: #5cb85c;
-//   margin-left: 20px;
-//   color: white;
-//   display: block;
-//   margin: auto;
-//   width: 100%;
-// }
 
 class SignTransaction extends Component {
 
@@ -72,15 +43,23 @@ class SignTransaction extends Component {
   buyShares (e) {
     e.preventDefault()
 
+    console.log('buyShares')
+
     let sharesNumber = this.props.sharesInput
     const addr = checkAddressMNID(this.props.uport.address)
     const actions = this.props.actions
 
+    console.log({sharesNumber, addr, actions})
+
     this.props.actions.buySharesREQUEST(sharesNumber)
 
+    // this.props.actions.buySharesSUCCESS('0x00', '001')
+
     SharesContract.updateShares(sharesNumber, (error, txHash) => {
+      console.log('updateShares')
       if (error) { this.props.actions.buySharesERROR(error) }
       waitForMined(addr, txHash, { blockNumber: null }, actions, (total) => {
+        console.log('waitForMined')
         this.props.actions.buySharesSUCCESS(txHash, total)
       })
     })
@@ -103,7 +82,7 @@ class SignTransaction extends Component {
 
         <SharesArea>
           <CurrentSharesArea>
-            <span>Your current shares of Company-X: </span>
+            <span>Your current shares of ConsenSys: </span>
             <CurrentSharesNumber>{this.props.sharesTotal}</CurrentSharesNumber>
           </CurrentSharesArea>
 
@@ -121,13 +100,17 @@ class SignTransaction extends Component {
                       value={this.props.sharesInput} />
                   </FormRow>
                   <FormRow>
+                    <br />
                     <BtnBuyShares
                       onClick={this.buyShares}>
                       Buy Shares
                     </BtnBuyShares>
+                  </FormRow>
+                  <FormRow>
+                    <br />
                     {
                       this.props.buyingInProgress
-                        ? <span>Please wait for transaction card on phone</span>
+                        ? <div>Please wait for transaction card on phone</div>
                         : null
                     }
                   </FormRow>
