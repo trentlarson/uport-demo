@@ -50,3 +50,27 @@ h4 {
 h6 {
   font-size: 20px;
 }
+
+.loading {
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  border: 0.25rem solid white;
+  border-top-color: #33C273;
+  margin: auto;
+  animation: spin 1s infinite linear;
+}
+.loading--double {
+  border-style: double;
+  border-width: 5.5rem;
+}
+
+@keyframes spin {
+  0% {transform: rotate(0deg)}
+  100% {transform: rotate(360deg)}
+}
+@keyframes GradientScroll {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}

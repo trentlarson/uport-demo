@@ -39,30 +39,30 @@ class App extends Component {
         <AppBody>
           {
             !this.props.uport &&
-            !this.props.signTransaction
+            !this.props.signTransactionPage
               ? <Welcome />
               : null
           }
           {
-            this.props.signTransaction &&
-            !this.props.collectCredentials
+            this.props.signTransactionPage === true &&
+            !this.props.collectCredentialsPage
               ? <SignTransaction />
               : null
           }
           {
-            this.props.collectCredentials &&
-            !this.props.registerYourApp
+            this.props.collectCredentialsPage &&
+            !this.props.registerYourAppPage
               ? <CollectCredentials />
               : null
           }
           {
-            this.props.registerYourApp &&
-            !this.props.logOut
+            this.props.registerYourAppPage &&
+            !this.props.logOutPage
               ? <RegisterYourApp />
               : null
           }
           {
-            this.props.logOut
+            this.props.logOutPage
               ? <LogOut />
               : null
           }
@@ -75,10 +75,10 @@ class App extends Component {
 const mapStateToProps = (state, props) => {
   return {
     uport: state.App.uport,
-    signTransaction: state.App.signTransaction,
-    collectCredentials: state.App.collectCredentials,
-    registerYourApp: state.App.registerYourApp,
-    logOut: state.App.logOut
+    signTransactionPage: state.App.signTransactionPage,
+    collectCredentialsPage: state.App.collectCredentialsPage,
+    registerYourAppPage: state.App.registerYourAppPage,
+    logOutPage: state.App.logOutPage
   }
 }
 const mapDispatchToProps = (dispatch) => {

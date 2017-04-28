@@ -67,6 +67,11 @@ export const buySharesREQUEST = (tx, amount) => {
     buyingInProgress: true
   }
 }
+export const buySharesPENDING = () => {
+  return {
+    type: 'BUY_SHARES_PENDING'
+  }
+}
 export const buySharesSUCCESS = (tx, data) => {
   return {
     type: 'BUY_SHARES_SUCCESS',
@@ -82,13 +87,22 @@ export const buySharesERROR = (data) => {
 }
 
 // //////////////////////////////////////////////
+// Complete Buy Shares Demo
+// //////////////////////////////////////////////
+
+export const buySharesDemoComplete = (data) => {
+  return {
+    type: 'BUY_SHARES_DEMO_COMPLETE'
+  }
+}
+
+// //////////////////////////////////////////////
 // Complete Credentials Demo
 // //////////////////////////////////////////////
 
 export const credentialsDemoComplete = (data) => {
   return {
-    type: 'CREDENTIALS_DEMO_COMPLETE',
-    data
+    type: 'CREDENTIALS_DEMO_COMPLETE'
   }
 }
 
@@ -98,7 +112,6 @@ export const credentialsDemoComplete = (data) => {
 
 export const registerAppAreaComplete = (data) => {
   return {
-    type: 'LOGOUT',
-    data
+    type: 'LOGOUT'
   }
 }

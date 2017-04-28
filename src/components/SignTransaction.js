@@ -22,6 +22,9 @@ const CurrentSharesNumber = styled.span`
 const FormBuyshares = styled.form``
 const FormRow = styled.div``
 const BtnBuyShares = styled.button``
+const NextButton = styled.button`
+  margin-top: 20px;
+`
 
 class SignTransaction extends Component {
 
@@ -33,7 +36,6 @@ class SignTransaction extends Component {
   }
 
   getCurrentShares () {
-    console.log('getCurrentShares')
     // TODO: Dump this check once MNID is default behavior
     const addr = checkAddressMNID(this.props.uport.address)
     const actions = this.props.actions
@@ -53,15 +55,18 @@ class SignTransaction extends Component {
 
     this.props.actions.buySharesREQUEST(sharesNumber)
 
-    // this.props.actions.buySharesSUCCESS('0x00', '001')
-
     SharesContract.updateShares(sharesNumber, (error, txHash) => {
       console.log('updateShares')
       if (error) { this.props.actions.buySharesERROR(error) }
-      waitForMined(addr, txHash, { blockNumber: null }, actions, (total) => {
-        console.log('waitForMined')
-        this.props.actions.buySharesSUCCESS(txHash, total)
-      })
+      waitForMined(addr, txHash, { blockNumber: null }, actions,
+        () => {
+          this.props.actions.buySharesPENDING()
+        },
+        (total) => {
+          console.log('waitForMined complete')
+          this.props.actions.buySharesSUCCESS(txHash, total)
+        }
+      )
     })
   }
 
@@ -87,8 +92,14 @@ class SignTransaction extends Component {
           </CurrentSharesArea>
 
           {
-            this.props.confirmingInProgress
-              ? <div> SPINNER </div>
+            this.props.buyingInProgress
+              ? (
+                <div>
+                  <br />
+                  <div className='loading loading--double' />
+                  <br />
+                </div>
+              )
               : (
                 <FormBuyshares>
                   <FormRow>
@@ -118,6 +129,21 @@ class SignTransaction extends Component {
               )
           }
         </SharesArea>
+        {
+          this.props.confirmingInProgress
+            ? <div>Please confirm the transaction card on your phone</div>
+            : null
+        }
+        {
+          this.props.buyingInProgress === false
+            ? (
+              <NextButton
+                onClick={this.props.actions.buySharesDemoComplete}>
+                Next
+              </NextButton>
+            )
+            : null
+        }
       </SharesWrap>
     )
   }
@@ -127,6 +153,8 @@ const mapStateToProps = (state, props) => {
   return {
     uport: state.App.uport,
     sharesInput: state.App.sharesInput,
+    gettingShares: state.App.gettingShares,
+    confirmingInProgress: state.App.confirmingInProgress,
     sharesTotal: state.App.sharesTotal,
     buyingInProgress: state.App.buyingInProgress,
     tx: state.App.tx,
