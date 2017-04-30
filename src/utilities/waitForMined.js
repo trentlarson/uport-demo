@@ -3,27 +3,26 @@ import { web3 } from './uportSetup'
 import checkAddressMNID from './checkAddressMNID'
 import getShares from './getShares'
 
-const pollingLoop = (address, txHash, response, actions, cb) => {
+const pollingLoop = (address, txHash, response, actions, pendingCB, successCB) => {
   setTimeout(function () {
     web3.eth.getTransaction(txHash, (error, response) => {
-      console.log({error, response})
+      if (error) { throw error }
       if (response === null) {
         response = { blockNumber: null }
       } // Some nodes do not return pending tx
-      waitForMined(address, txHash, response, actions, cb)
+      waitForMined(address, txHash, response, actions, pendingCB, successCB)
     })
   }, 1000) // check again in one sec.
 }
 
-async function waitForMined (address, txHash, response, actions, cb) {
+async function waitForMined (address, txHash, response, actions, pendingCB, successCB) {
   if (response.blockNumber) {
-    console.log('MINED!!!')
     const addr = checkAddressMNID(address)
     getShares(addr, actions)
-    cb()
+    successCB()
   } else {
-    console.log('Not mined yet.')
-    pollingLoop(address, txHash, response, actions, cb)
+    pendingCB()
+    pollingLoop(address, txHash, response, actions, pendingCB, successCB)
   }
 }
 

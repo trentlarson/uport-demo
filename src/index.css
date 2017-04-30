@@ -6,186 +6,71 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background: gray;
+  background-image: linear-gradient(-135deg, #232323 0%, #666666 100%);
+  color: white;
 }
 
 *:disabled { cursor: not-allowed !important }
 
 button {
   cursor: pointer;
+  background: #33C273;
+  border: 2px solid #33C273;
+  border-radius: 4px;
+  font-size: 18px;
+  color: #FFFFFF;
+  padding: 5px 25px;
 }
 
-/* ////////////////////////////////////////// */
-
-.App {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-}
-
-.App-header {
-  background-color: #222;
-  padding: 0;
-  color: white;
+section {
   position: relative;
-  z-index: 1;
+  top: -10%;
 }
 
-.App-header .navbar-brand {
-  padding-left: 0;
-}
-
-.App-header .navbar-loginArea {
-  justify-content: flex-end;
-}
-
-.warning-banner {
-  background: #d04646;
+a {
   color: white;
-  text-align: center;
-  position: relative;
-  z-index: 0;
-  padding: .75rem;
-  font-size: 1.2rem;
-  animation-delay: 1s
-}
-
-.App-body {
-  padding: 1rem;
-  color: white;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.App-body-inner-wrap {
-  text-align: center;
-  max-width: 100%;
-}
-
-/* ////////////////////////////////////////// */
-
-#shares {
-  width: 320px;
-  margin: 1rem auto;
-  background: white;
-  padding: 10px 15px;
-  color: black;
-}
-#shares #shares-text {
-  display: block;
-  margin: auto;
-}
-
-#shares #shares-text #currentShares {
-  color: rgb(110, 212, 110);
-  font-size: 1.5rem;
-  position: relative;
-  top: 1px;
-}
-
-#sharesInput {
-  margin-left: 10px;
-}
-
-.btn-buy-shares {
-  background: #5cb85c;
-  margin-left: 20px;
-  color: white;
-  display: block;
-  margin: auto;
-  width: 100%;
-}
-
-/* ////////////////////////////////////////// */
-
-#modal button,
-#modal input {
-  width: 200px;
-  padding: 5px;
-  color: white;
-  cursor: pointer;
-  display: block;
-  margin: auto;
-}
-
-
-
-/* MODAL STUFF */
-#modal {
-  left: 50%;
-  margin: -250px 0 0 calc(-262px / 2);
-  opacity: 0;
-  position: absolute;
-  top: -50%;
-  visibility: hidden;
-  width: auto;
-  box-shadow: 0 3px 7px rgba(0,0,0,.25);
-  box-sizing: border-box;
-  transition: all .4s ease-in-out;
-  -moz-transition: all .4s ease-in-out;
-  -webkit-transition: all .4s ease-in-out
-}
-
-#modal {
-  opacity: 1;
-  top: 50%;
-  visibility: visible
-}
-
-#modal .btn {
-  width: 200px;
-  color: white;
-  border: 1px solid #CCC;
-}
-
-#modal .fb-btn { background: #334CA1; }
-#modal .uport-btn { background: rgba(0, 113, 255, 1.0); }
-
-#modal .header,
-#modal .footer {
-  border-radius: 5px 5px 0 0
-}
-
-#modal .footer {
-  border: none;
-  border-top: 1px solid #e7e7e7;
-  border-radius: 0 0 5px 5px
-}
-
-#modal .copy,
-#modal .header,
-#modal .footer {
-  padding: 10px;
-}
-
-#modal .modal-content {
-  background: darkgrey;
-  position: relative;
-  z-index: 20;
-  border-radius: 5px;
-  padding: 5px 30px;
-}
-
-#modal .overlay {
-  background-color: #000;
-  background: rgba(0,0,0,.8);
-  height: 100%;
-  left: 0;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 10
-}
-
-#modal .body a {
-  color: #fff;
   text-decoration: none;
   display: inline-block;
-  padding: 5px 10px;
-  border-radius: 5px;
-  background-color: #E74C3C;
+}
+a:hover {
+  color: #33C273;
+  text-decoration: underline;
+}
+a.external {
+  text-decoration: underline;
+}
+
+h4 {
+  margin-top: 0;
+  font-family: Avenir-Heavy;
+  font-size: 30px;
+  color: #33C273;
+}
+
+h6 {
+  font-size: 20px;
+}
+
+.loading {
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  border: 0.25rem solid white;
+  border-top-color: #33C273;
+  margin: auto;
+  animation: spin 1s infinite linear;
+}
+.loading--double {
+  border-style: double;
+  border-width: 5.5rem;
+}
+
+@keyframes spin {
+  0% {transform: rotate(0deg)}
+  100% {transform: rotate(360deg)}
+}
+@keyframes GradientScroll {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
 }

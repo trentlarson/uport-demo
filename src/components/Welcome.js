@@ -3,28 +3,50 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
+import { uport } from '../utilities/uportSetup'
+
+import styled from 'styled-components'
+
+const WelcomeWrap = styled.section``
+const ConnectUport = styled.button``
 
 class Welcome extends Component {
 
+  constructor (props) {
+    super(props)
+    this.uportBtnClick = this.uportBtnClick.bind(this)
+  }
+
+  uportBtnClick () {
+    console.log('uportBtnClick')
+    uport.requestCredentials({
+      requested: ['name', 'phone', 'country'],
+      notifications: true
+    })
+    .then((credentials) => {
+      this.props.actions.connectUport(credentials)
+    })
+  }
+
   render () {
+    // console.log({props})
     return (
-      <div>
-        <h4>Welcome to Crypto X</h4>
-        <h6>
-          This is a test application built by the uPort team
-          to demonstrate the log-in and credentialing
-          functionalities of our uPort libraries.
-        </h6>
-        <a onClick={this.props.actions.openModal}
-          style={{cursor: 'pointer'}}
-          className='btn btn-primary btn-md ml-auto p-2'>SIGN IN</a>
-      </div>
+      <WelcomeWrap>
+        <h4>Build a better DApp</h4>
+        <h6>Identity and transaction infrastructure for Ethereum</h6>
+        <ConnectUport
+          onClick={this.uportBtnClick}>
+          Connect with uPort
+        </ConnectUport>
+      </WelcomeWrap>
     )
   }
 }
 
 const mapStateToProps = (state, props) => {
-  return { }
+  return {
+    uport: state.App.uport
+  }
 }
 const mapDispatchToProps = (dispatch) => {
   return { actions: bindActionCreators(AppActions, dispatch) }
