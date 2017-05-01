@@ -48,7 +48,9 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "kjua": "^0.1.2",
     "mnid": "^0.1.1",
+    "qrious": "^2.2.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",

@@ -10,18 +10,12 @@ export const connectUport = (data) => {
 }
 
 // //////////////////////////////////////////////
-// Open/Close Modal
+// Welcome page finished
 // //////////////////////////////////////////////
 
-export const openModal = () => {
+export const welcomeComplete = (data) => {
   return {
-    type: 'OPEN_MODAL'
-  }
-}
-
-export const closeModal = () => {
-  return {
-    type: 'CLOSE_MODAL'
+    type: 'WELCOME_COMPLETE'
   }
 }
 
@@ -47,14 +41,12 @@ export const getCurrentSharesERROR = (data) => {
   }
 }
 
-
 export const updatesharesInput = (data) => {
   return {
     type: 'UPDATE_SHARES_INPUT',
     data
   }
 }
-
 
 // //////////////////////////////////////////////
 // Buy Shares
