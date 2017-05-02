@@ -6,115 +6,75 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background: gray;
-}
-
-.App {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-}
-
-.App-header {
-  background-color: #222;
-  padding: 0;
+  background-image: linear-gradient(-135deg, #232323 0%, #666666 100%);
   color: white;
-  position: relative;
-  z-index: 1;
 }
 
-.App-header .navbar-brand {
-  padding-left: 0 !important;
-}
+*:disabled { cursor: not-allowed !important }
 
-.App-banner {}
-
-.warning-banner {
-  background: #d04646;
-  color: white;
-  text-align: center;
-  position: relative;
-  z-index: 0;
-  padding: .75rem;
-  font-size: 1.2rem;
-  animation-delay: 1s
-}
-
-.App-body {
-  padding: 1rem;
-  color: white;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.App-body-intro {
-  text-align: center;
-  max-width: 720px;
-}
-
-#signInModal button,
-#signInModal input {
-  width: 200px;
-  padding: 5px;
-  color: white;
+button {
   cursor: pointer;
-}
-#signInModal h2 {
-  color: black;
-}
-#signInModal .fb-btn {
-  background: #334CA1;
-  cursor: not-allowed;
-}
-#signInModal .uport-btn {
-  background: #00AFFF;
-}
-#signInModal .form-btn {
-  background: #B1B0B1;
+  background: #33C273;
+  border: 2px solid #33C273;
+  border-radius: 4px;
+  font-size: 18px;
+  color: #FFFFFF;
+  padding: 5px 25px;
 }
 
-#signInModal *:disabled {
-  cursor: not-allowed;
+img {
+  max-width: 100%;
 }
 
-/* MODAL STUFF */
-.absolutecentercontent .Absolute-Center.is-Variable {
-  display: table;
-  height: auto;
+section {
+  position: relative;
+  top: -10%;
 }
-.Absolute-Center.is-Fixed {
-  position: fixed;
-  z-index: 999;
+
+a {
+  color: white;
+  text-decoration: none;
+  display: inline-block;
 }
-.Modal {
-  background: white;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+a:hover {
+  color: #33C273;
+  text-decoration: underline;
 }
-.Center-Block {
-  padding: 20px;
+a.external {
+  text-decoration: underline;
 }
-.Absolute-Center {
-  height: 50%;
-  width: 25%;
-  min-width: 340px;
-  min-height: 320px;
-  overflow: auto;
+
+h4 {
+  margin-top: 0;
+  font-family: Avenir-Heavy;
+  font-size: 30px;
+  color: #33C273;
+}
+
+h6 {
+  font-size: 20px;
+}
+
+.loading {
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  border: 0.25rem solid white;
+  border-top-color: #33C273;
   margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  animation: spin 1s infinite linear;
 }
-#signInModal {
-  min-height: 370px;
+.loading--double {
+  border-style: double;
+  border-width: 5.5rem;
 }
 
-#navbarsExampleDefault {
-  padding-right: 0 !important;
-  justify-content: flex-end !important;
+@keyframes spin {
+  0% {transform: rotate(0deg)}
+  100% {transform: rotate(360deg)}
+}
+@keyframes GradientScroll {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
 }
