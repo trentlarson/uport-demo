@@ -71,7 +71,7 @@ class CollectCredentials extends Component {
     uport.attestCredentials({
       sub: this.props.uport.address,
       claim: {
-        name: this.props.uport.name,
+        Name: this.props.uport.name,
         Relationship: RELATIONSHIPCLAIM,
         Certificate: CERTIFICATECLAIM
       },
