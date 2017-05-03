@@ -88,6 +88,7 @@ class SignTransaction extends Component {
         <SharesArea>
           <CurrentSharesArea>
             <span>Your current shares: </span>
+            <br />
             <CurrentSharesNumber>{this.props.sharesTotal}</CurrentSharesNumber>
           </CurrentSharesArea>
 
