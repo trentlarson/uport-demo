@@ -44,7 +44,8 @@ class AppNavbar extends Component {
           <DemoText>Demo</DemoText>
           {
             this.props.uport !== null &&
-            this.props.uport !== undefined
+            this.props.uport !== undefined &&
+            this.props.uport.image
               ? (
                 <UportAvatar
                   alt='user-img'

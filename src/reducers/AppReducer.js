@@ -11,16 +11,11 @@ export default(state = initialState, payload) => {
         signTransactionPage: true
       }
 
-    // case 'OPEN_MODAL':
-    //   return {
-    //     ...state,
-    //     modal: true
-    //   }
-    // case 'CLOSE_MODAL':
-    //   return {
-    //     ...state,
-    //     modal: false
-    //   }
+    case 'WELCOME_COMPLETE':
+      return {
+        ...state,
+        connectYourUport: true
+      }
 
     case 'GET_CURRENT_SHARES_REQUEST':
       return {
@@ -44,8 +39,6 @@ export default(state = initialState, payload) => {
         ...state,
         sharesInput: payload.data
       }
-
-
 
     case 'BUY_SHARES_REQUEST':
       return {
@@ -71,8 +64,6 @@ export default(state = initialState, payload) => {
         buyingInProgress: false,
         sharesTotal: payload.data
       }
-
-
 
     case 'BUY_SHARES_DEMO_COMPLETE':
       return {
