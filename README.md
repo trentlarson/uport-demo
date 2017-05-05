@@ -54,7 +54,7 @@ When a transaction is signed and submitted to a smart contract, the Ethereum net
 #### Attesting Credentials
 <img src="./screens/creds.png" alt="Attesting Credentials" style="width: 400px; display: block; margin-bottom: 20px"/>
 
-One of the core needs of Web 3.0 is to build trust in a self-soverign world. We establish facts which are not mathmatically derived by social consensus. To create social consensus, actors must attest to things being true. We can do this with uPort using the `attestCredentials` function. We can attest to multiple facts (credentials) in one submission and even provide an expiration date for such information.
+One of the core needs of Web 3.0 is to build trust in a self-soverign world. We establish facts which are not mathmatically derived by social consensus. To create social consensus, actors must attest to things being true. We can do this with uPort using the `attestCredentials` function.
 
 [Click here to see the attestation code](https://github.com/uport-project/demo/blob/master/src/components/CollectCredentials.js#L70)
 
