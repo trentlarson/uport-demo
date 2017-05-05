@@ -40,7 +40,6 @@ class CollectCredentials extends Component {
     this.credentialsbtnClickA = this.credentialsbtnClickA.bind(this)
     this.credentialsbtnClickB = this.credentialsbtnClickB.bind(this)
     this.credentialsbtnClickC = this.credentialsbtnClickC.bind(this)
-    this.credentialsbtnClickD = this.credentialsbtnClickD.bind(this)
   }
 
   credentialsbtnClickA () {
@@ -63,18 +62,6 @@ class CollectCredentials extends Component {
     uport.attestCredentials({
       sub: this.props.uport.address,
       claim: {Certificate: CERTIFICATECLAIM},
-      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000,  // 30 days from now
-      uriHandler: (log) => { console.log(log) }
-    })
-  }
-  credentialsbtnClickD () {
-    uport.attestCredentials({
-      sub: this.props.uport.address,
-      claim: {
-        name: this.props.uport.name,
-        Relationship: RELATIONSHIPCLAIM,
-        Certificate: CERTIFICATECLAIM
-      },
       exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000,  // 30 days from now
       uriHandler: (log) => { console.log(log) }
     })
@@ -109,14 +96,6 @@ class CollectCredentials extends Component {
                 </td>
                 <td>
                   <CredsButton onClick={this.credentialsbtnClickC}>Get</CredsButton>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <CredsLabel>Collect all credentials at once</CredsLabel>
-                </td>
-                <td>
-                  <CredsButton onClick={this.credentialsbtnClickD}>Get</CredsButton>
                 </td>
               </tr>
             </tbody>
