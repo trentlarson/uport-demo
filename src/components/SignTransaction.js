@@ -83,11 +83,12 @@ class SignTransaction extends Component {
     return (
       <SharesWrap>
         <h4>Sign a transaction</h4>
-        <h6>Buy Shares in ConsenSys</h6>
+        <h6>Buy Shares</h6>
 
         <SharesArea>
           <CurrentSharesArea>
-            <span>Your current shares of ConsenSys: </span>
+            <span>Your current shares: </span>
+            <br />
             <CurrentSharesNumber>{this.props.sharesTotal}</CurrentSharesNumber>
           </CurrentSharesArea>
 
