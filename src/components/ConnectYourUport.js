@@ -19,12 +19,13 @@ class ConnectYourUport extends Component {
         notifications: true
       },
       (uri) => {
+
         // Create QR
         const qr = kjua({
           text: uri,
-          fill: '#33C273',
+          fill: '#000000',
           size: 400,
-          back: 'rgba(0,0,0,0)'
+          back: 'rgba(255,255,255,1)'
         })
 
         // Create wrapping link for mobile touch
