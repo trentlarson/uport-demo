@@ -22,7 +22,7 @@ class ConnectYourUport extends Component {
         // Create QR
         const qr = kjua({
           text: uri,
-          fill: '#33C273',
+          fill: '#FFFFFF',
           size: 400,
           back: 'rgba(0,0,0,0)'
         })
