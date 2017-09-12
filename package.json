@@ -63,8 +63,9 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "deploy": "npm run build && npm run deploy-to-s3 demo.uport.me",
-    "deploy-test": "npm run build && npm run deploy-to-s3 demo.uport.space",
+    "pre-deploy": "npm i && npm run build",
+    "deploy": "npm run pre-deploy && npm run deploy-to-s3 demo.uport.me",
+    "deploy-test": "npm run pre-deploy && npm run deploy-to-s3 demo.uport.space",
     "deploy-to-s3": "node_modules/.bin/s3-deploy './build/**' --cwd './build/' --region us-west-2 --bucket"
   },
   "jest": {
