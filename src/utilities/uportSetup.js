@@ -6,4 +6,11 @@ const uport = new Connect('uPort Demo', {
 })
 
 const web3 = uport.getWeb3()
+
+// if(window.location.hash.includes('#access_token')) {
+//   const userDataFromJWT = JSON.parse(atob(window.location.hash.split('.')[1]))
+//   console.log(userDataFromJWT)
+// }
+
+
 export { web3, uport }
