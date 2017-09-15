@@ -18,14 +18,19 @@ class RegisterYourApp extends Component {
   render () {
     return (
       <RegisterYourAppWrap>
-        <h4>Create a uPort ID for your app contracts</h4>
-        <Link className='external' target='_blank' href='https://goo.gl/6mq9NW'>
-          Click Here to Read the 'How To' Guide
+        <h4>Register your Application</h4>
+        <Link className='external' target='_blank' href='http://developer.uport.me'>
+          Go to the full Documentation Site.
         </Link>
         <br/>
-        <Link className='external' target='_blank' href='https://appmanager.uport.me'>
-          Go to the App Manager
+        <Link className='external' target='_blank' href='http://developer.uport.me/myapps.html'>
+          Go directly to the App Manager in the Documentation Site
         </Link>
+        <br/>
+        <Link className='external' target='_blank' href='https://goo.gl/6mq9NW'>
+          Click here to read the 'How To' Guide for App Manager
+        </Link>
+        <br/>
         <NextButton
           onClick={this.props.actions.registerAppAreaComplete}>
           Next

@@ -45,13 +45,11 @@ class AppNavbar extends Component {
           {
             this.props.uport !== null &&
             this.props.uport !== undefined &&
-            this.props.uport.image
+            this.props.uport.avatar
               ? (
                 <UportAvatar
                   alt='user-img'
-                  src={
-                    'https://ipfs.infura.io' +
-                    this.props.uport.image.contentUrl} />
+                  src={this.props.uport.avatar.uri} />
               )
               : null
           }
