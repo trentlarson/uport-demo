@@ -17,7 +17,7 @@ const CredsTable = styled.table`
   text-align: left;
 `
 
-const CredsLabel = styled.table`
+const CredsLabel = styled.label`
   position: relative;
   top: 10px;
 `

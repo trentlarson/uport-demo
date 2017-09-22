@@ -24,6 +24,15 @@ const LogoLink = styled.a`
 const DemoText = styled.span``
 
 const RightArea = styled.div``
+
+const UserName = styled.span`
+  display: block;
+  position: relative;
+  top: 80px;
+  font-size: 18px;
+  color: white;
+  text-align: center;
+`
 const UportAvatar = styled.img`
   display: inline-block;
   border-radius: 50%;
@@ -45,13 +54,14 @@ class AppNavbar extends Component {
           {
             this.props.uport !== null &&
             this.props.uport !== undefined &&
-            this.props.uport.image
+            this.props.uport.avatar
               ? (
-                <UportAvatar
-                  alt='user-img'
-                  src={
-                    'https://ipfs.infura.io' +
-                    this.props.uport.image.contentUrl} />
+                <div>
+                  <UportAvatar
+                    alt='user-img'
+                    src={this.props.uport.avatar.uri} />
+                  <UserName>{this.props.uport.name}</UserName>
+                </div>
               )
               : null
           }

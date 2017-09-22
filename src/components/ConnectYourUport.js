@@ -15,7 +15,7 @@ class ConnectYourUport extends Component {
   componentDidMount () {
     uport.requestCredentials(
       {
-        requested: ['name', 'phone', 'country'],
+        requested: ['name', 'phone', 'country', 'avatar'],
         notifications: true
       },
       (uri) => {
@@ -36,6 +36,7 @@ class ConnectYourUport extends Component {
         aTag.appendChild(qr)
         document.querySelector('#kqr').appendChild(aTag)
       }).then((credentials) => {
+        console.log({credentials})
         this.props.actions.connectUport(credentials)
       })
   }
