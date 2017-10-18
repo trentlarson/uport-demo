@@ -31,7 +31,6 @@ const AppBody = styled.div`
   text-align: center;
   max-width: 100%;
   padding: 20px;
-  overflow: scroll;
 `
 
 class App extends Component {
