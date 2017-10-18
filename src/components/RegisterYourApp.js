@@ -19,6 +19,7 @@ class RegisterYourApp extends Component {
     return (
       <RegisterYourAppWrap>
         <h4>Register your Application</h4>
+        <br/>
         <Link className='external' target='_blank' href='http://developer.uport.me'>
           Go to the full Documentation Site.
         </Link>

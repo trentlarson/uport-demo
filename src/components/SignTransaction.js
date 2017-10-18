@@ -16,14 +16,17 @@ const SharesWrap = styled.section``
 const SharesArea = styled.div``
 const CurrentSharesArea = styled.div``
 const CurrentSharesNumber = styled.span`
-  color: #33C273;
-  font-weight: bold;
+  color: white;
 `
 const FormBuyshares = styled.form``
 const FormRow = styled.div``
 const BtnBuyShares = styled.button``
 const NextButton = styled.button`
   margin-top: 20px;
+`
+const SubText = styled.p`
+  margin: 0 auto 3em auto;
+  font-size: 18px;
 `
 
 class SignTransaction extends Component {
@@ -83,7 +86,7 @@ class SignTransaction extends Component {
     return (
       <SharesWrap>
         <h4>Sign a transaction</h4>
-        <h6>Buy Shares</h6>
+        <SubText>Buy Shares</SubText>
 
         <SharesArea>
           <CurrentSharesArea>
@@ -108,6 +111,7 @@ class SignTransaction extends Component {
                     <input
                       id='sharesInput'
                       type='number'
+                      style={{"paddingLeft":".5em"}}
                       onChange={this.handleInputChange}
                       value={this.props.sharesInput} />
                   </FormRow>
@@ -135,16 +139,12 @@ class SignTransaction extends Component {
             ? <div>Please confirm the transaction card on your phone</div>
             : null
         }
-        {
-          this.props.buyingInProgress === false
-            ? (
+
               <NextButton
                 onClick={this.props.actions.buySharesDemoComplete}>
                 Next
               </NextButton>
-            )
-            : null
-        }
+
       </SharesWrap>
     )
   }

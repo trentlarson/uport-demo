@@ -9,6 +9,10 @@ import kjua from 'kjua'
 import styled from 'styled-components'
 
 const ConnectWrap = styled.section``
+const SubText = styled.p`
+  margin: 0 auto 3em auto;
+  font-size: 18px;
+`
 
 class ConnectYourUport extends Component {
 
@@ -45,7 +49,7 @@ class ConnectYourUport extends Component {
     return (
       <ConnectWrap>
         <h4>Connect with uPort</h4>
-        <h6>Scan QR code with mobile app</h6>
+        <SubText>Scan QR code with mobile app</SubText>
         <div id='kqr' />
       </ConnectWrap>
     )

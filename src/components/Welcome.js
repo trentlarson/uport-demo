@@ -7,13 +7,17 @@ import styled from 'styled-components'
 
 const WelcomeWrap = styled.section``
 const ConnectUport = styled.button``
+const SubText = styled.p`
+  margin: 0 auto 3em auto;
+  font-size: 18px;
+`
 
 class Welcome extends Component {
   render () {
     return (
       <WelcomeWrap>
-        <h4>Build a better DApp</h4>
-        <h6>Identity and transaction infrastructure for Ethereum</h6>
+        <h4>Build a Better dApp</h4>
+        <SubText>Identity and transaction infrastructure for Ethereum</SubText>
         <ConnectUport
           onClick={this.props.actions.welcomeComplete}>
           Connect with uPort
