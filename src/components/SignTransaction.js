@@ -97,7 +97,11 @@ class SignTransaction extends Component {
               ? (
                 <div>
                   <br />
-                  <div className='loading loading--double' />
+                  <div className="spinner center">
+                    {[...Array(12)].map((x,i) =>
+                      <div className="spinner-blade"key={i}/>
+                    )}
+                  </div>
                   <br />
                 </div>
               )
