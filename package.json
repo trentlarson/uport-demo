@@ -56,7 +56,7 @@
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
     "styled-components": "^1.4.5",
-    "uport-connect": "^0.6.6",
+    "uport-connect": "0.6.7-alpha-4",
     "web3": "^0.19.1"
   },
   "scripts": {
