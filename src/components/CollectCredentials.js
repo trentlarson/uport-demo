@@ -30,6 +30,11 @@ const NextButton = styled.button`
   margin-top: 20px;
 `
 
+const SubText = styled.p`
+  margin: 0 auto 3em auto;
+  font-size: 18px;
+`
+
 const RELATIONSHIPCLAIM = 'User'
 const CERTIFICATECLAIM = 'uPort Demo'
 
@@ -75,7 +80,7 @@ class CollectCredentials extends Component {
           <CredsTable>
             <tbody>
               <tr>
-                <td>
+                <td style={{"paddingRight":"8em"}}>
                   <CredsLabel>Name: {this.props.uport.name}</CredsLabel>
                 </td>
                 <td>
@@ -102,7 +107,7 @@ class CollectCredentials extends Component {
           </CredsTable>
           <NextButton onClick={this.props.actions.credentialsDemoComplete}>Next</NextButton>
         </CredentialsArea>
-        <h6>Credentials take a moment to appear on your device.</h6>
+        <SubText>Credentials take a moment to appear on your device.</SubText>
       </CredentialsWrap>
     )
   }
