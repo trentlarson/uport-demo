@@ -56,7 +56,7 @@
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
     "styled-components": "^1.4.5",
-    "uport-connect": "0.6.6",
+    "uport-connect": "^0.7.0",
     "web3": "^0.19.1"
   },
   "scripts": {
@@ -64,6 +64,7 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "pre-deploy": "npm i && npm run build",
+    "safe-deploy": "bash ./safe-deploy.sh",
     "deploy": "npm run pre-deploy && npm run deploy-to-s3 demo.uport.me",
     "deploy-test": "npm run pre-deploy && npm run deploy-to-s3 demo.uport.space",
     "deploy-to-s3": "node_modules/.bin/s3-deploy './build/**' --cwd './build/' --region us-west-2 --bucket"
