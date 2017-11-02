@@ -12,7 +12,11 @@ import getShares from '../utilities/getShares'
 
 import styled from 'styled-components'
 
-const SharesWrap = styled.section``
+const SharesWrap = styled.section`
+  @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+    position: inherit;
+  }
+`
 const SharesArea = styled.div``
 const CurrentSharesArea = styled.div``
 const CurrentSharesNumber = styled.span`
