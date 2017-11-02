@@ -8,7 +8,11 @@ import * as AppActions from '../actions/AppActions'
 
 import styled from 'styled-components'
 
-const CredentialsWrap = styled.section``
+const CredentialsWrap = styled.section`
+  @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+    position: inherit;
+  }
+`
 const CredentialsArea = styled.section`
   text-align: center;
 `
@@ -31,7 +35,7 @@ const NextButton = styled.button`
 `
 
 const SubText = styled.p`
-  margin: 0 auto 3em auto;
+  margin: 20px auto 3em auto;
   font-size: 18px;
 `
 

@@ -63,11 +63,9 @@ h6 {
 
 .spinner {
   font-size: 48px;
-  position: relative;
   width: 1em;
   height: 1em;
   transform: scale(1.2);;
-  top: 1em;
 }
 
 .spinner.center {
