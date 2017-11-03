@@ -18,7 +18,9 @@ const SharesWrap = styled.section`
   }
 `
 const SharesArea = styled.div``
-const CurrentSharesArea = styled.div``
+const CurrentSharesArea = styled.div`
+  margin-bottom: 20px;
+`
 const CurrentSharesNumber = styled.span`
   color: white;
 `
@@ -93,7 +95,7 @@ class SignTransaction extends Component {
         <SubText>Buy Shares</SubText>
 
         <SharesArea>
-          <CurrentSharesArea>
+          <CurrentSharesArea >
             <span>Your current shares: </span>
             <br />
             <CurrentSharesNumber>{this.props.sharesTotal}</CurrentSharesNumber>
@@ -119,7 +121,7 @@ class SignTransaction extends Component {
                     <input
                       id='sharesInput'
                       type='number'
-                      style={{"paddingLeft":".5em"}}
+                      style={{"paddingLeft":".5em", "font-size":"16px"}}
                       onChange={this.handleInputChange}
                       value={this.props.sharesInput} />
                   </FormRow>
