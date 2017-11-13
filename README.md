@@ -3,7 +3,7 @@
 ### About
 This uPort demo is designed to showcase some of the basic features and approaches you will take to integrate uPort features into your project. Using [uport-connect](https://github.com/uport-project/uport-connect) itself is quite simple but requires a little bit of understanding the flow for a typical implementation.
 
-**You are  encouraged to run through the demo at [demo.uport.me](demo.uport.me) before picking apart the code.**
+**You are  encouraged to run through the demo at [demo.uport.me](https://demo.uport.me) before picking apart the code.**
 
 ----------
 
