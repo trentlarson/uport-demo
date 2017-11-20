@@ -13,7 +13,7 @@ dependencies:
 
 deployment:
   develop:
-    branch: feature/ch4393/add-ci
+    branch: develop
     commands:
       - npm run deploy-test
   production:
