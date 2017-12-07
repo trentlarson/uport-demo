@@ -12,9 +12,15 @@ import getShares from '../utilities/getShares'
 
 import styled from 'styled-components'
 
-const SharesWrap = styled.section``
+const SharesWrap = styled.section`
+  @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+    position: inherit;
+  }
+`
 const SharesArea = styled.div``
-const CurrentSharesArea = styled.div``
+const CurrentSharesArea = styled.div`
+  margin-bottom: 20px;
+`
 const CurrentSharesNumber = styled.span`
   color: white;
 `
@@ -89,7 +95,7 @@ class SignTransaction extends Component {
         <SubText>Buy Shares</SubText>
 
         <SharesArea>
-          <CurrentSharesArea>
+          <CurrentSharesArea >
             <span>Your current shares: </span>
             <br />
             <CurrentSharesNumber>{this.props.sharesTotal}</CurrentSharesNumber>
@@ -100,7 +106,11 @@ class SignTransaction extends Component {
               ? (
                 <div>
                   <br />
-                  <div className='loading loading--double' />
+                  <div className="spinner center">
+                    {[...Array(12)].map((x,i) =>
+                      <div className="spinner-blade"key={i}/>
+                    )}
+                  </div>
                   <br />
                 </div>
               )
@@ -111,7 +121,7 @@ class SignTransaction extends Component {
                     <input
                       id='sharesInput'
                       type='number'
-                      style={{"paddingLeft":".5em"}}
+                      style={{"paddingLeft":".5em", "font-size":"16px"}}
                       onChange={this.handleInputChange}
                       value={this.props.sharesInput} />
                   </FormRow>

@@ -10,7 +10,6 @@ import styled from 'styled-components'
 // Components
 import AppNavbar from './components/AppNavbar'
 import Welcome from './components/Welcome'
-import ConnectYourUport from './components/ConnectYourUport'
 import SignTransaction from './components/SignTransaction'
 import CollectCredentials from './components/CollectCredentials'
 import RegisterYourApp from './components/RegisterYourApp'
@@ -31,7 +30,6 @@ const AppBody = styled.div`
   text-align: center;
   max-width: 100%;
   padding: 20px;
-  overflow: scroll;
 `
 
 class App extends Component {
@@ -42,14 +40,8 @@ class App extends Component {
         <AppBody>
           {
             !this.props.uport &&
-            !this.props.connectYourUport
-              ? <Welcome />
-              : null
-          }
-          {
-            this.props.connectYourUport &&
             !this.props.signTransactionPage
-              ? <ConnectYourUport />
+              ? <Welcome />
               : null
           }
           {
@@ -84,7 +76,6 @@ class App extends Component {
 const mapStateToProps = (state, props) => {
   return {
     uport: state.App.uport,
-    connectYourUport: state.App.connectYourUport,
     signTransactionPage: state.App.signTransactionPage,
     collectCredentialsPage: state.App.collectCredentialsPage,
     registerYourAppPage: state.App.registerYourAppPage,
