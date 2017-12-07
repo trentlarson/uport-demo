@@ -10,13 +10,7 @@ export default(state = initialState, payload) => {
         uport: payload.data,
         signTransactionPage: true
       }
-
-    case 'WELCOME_COMPLETE':
-      return {
-        ...state,
-        connectYourUport: true
-      }
-
+      
     case 'GET_CURRENT_SHARES_REQUEST':
       return {
         ...state,

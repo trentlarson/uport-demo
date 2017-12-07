@@ -8,7 +8,11 @@ import * as AppActions from '../actions/AppActions'
 
 import styled from 'styled-components'
 
-const CredentialsWrap = styled.section``
+const CredentialsWrap = styled.section`
+  @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+    position: inherit;
+  }
+`
 const CredentialsArea = styled.section`
   text-align: center;
 `
@@ -28,6 +32,11 @@ const CredsButton = styled.button`
 
 const NextButton = styled.button`
   margin-top: 20px;
+`
+
+const SubText = styled.p`
+  margin: 20px auto 3em auto;
+  font-size: 18px;
 `
 
 const RELATIONSHIPCLAIM = 'User'
@@ -75,7 +84,7 @@ class CollectCredentials extends Component {
           <CredsTable>
             <tbody>
               <tr>
-                <td>
+                <td style={{"paddingRight":"8em"}}>
                   <CredsLabel>Name: {this.props.uport.name}</CredsLabel>
                 </td>
                 <td>
@@ -102,7 +111,7 @@ class CollectCredentials extends Component {
           </CredsTable>
           <NextButton onClick={this.props.actions.credentialsDemoComplete}>Next</NextButton>
         </CredentialsArea>
-        <h6>Credentials take a moment to appear on your device.</h6>
+        <SubText>Credentials take a moment to appear on your device.</SubText>
       </CredentialsWrap>
     )
   }
