@@ -23,7 +23,9 @@ class Welcome extends Component {
   connectUport () {
     uport.requestCredentials(
       { requested: ['name', 'phone', 'country', 'avatar'],
-        notifications: true }
+        accountType: 'segregated',
+        // notifications: true 
+      }
     ).then((credentials) => {
         console.log({credentials})
         this.props.actions.connectUport(credentials)
