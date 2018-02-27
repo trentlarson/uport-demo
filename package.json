@@ -57,7 +57,7 @@
     "redux": "^3.6.0",
     "styled-components": "^1.4.5",
     "uport": "^0.6.2",
-    "uport-connect": "^0.7.0",
+    "uport-connect": "^0.7.1",
     "web3": "^0.19.1"
   },
   "scripts": {
