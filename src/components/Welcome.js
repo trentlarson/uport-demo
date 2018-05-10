@@ -4,8 +4,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
-import { uportConnect } from '../utilities/uportSetup'
-import { withRouter, Link } from 'react-router-dom'
+import { uportServer, uportConnect } from '../utilities/uportSetup'
+const CHASQUI_URL = 'https://chasqui.uport.me/api/v1/topic/'
+import { crypto } from 'uport-core'
+
 
 
 const ConnectReqID = 'ConnectRequest'
@@ -25,18 +27,21 @@ class Welcome extends Component {
     super(props)
     this.connectUport = this.connectUport.bind(this)
 
-    uportConnect.onResponse(ConnectReqID).then(res => {
-      console.log("res.payload")
-      console.log(res.payload)
-      this.props.actions.connectUport(uportConnect.state)
-      this.props.history.push('/signclaim')
+    uportConnect.onResponse('ConnectRequest').then(res => {
+      console.log(res)
+      this.props.actions.connectUport(res.res)
     })
   }
 
   connectUport () {
     const reqObj = { requested: ['name', 'phone', 'country'],
-                     notifications: true }
-    uportConnect.requestDisclosure(reqObj, ConnectReqID)
+                     notifications: true,
+                     callbackUrl: CHASQUI_URL + crypto.randomString(16) }
+    uportServer.requestDisclosure(reqObj).then(jwt => {
+      // TODO simple func to wrap in libs
+      console.log(jwt)
+      uportConnect.request(`https://id.uport.me/me?requestToken=${jwt}`, 'ConnectRequest')
+    })
   }
 
   render () {

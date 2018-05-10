@@ -1,10 +1,13 @@
 // Frameworks
 import React, { Component } from 'react'
-import { uportConnect } from '../utilities/uportSetup'
+import { uportServer, uportConnect } from '../utilities/uportSetup'
+
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import { withRouter, Link } from 'react-router-dom'
+
+import { transport } from 'uport-core'
 
 import styled from 'styled-components'
 
@@ -49,6 +52,9 @@ const credCReq ='credCReq'
 const credentialFactory = (sub, exp) => (claim) => ({sub, exp, claim})
 
 
+
+// TODO swap out with all
+
 class CollectCredentials extends Component {
 
   constructor (props) {
@@ -56,23 +62,42 @@ class CollectCredentials extends Component {
     this.credentialsbtnClickA = this.credentialsbtnClickA.bind(this)
     this.credentialsbtnClickB = this.credentialsbtnClickB.bind(this)
     this.credentialsbtnClickC = this.credentialsbtnClickC.bind(this)
-    uportConnect.onResponse(credAReq).then(res => {
-      // TODO this request doesn't close qr code??
-      console.log(res)
-    })
-    this.credentialCreate = credentialFactory (this.props.uport.did, Time30Days())
+    console.log(this.props.uport.capabilities[0])
+    console.log(this.props.uport.publicEncKey)
+    uportServer.push = transport.push.send(this.props.uport.capabilities[0], this.props.uport.publicEncKey, 'https://api.uport.me/pututu/sns/')
   }
 
   credentialsbtnClickA () {
-    uportConnect.sendVerification(this.credentialCreate({Name: this.props.uport.name}), credAReq)
+    uportServer.attest({
+      sub: this.props.uport.iss,
+      claim: {name: this.props.uport.own.name},
+      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000  // 30 days from now
+    }).then(jwt => {
+      // uportConnect.request(`https://id.uport.me/add?attestations=${jwt}`)
+      uportServer.push(`https://id.uport.me/add?attestations=${jwt}`)
+    })
   }
 
   credentialsbtnClickB () {
-    uportConnect.sendVerification(this.credentialCreate({Relationship: RELATIONSHIPCLAIM}), credBReq)
+    uportServer.attest({
+      sub: this.props.uport.iss,
+      claim: {Relationship: RELATIONSHIPCLAIM},
+      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000  // 30 days from now
+    }).then(jwt => {
+      uportConnect.request(`https://id.uport.me/add?attestations=${jwt}`)
+      // uportServer.push(`https://id.uport.me/me?attest=${jwt}`)
+    })
   }
 
   credentialsbtnClickC () {
-    uportConnect.sendVerification(this.credentialCreate({Certificate: CERTIFICATECLAIM}), credCReq)
+    uportServer.attest({
+      sub: this.props.uport.iss,
+      claim: {Certificate: CERTIFICATECLAIM},
+      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000  // 30 days from now
+    }).then(jwt => {
+      uportConnect.request(`https://id.uport.me/add?attestations=${jwt}`)
+      // uportServer.push(`https://id.uport.me/me?attest=${jwt}`)
+    })
   }
 
   render (props) {

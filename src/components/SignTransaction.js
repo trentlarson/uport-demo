@@ -46,9 +46,8 @@ class SignTransaction extends Component {
     this.handleInputChange = this.handleInputChange.bind(this)
 
     uportConnect.onResponse('updateShares').then(res => {
-      const txHash = res.payload
-      console.log(txHash)
-      const addr = this.props.uport.address
+      const txHash = res.res
+      const addr = checkAddressMNID(this.props.uport.nad)
       const actions = this.props.actions
       console.log('updateShares')
       waitForMined(addr, txHash, { blockNumber: null }, actions,
@@ -58,7 +57,6 @@ class SignTransaction extends Component {
         (total) => {
           console.log('waitForMined complete')
           this.props.actions.buySharesSUCCESS(txHash, total)
-          this.props.history.push('/credentials')
         }
       )
     }).catch(error => {
@@ -69,7 +67,7 @@ class SignTransaction extends Component {
 
   getCurrentShares () {
     // TODO: Dump this check once MNID is default behavior
-    const addr = checkAddressMNID(this.props.uport.networkAddress)
+    const addr = checkAddressMNID(this.props.uport.nad)
     const actions = this.props.actions
     getShares(addr, actions)
   }
@@ -80,7 +78,7 @@ class SignTransaction extends Component {
     console.log('buyShares')
 
     let sharesNumber = this.props.sharesInput
-    const addr = checkAddressMNID(this.props.uport.networkAddress)
+    const addr = checkAddressMNID(this.props.uport.nad)
     const actions = this.props.actions
 
     console.log({sharesNumber, addr, actions})
