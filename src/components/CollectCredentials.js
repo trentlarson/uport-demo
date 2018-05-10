@@ -1,10 +1,12 @@
 // Frameworks
 import React, { Component } from 'react'
-import { uport } from '../utilities/uportSetup'
+import { uportServer, uportConnect } from '../utilities/uportSetup'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
+
+import { transport } from 'uport-core'
 
 import styled from 'styled-components'
 
@@ -42,6 +44,9 @@ const SubText = styled.p`
 const RELATIONSHIPCLAIM = 'User'
 const CERTIFICATECLAIM = 'uPort Demo'
 
+
+// TODO swap out with all
+
 class CollectCredentials extends Component {
 
   constructor (props) {
@@ -49,30 +54,39 @@ class CollectCredentials extends Component {
     this.credentialsbtnClickA = this.credentialsbtnClickA.bind(this)
     this.credentialsbtnClickB = this.credentialsbtnClickB.bind(this)
     this.credentialsbtnClickC = this.credentialsbtnClickC.bind(this)
+    console.log(this.props.uport.capabilities[0])
+    console.log(this.props.uport.publicEncKey)
+    uportServer.push = transport.push.send(this.props.uport.capabilities[0], this.props.uport.publicEncKey, 'https://api.uport.me/pututu/sns/')
   }
 
   credentialsbtnClickA () {
-    uport.attestCredentials({
-      sub: this.props.uport.address,
-      claim: {name: this.props.uport.name},
-      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000,  // 30 days from now
-      uriHandler: (log) => { console.log(log) }
+    uportServer.attest({
+      sub: this.props.uport.iss,
+      claim: {name: this.props.uport.own.name},
+      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000  // 30 days from now
+    }).then(jwt => {
+      // uportConnect.request(`https://id.uport.me/add?attestations=${jwt}`)
+      uportServer.push(`https://id.uport.me/add?attestations=${jwt}`)
     })
   }
   credentialsbtnClickB () {
-    uport.attestCredentials({
-      sub: this.props.uport.address,
+    uportServer.attest({
+      sub: this.props.uport.iss,
       claim: {Relationship: RELATIONSHIPCLAIM},
-      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000,  // 30 days from now
-      uriHandler: (log) => { console.log(log) }
+      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000  // 30 days from now
+    }).then(jwt => {
+      uportConnect.request(`https://id.uport.me/add?attestations=${jwt}`)
+      // uportServer.push(`https://id.uport.me/me?attest=${jwt}`)
     })
   }
   credentialsbtnClickC () {
-    uport.attestCredentials({
-      sub: this.props.uport.address,
+    uportServer.attest({
+      sub: this.props.uport.iss,
       claim: {Certificate: CERTIFICATECLAIM},
-      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000,  // 30 days from now
-      uriHandler: (log) => { console.log(log) }
+      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000  // 30 days from now
+    }).then(jwt => {
+      uportConnect.request(`https://id.uport.me/add?attestations=${jwt}`)
+      // uportServer.push(`https://id.uport.me/me?attest=${jwt}`)
     })
   }
 

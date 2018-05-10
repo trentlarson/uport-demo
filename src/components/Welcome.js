@@ -4,7 +4,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
-import { uport } from '../utilities/uportSetup'
+import { uportServer, uportConnect } from '../utilities/uportSetup'
+const CHASQUI_URL = 'https://chasqui.uport.me/api/v1/topic/'
+import { crypto } from 'uport-core'
+
 
 const WelcomeWrap = styled.section``
 const ConnectUport = styled.button``
@@ -18,15 +21,21 @@ class Welcome extends Component {
   constructor (props) {
     super(props)
     this.connectUport = this.connectUport.bind(this)
+
+    uportConnect.onResponse('ConnectRequest').then(res => {
+      console.log(res)
+      this.props.actions.connectUport(res.res)
+    })
   }
 
   connectUport () {
-    uport.requestCredentials(
-      { requested: ['name', 'phone', 'country', 'avatar'],
-        notifications: true }
-    ).then((credentials) => {
-        console.log({credentials})
-        this.props.actions.connectUport(credentials)
+    const reqObj = { requested: ['name', 'phone', 'country'],
+                     notifications: true,
+                     callbackUrl: CHASQUI_URL + crypto.randomString(16) }
+    uportServer.requestDisclosure(reqObj).then(jwt => {
+      // TODO simple func to wrap in libs
+      console.log(jwt)
+      uportConnect.request(`https://id.uport.me/me?requestToken=${jwt}`, 'ConnectRequest')
     })
   }
 
