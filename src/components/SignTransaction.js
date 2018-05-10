@@ -45,10 +45,9 @@ class SignTransaction extends Component {
     this.buyShares = this.buyShares.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)
 
-    uportConnect.onResponse('updateShares').then(payload => {
-      const txHash = payload.res
-      console.log(txHash)
-      const addr = this.props.uport.address
+    uportConnect.onResponse('updateShares').then(res => {
+      const txHash = res.res
+      const addr = checkAddressMNID(this.props.uport.nad)
       const actions = this.props.actions
       console.log('updateShares')
       waitForMined(addr, txHash, { blockNumber: null }, actions,
@@ -67,7 +66,10 @@ class SignTransaction extends Component {
   }
 
   getCurrentShares () {
-    getShares(this.props.uport.address, this.props.actions)
+    // TODO: Dump this check once MNID is default behavior
+    const addr = checkAddressMNID(this.props.uport.nad)
+    const actions = this.props.actions
+    getShares(addr, actions)
   }
 
   buyShares (e) {

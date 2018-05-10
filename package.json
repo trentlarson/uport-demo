@@ -60,10 +60,9 @@
     "react-router-dom": "^4.3.1",
     "redux": "^3.6.0",
     "styled-components": "^1.4.5",
-    "tweetnacl": "^1.0.0",
-    "uport": "^0.7.0-alpha-5",
-    "uport-connect": "^0.8.12-alpha-12",
-    "uport-core": "0.0.36",
+    "uport": "^0.7.0-alpha-2",
+    "uport-connect": "^0.8.4",
+    "uport-core": "0.0.18",
     "web3": "^0.19.1"
   },
   "scripts": {
