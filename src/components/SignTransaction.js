@@ -5,10 +5,11 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 
-import SharesContract from '../utilities/SharesContract'
+import { SharesContract } from '../utilities/SharesContract'
 import waitForMined from '../utilities/waitForMined'
 import checkAddressMNID from '../utilities/checkAddressMNID'
 import getShares from '../utilities/getShares'
+import { uportConnect } from '../utilities/uportSetup'
 
 import styled from 'styled-components'
 
@@ -42,11 +43,30 @@ class SignTransaction extends Component {
     this.getCurrentShares = this.getCurrentShares.bind(this)
     this.buyShares = this.buyShares.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)
+
+    uportConnect.onResponse('updateShares').then(res => {
+      const txHash = res.res
+      const addr = checkAddressMNID(this.props.uport.nad)
+      const actions = this.props.actions
+      console.log('updateShares')
+      waitForMined(addr, txHash, { blockNumber: null }, actions,
+        () => {
+          this.props.actions.buySharesPENDING()
+        },
+        (total) => {
+          console.log('waitForMined complete')
+          this.props.actions.buySharesSUCCESS(txHash, total)
+        }
+      )
+    }).catch(error => {
+      if (error) { this.props.actions.buySharesERROR(error) }
+    })
+
   }
 
   getCurrentShares () {
     // TODO: Dump this check once MNID is default behavior
-    const addr = checkAddressMNID(this.props.uport.address)
+    const addr = checkAddressMNID(this.props.uport.nad)
     const actions = this.props.actions
     getShares(addr, actions)
   }
@@ -57,26 +77,14 @@ class SignTransaction extends Component {
     console.log('buyShares')
 
     let sharesNumber = this.props.sharesInput
-    const addr = checkAddressMNID(this.props.uport.address)
+    const addr = checkAddressMNID(this.props.uport.nad)
     const actions = this.props.actions
 
     console.log({sharesNumber, addr, actions})
 
     this.props.actions.buySharesREQUEST(sharesNumber)
 
-    SharesContract.updateShares(sharesNumber, (error, txHash) => {
-      console.log('updateShares')
-      if (error) { this.props.actions.buySharesERROR(error) }
-      waitForMined(addr, txHash, { blockNumber: null }, actions,
-        () => {
-          this.props.actions.buySharesPENDING()
-        },
-        (total) => {
-          console.log('waitForMined complete')
-          this.props.actions.buySharesSUCCESS(txHash, total)
-        }
-      )
-    })
+    SharesContract.updateShares(sharesNumber, 'updateShares')
   }
 
   handleInputChange (event) {
@@ -121,7 +129,7 @@ class SignTransaction extends Component {
                     <input
                       id='sharesInput'
                       type='number'
-                      style={{"paddingLeft":".5em", "font-size":"16px"}}
+                      style={{"paddingLeft":".5em", "fontSize":"16px"}}
                       onChange={this.handleInputChange}
                       value={this.props.sharesInput} />
                   </FormRow>
