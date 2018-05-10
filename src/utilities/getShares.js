@@ -1,8 +1,10 @@
-import SharesContract from '../utilities/SharesContract'
+import { SharesContractWeb3 } from '../utilities/SharesContract'
 
 async function getShares (addr, actions) {
+  console.log('address')
+  console.log(addr)
   actions.getCurrentSharesREQUEST()
-  SharesContract.getShares
+  SharesContractWeb3.getShares
     .call(addr, (error, sharesNumber) => {
       if (error) {
         actions.getCurrentSharesERROR(error)
