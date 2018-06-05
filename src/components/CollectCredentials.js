@@ -54,28 +54,30 @@ class CollectCredentials extends Component {
     this.credentialsbtnClickA = this.credentialsbtnClickA.bind(this)
     this.credentialsbtnClickB = this.credentialsbtnClickB.bind(this)
     this.credentialsbtnClickC = this.credentialsbtnClickC.bind(this)
-    console.log(this.props.uport.capabilities[0])
+    // console.log(this.props.uport.capabilities[0])
     console.log(this.props.uport.publicEncKey)
-    uportServer.push = transport.push.send(this.props.uport.capabilities[0], this.props.uport.publicEncKey, 'https://api.uport.me/pututu/sns/')
+    uportServer.push = transport.push.send(this.props.uport.pushToken, this.props.uport.publicEncKey, 'https://pututu.uport.me/api/v2/sns')
+    // uportServer.push = transport.push.send(this.props.uport.pushToken, this.props.uport.publicEncKey)
   }
 
   credentialsbtnClickA () {
     uportServer.attest({
-      sub: this.props.uport.iss,
-      claim: {name: this.props.uport.own.name},
-      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000  // 30 days from now
+      sub: this.props.uport.did,
+      claim: {name: this.props.uport.name},
+        exp: Math.floor(new Date().getTime() / 1000) + 30 * 24 * 60 * 60 // 30 days from now
     }).then(jwt => {
       // uportConnect.request(`https://id.uport.me/add?attestations=${jwt}`)
-      uportServer.push(`https://id.uport.me/add?attestations=${jwt}`)
+      uportServer.push(`https://id.uport.me/req/${jwt}`, )
     })
   }
   credentialsbtnClickB () {
     uportServer.attest({
-      sub: this.props.uport.iss,
+      sub: this.props.uport.did,
       claim: {Relationship: RELATIONSHIPCLAIM},
-      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000  // 30 days from now
+      exp: Math.floor(new Date().getTime() / 1000) + 30 * 24 * 60 * 60  // 30 days from now
     }).then(jwt => {
-      uportConnect.request(`https://id.uport.me/add?attestations=${jwt}`)
+      console.log(jwt)
+      uportConnect.request(jwt, 'credReqB')
       // uportServer.push(`https://id.uport.me/me?attest=${jwt}`)
     })
   }
