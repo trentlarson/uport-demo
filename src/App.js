@@ -14,6 +14,7 @@ import SignTransaction from './components/SignTransaction'
 import CollectCredentials from './components/CollectCredentials'
 import RegisterYourApp from './components/RegisterYourApp'
 import LogOut from './components/LogOut'
+import SignClaim from './components/SignClaim'
 
 const AppWrap = styled.div`
   display: flex;
@@ -40,8 +41,14 @@ class App extends Component {
         <AppBody>
           {
             !this.props.uport &&
-            !this.props.signTransactionPage
+            !this.props.signClaimPage
               ? <Welcome />
+              : null
+          }
+          {
+            this.props.signClaimPage === true &&
+            !this.props.signTransactionPage
+              ? <SignClaim />
               : null
           }
           {
@@ -79,7 +86,8 @@ const mapStateToProps = (state, props) => {
     signTransactionPage: state.App.signTransactionPage,
     collectCredentialsPage: state.App.collectCredentialsPage,
     registerYourAppPage: state.App.registerYourAppPage,
-    logOutPage: state.App.logOutPage
+    logOutPage: state.App.logOutPage,
+    signClaimPage: state.App.signClaimPage
   }
 }
 const mapDispatchToProps = (dispatch) => {
