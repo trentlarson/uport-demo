@@ -63,7 +63,7 @@
     "tweetnacl": "^1.0.0",
     "uport": "^0.7.0-alpha-3",
     "uport-connect": "^0.8.6-alpha-6",
-    "uport-core": "0.0.18",
+    "uport-core": "0.0.31",
     "web3": "^0.19.1"
   },
   "scripts": {

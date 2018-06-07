@@ -48,9 +48,6 @@ const RELATIONSHIPCLAIM = 'User'
 const CERTIFICATECLAIM = 'uPort Demo'
 const Time30Days = () => Math.floor(new Date().getTime() / 1000) + 30 * 24 * 60 * 60
 
-
-// TODO swap out with all
-
 class CollectCredentials extends Component {
 
   constructor (props) {
@@ -58,19 +55,16 @@ class CollectCredentials extends Component {
     this.credentialsbtnClickA = this.credentialsbtnClickA.bind(this)
     this.credentialsbtnClickB = this.credentialsbtnClickB.bind(this)
     this.credentialsbtnClickC = this.credentialsbtnClickC.bind(this)
-    // console.log(this.props.uport.capabilities[0])
-    console.log(this.props.uport.publicEncKey)
-    uportServer.push = transport.push.send(this.props.uport.pushToken, this.props.uport.publicEncKey, 'https://pututu.uport.me/api/v2/sns')
-    // uportServer.push = transport.push.send(this.props.uport.pushToken, this.props.uport.publicEncKey)
+    console.log(this.props.uport.pushToken)
+    uportServer.push = transport.push.send(this.props.uport.pushToken, this.props.uport.publicEncKey, 'https://api.uport.space/pututu/sns')
   }
 
   credentialsbtnClickA () {
     uportServer.attest({
       sub: this.props.uport.did,
       claim: {name: this.props.uport.name},
-        exp: Math.floor(new Date().getTime() / 1000) + 30 * 24 * 60 * 60 // 30 days from now
+      exp: Time30Days()
     }).then(jwt => {
-      // uportConnect.request(`https://id.uport.me/add?attestations=${jwt}`)
       uportServer.push(`https://id.uport.me/req/${jwt}`, )
     })
   }
@@ -79,22 +73,21 @@ class CollectCredentials extends Component {
     uportServer.attest({
       sub: this.props.uport.did,
       claim: {Relationship: RELATIONSHIPCLAIM},
-      exp: Math.floor(new Date().getTime() / 1000) + 30 * 24 * 60 * 60  // 30 days from now
+      exp: Time30Days()
     }).then(jwt => {
       console.log(jwt)
       uportConnect.request(jwt, 'credReqB')
-      // uportServer.push(`https://id.uport.me/me?attest=${jwt}`)
+      // uportServer.push(`https://id.uport.me/req/${jwt}`, )
     })
   }
 
   credentialsbtnClickC () {
     uportServer.attest({
-      sub: this.props.uport.iss,
+      sub: this.props.uport.did,
       claim: {Certificate: CERTIFICATECLAIM},
-      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000  // 30 days from now
+      exp: Time30Days()
     }).then(jwt => {
-      uportConnect.request(`https://id.uport.me/add?attestations=${jwt}`)
-      // uportServer.push(`https://id.uport.me/me?attest=${jwt}`)
+      uportServer.push(`https://id.uport.me/req/${jwt}`, )
     })
   }
 
