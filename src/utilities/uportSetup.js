@@ -20,20 +20,21 @@ uportConnect.verifyResponse = (token) => {
         return credentials.processDisclosurePayload(res)
       })
     }
-
+uportConnect.mobileTransport = transport.url.send()
 // Also because we are mocking server, using chasqui in place of our own server
 const CHASQUI_URL = 'https://chasqui.uport.me/api/v1/topic/'
 const uportServer = {
   requestDisclosure: () => {
     const reqObj = { requested: ['name', 'phone', 'country'],
                      notifications: true,
-                     callbackUrl: CHASQUI_URL + crypto.randomString(16) }
+                     callbackUrl: uportConnect.isOnMobile ? window.location.href : CHASQUI_URL + crypto.randomString(16) }
     return credentials.requestDisclosure(reqObj)
   },
   attest: credentials.attest.bind(credentials),
   createVerificationRequest: (sub) => {
-    const unsignedClaim = { claim: { "Self Signed": { value: true }}, sub }
-    return credentials.signJWT({unsignedClaim, sub, type: 'verReq', callback: CHASQUI_URL + crypto.randomString(16)})
+    const unsignedClaim = { claim: { "Self Signed": { value: true }}}
+    const callbackUrl = uportConnect.isOnMobile ? window.location.href : CHASQUI_URL + crypto.randomString(16)
+    return credentials.createVerificationRequest(unsignedClaim, sub, callbackUrl, sub)
   }
 }
 
