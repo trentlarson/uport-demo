@@ -247,6 +247,7 @@ class SignClaim extends Component {
       responseJWT: null,
       responseJSON: null,
       sub: 'did:uport:2oze6gbJDBVsvvBpzghEhCJsWMazvKmwUCD',
+      aud: '',
       unsignedClaim: { name: 'Bob'}
     }
     this.signClaim = this.signClaim.bind(this)
@@ -264,13 +265,14 @@ class SignClaim extends Component {
         responseJSON: json.payload
       })
     })
+    .catch(window.alert)
     
   }
 
   signClaim () {
     this.setState({responseJWT: null})
     
-    uportServer.createVerificationRequest(this.state.unsignedClaim, this.state.sub).then(jwt => {
+    uportServer.createVerificationRequest(this.state.unsignedClaim, this.state.sub, this.state.aud).then(jwt => {
       console.log(jwt)
       uportConnect.request(jwt, SignReqID, {type: 'redirect'})
       uportConnect.onResponse(SignReqID)
@@ -289,7 +291,9 @@ class SignClaim extends Component {
         <div style={{display: 'flex', flex: 1, flexDirection: 'row', justifyContent: 'center', textAlign: 'left', marginBottom: '20px'}}>
           <div style={{marginRight: '20px'}}>
           <h3>Subject: </h3>
-          <input type='text' style={{width: '500px'}} value={this.state.sub} onChange={(e) => this.setState({sub: e.target.value})} />
+          <input type='text' style={{width: '500px'}} value={this.state.sub} onChange={(e) => this.setState({sub: e.target.value !== '' ? e.target.value : null})} />
+          <h3>Audience: </h3>
+          <input type='text' style={{width: '500px'}} value={this.state.aud} onChange={(e) => this.setState({aud: e.target.value !== '' ? e.target.value : null})} />
           <h3>Claim: </h3>
             <JSONWrapper>
             {!this.state.unsignedClaim !== null && <JSONInput
