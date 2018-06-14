@@ -31,10 +31,9 @@ const uportServer = {
     return credentials.requestDisclosure(reqObj)
   },
   attest: credentials.attest.bind(credentials),
-  createVerificationRequest: (sub) => {
-    const unsignedClaim = { claim: { "Self Signed": { value: true }}}
+  createVerificationRequest: (unsignedClaim, sub) => {
     const callbackUrl = uportConnect.isOnMobile ? window.location.href : CHASQUI_URL + crypto.randomString(16)
-    return credentials.createVerificationRequest(unsignedClaim, sub, callbackUrl, sub)
+    return credentials.createVerificationRequest(unsignedClaim, sub, callbackUrl)
   }
 }
 
