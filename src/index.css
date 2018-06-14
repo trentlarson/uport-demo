@@ -1,8 +1,8 @@
-html, body, #root {
+html, body {
   height: 100%;
 }
 
-* {
+button, p, h1, h2, h3, h4 {
   font-family: 'Nunito', sans-serif;
   font-weight: 200;
 }
@@ -20,7 +20,7 @@ body {
 button {
   cursor: pointer;
   border: none;
-  font-size: 18px;s
+  font-size: 18px;
   font-weight: 100;
   color: #FFFFFF;
   padding: 18px 50px;
@@ -35,7 +35,7 @@ img {
 
 section {
   position: relative;
-  top: -20%;
+  margin-bottom: 20px;
 }
 
 a {
