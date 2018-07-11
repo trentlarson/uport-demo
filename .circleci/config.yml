@@ -1,0 +1,40 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/demo
+    docker:
+      - image: circleci/node:6.10
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - dependencies-cache-{{ checksum "package.json" }}
+
+      - run:
+          name: install-awscli-and-dependencies
+          command: |
+            sudo apt-get update && sudo apt-get install awscli
+            yarn
+
+      - run:
+          name: deploy-to-s3
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+              npm run deploy-space
+            fi
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              npm run deploy-production
+            fi
+
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
