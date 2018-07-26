@@ -46,7 +46,7 @@ class SignTransaction extends Component {
 
   getCurrentShares () {
     // TODO: Dump this check once MNID is default behavior
-    const addr = checkAddressMNID(this.props.uport.address)
+    const addr = checkAddressMNID(this.props.uport.networkAddress)
     const actions = this.props.actions
     getShares(addr, actions)
   }
@@ -57,7 +57,7 @@ class SignTransaction extends Component {
     console.log('buyShares')
 
     let sharesNumber = this.props.sharesInput
-    const addr = checkAddressMNID(this.props.uport.address)
+    const addr = checkAddressMNID(this.props.uport.networkAddress)
     const actions = this.props.actions
 
     console.log({sharesNumber, addr, actions})
