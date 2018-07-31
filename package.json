@@ -60,16 +60,18 @@
     "redux": "^3.6.0",
     "styled-components": "^1.4.5",
     "tweetnacl": "^1.0.0",
-    "uport-connect": "^0.8.14-alpha-26",
+    "uport": "0.7.0-alpha-8",
+    "uport-connect": "0.8.14-alpha-27",
     "web3": "^0.19.1"
   },
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "pre-deploy": "npm run build",
+    "pre-deploy": "npm i && npm run build",
     "safe-deploy": "bash ./safe-deploy.sh",
-    "deploy": "npm run pre-deploy && npm run deploy-to-s3 demo.uport.me && npm run invalidate E2QS4BB2HWFFZ2",
-    "deploy-test": "npm run pre-deploy && npm run deploy-to-s3 demo.uport.space && npm run invalidate E3PKUGAQ52BBOT",
+    "deploy-production": "npm run pre-deploy && npm run deploy-to-s3 demo.uport.me && npm run invalidate E2QS4BB2HWFFZ2",
+    "deploy-space": "npm run pre-deploy && npm run deploy-to-s3 demo.uport.space && npm run invalidate E3PKUGAQ52BBOT",
+    "deploy-test": "npm run pre-deploy && npm run deploy-to-s3 demo-test.uport.space && npm run invalidate E1IHJAXYXUJJ2W",
     "deploy-to-s3": "node_modules/.bin/s3-deploy './build/**' --cwd './build/' --region us-west-2 --bucket",
     "invalidate": "node_modules/.bin/aws-cloudfront-invalidate"
   },

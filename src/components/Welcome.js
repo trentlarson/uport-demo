@@ -5,8 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
-// import { uportServer, uportConnect } from '../utilities/uportSetup'
-// import { crypto } from 'uport-core'
+
 
 const ConnectReqID = 'ConnectRequest'
 const WelcomeWrap = styled.section``
