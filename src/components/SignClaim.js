@@ -6,7 +6,6 @@ import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportServer, uportConnect } from '../utilities/uportSetup'
 import { decodeJWT, verifyJWT } from 'did-jwt'
-import { crypto } from 'uport-core'
 import JSONInput from 'react-json-editor-ajrm'
 
 const SignReqID = 'SignRequest'
@@ -237,7 +236,7 @@ const trafficAccidentClaim = {
     ],
     liableForCausingDamage: true,
   },
-  sketchOfAccidentWhenImpactOccuredURL: 'https://i.imgur.com/iK0aJJg.jpg'   
+  sketchOfAccidentWhenImpactOccuredURL: 'https://i.imgur.com/iK0aJJg.jpg'
 }
 class SignClaim extends Component {
 
@@ -253,6 +252,11 @@ class SignClaim extends Component {
     this.signClaim = this.signClaim.bind(this)
     this.handleSignedClaim = this.handleSignedClaim.bind(this)
 
+    uportConnect.onResponse(SignReqID)
+    .then(this.handleSignedClaim)
+    .catch(error => {
+      this.setState({responseJWT: error})
+    })
 
   }
 
@@ -266,22 +270,26 @@ class SignClaim extends Component {
       })
     })
     .catch(window.alert)
-    
+
   }
 
   signClaim () {
     this.setState({responseJWT: null})
-    
-    uportServer.createVerificationRequest(this.state.unsignedClaim, this.state.sub, this.state.aud).then(jwt => {
-      console.log(jwt)
-      uportConnect.request(jwt, SignReqID, {type: 'redirect'})
-      uportConnect.onResponse(SignReqID)
-      .then(this.handleSignedClaim)
-      .catch(error => {
-        this.setState({responseJWT: error})
-      })
-    })
-    .catch(e => window.alert(e))
+
+    const reqObj = { unsignedClaim: this.state.unsignedClaim,
+                     sub: this.state.sub }
+    uportConnect.createVerificationRequest(reqObj, SignReqID)
+
+    // uportConnect.createVerificationRequest(this.state.unsignedClaim, this.state.sub, this.state.aud).then(jwt => {
+    //   console.log(jwt)
+    //   uportConnect.request(jwt, SignReqID, {type: 'redirect'})
+    //   uportConnect.onResponse(SignReqID)
+    //   .then(this.handleSignedClaim)
+    //   .catch(error => {
+    //     this.setState({responseJWT: error})
+    //   })
+    // })
+    // .catch(e => window.alert(e))
   }
 
   render () {
