@@ -4,8 +4,9 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
-import { uportServer, uportConnect } from '../utilities/uportSetup'
-import { crypto } from 'uport-core'
+import { uportConnect } from '../utilities/uportSetup'
+// import { uportServer, uportConnect } from '../utilities/uportSetup'
+// import { crypto } from 'uport-core'
 
 const ConnectReqID = 'ConnectRequest'
 const WelcomeWrap = styled.section``
@@ -26,18 +27,16 @@ class Welcome extends Component {
 
     uportConnect.onResponse(ConnectReqID).then(payload => {
       console.log(uportConnect)
-      console.log(uportConnect.doc)
-      const publicEncKey = uportConnect.doc.publicKey[1].publicKeyBase64
-      const resObj = Object.assign(payload.res, {address: uportConnect.address, did: uportConnect.did, mnid: uportConnect.mnid, publicEncKey})
+      console.log(payload.res)
+      const resObj = Object.assign(payload.res, {address: uportConnect.address, did: uportConnect.did, mnid: uportConnect.mnid})
       this.props.actions.connectUport(resObj)
     })
   }
 
   connectUport () {
-    uportServer.requestDisclosure().then(jwt => {
-      console.log(jwt)
-      uportConnect.request(jwt, ConnectReqID, {type: 'redirect'})
-    })
+    const reqObj = { requested: ['name', 'phone', 'country'],
+                     notifications: true }
+    uportConnect.requestDisclosure(reqObj, ConnectReqID)
   }
 
   render () {

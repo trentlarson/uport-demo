@@ -1,13 +1,10 @@
 // Frameworks
 import React, { Component } from 'react'
-import { uportServer, uportConnect } from '../utilities/uportSetup'
-
+import { uportConnect } from '../utilities/uportSetup'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import { withRouter, Link } from 'react-router-dom'
-
-import { transport } from 'uport-core'
 
 import { transport } from 'uport-core'
 
@@ -47,6 +44,12 @@ const SubText = styled.p`
 const RELATIONSHIPCLAIM = 'User'
 const CERTIFICATECLAIM = 'uPort Demo'
 const Time30Days = () => Math.floor(new Date().getTime() / 1000) + 30 * 24 * 60 * 60
+const credAReq ='credAReq'
+const credBReq ='credBReq'
+const credCReq ='credCReq'
+
+const credentialFactory = (sub, exp) => (claim) => ({sub, exp, claim})
+
 
 class CollectCredentials extends Component {
 
@@ -55,40 +58,23 @@ class CollectCredentials extends Component {
     this.credentialsbtnClickA = this.credentialsbtnClickA.bind(this)
     this.credentialsbtnClickB = this.credentialsbtnClickB.bind(this)
     this.credentialsbtnClickC = this.credentialsbtnClickC.bind(this)
-    console.log(this.props.uport.pushToken)
-    uportServer.push = transport.push.send(this.props.uport.pushToken, this.props.uport.publicEncKey, 'https://api.uport.space/pututu/sns')
+    uportConnect.onResponse(credAReq).then(payload => {
+      // TODO this request doesn't close qr code??
+      console.log(payload)
+    })
+    this.credentialCreate = credentialFactory (this.props.uport.did, Time30Days())
   }
 
   credentialsbtnClickA () {
-    uportServer.attest({
-      sub: this.props.uport.did,
-      claim: {name: this.props.uport.name},
-      exp: Time30Days()
-    }).then(jwt => {
-      uportServer.push(`https://id.uport.me/req/${jwt}`, )
-    })
+    uportConnect.attest(this.credentialCreate({Name: this.props.uport.name}), credAReq)
   }
 
   credentialsbtnClickB () {
-    uportServer.attest({
-      sub: this.props.uport.did,
-      claim: {Relationship: RELATIONSHIPCLAIM},
-      exp: Time30Days()
-    }).then(jwt => {
-      console.log(jwt)
-      uportConnect.request(jwt, 'credReqB')
-      // uportServer.push(`https://id.uport.me/req/${jwt}`, )
-    })
+    uportConnect.attest(this.credentialCreate({Relationship: RELATIONSHIPCLAIM}), credBReq)
   }
 
   credentialsbtnClickC () {
-    uportServer.attest({
-      sub: this.props.uport.did,
-      claim: {Certificate: CERTIFICATECLAIM},
-      exp: Time30Days()
-    }).then(jwt => {
-      uportServer.push(`https://id.uport.me/req/${jwt}`, )
-    })
+    uportConnect.attest(this.credentialCreate({Certificate: CERTIFICATECLAIM}), credCReq)
   }
 
   render (props) {
