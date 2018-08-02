@@ -5,12 +5,24 @@ let initialState = {
 export default(state = initialState, payload) => {
   switch (payload.type) {
     case 'CONNECT_UPORT':
+      console.log({
+        ...state,
+        uport: payload.data,
+        signClaimPage: true
+      }
+)
       return {
         ...state,
         uport: payload.data,
+        signClaimPage: true
+      }
+
+    case 'SIGN_CLAIM':
+      return {
+        ...state,
         signTransactionPage: true
       }
-      
+
     case 'GET_CURRENT_SHARES_REQUEST':
       return {
         ...state,

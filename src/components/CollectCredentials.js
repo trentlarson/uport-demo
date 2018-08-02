@@ -1,7 +1,6 @@
 // Frameworks
 import React, { Component } from 'react'
-import { uport } from '../utilities/uportSetup'
-
+import { uportConnect } from '../utilities/uportSetup'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
@@ -41,6 +40,13 @@ const SubText = styled.p`
 
 const RELATIONSHIPCLAIM = 'User'
 const CERTIFICATECLAIM = 'uPort Demo'
+const Time30Days = () => Math.floor(new Date().getTime() / 1000) + 30 * 24 * 60 * 60
+const credAReq ='credAReq'
+const credBReq ='credBReq'
+const credCReq ='credCReq'
+
+const credentialFactory = (sub, exp) => (claim) => ({sub, exp, claim})
+
 
 class CollectCredentials extends Component {
 
@@ -49,31 +55,23 @@ class CollectCredentials extends Component {
     this.credentialsbtnClickA = this.credentialsbtnClickA.bind(this)
     this.credentialsbtnClickB = this.credentialsbtnClickB.bind(this)
     this.credentialsbtnClickC = this.credentialsbtnClickC.bind(this)
+    uportConnect.onResponse(credAReq).then(payload => {
+      // TODO this request doesn't close qr code??
+      console.log(payload)
+    })
+    this.credentialCreate = credentialFactory (this.props.uport.did, Time30Days())
   }
 
   credentialsbtnClickA () {
-    uport.attestCredentials({
-      sub: this.props.uport.address,
-      claim: {name: this.props.uport.name},
-      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000,  // 30 days from now
-      uriHandler: (log) => { console.log(log) }
-    })
+    uportConnect.attest(this.credentialCreate({Name: this.props.uport.name}), credAReq)
   }
+
   credentialsbtnClickB () {
-    uport.attestCredentials({
-      sub: this.props.uport.address,
-      claim: {Relationship: RELATIONSHIPCLAIM},
-      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000,  // 30 days from now
-      uriHandler: (log) => { console.log(log) }
-    })
+    uportConnect.attest(this.credentialCreate({Relationship: RELATIONSHIPCLAIM}), credBReq)
   }
+
   credentialsbtnClickC () {
-    uport.attestCredentials({
-      sub: this.props.uport.address,
-      claim: {Certificate: CERTIFICATECLAIM},
-      exp: new Date().getTime() + 30 * 24 * 60 * 60 * 1000,  // 30 days from now
-      uriHandler: (log) => { console.log(log) }
-    })
+    uportConnect.attest(this.credentialCreate({Certificate: CERTIFICATECLAIM}), credCReq)
   }
 
   render (props) {

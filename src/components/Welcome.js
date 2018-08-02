@@ -4,8 +4,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
-import { uport } from '../utilities/uportSetup'
+import { uportConnect } from '../utilities/uportSetup'
 
+
+const ConnectReqID = 'ConnectRequest'
 const WelcomeWrap = styled.section``
 const ConnectUport = styled.button``
 const SubText = styled.p`
@@ -18,16 +20,19 @@ class Welcome extends Component {
   constructor (props) {
     super(props)
     this.connectUport = this.connectUport.bind(this)
+
+    uportConnect.onResponse(ConnectReqID).then(payload => {
+      console.log(uportConnect)
+      console.log(payload.res)
+      const resObj = Object.assign(payload.res, {address: uportConnect.address, did: uportConnect.did, mnid: uportConnect.mnid})
+      this.props.actions.connectUport(resObj)
+    })
   }
 
   connectUport () {
-    uport.requestCredentials(
-      { requested: ['name', 'phone', 'country', 'avatar'],
-        notifications: true }
-    ).then((credentials) => {
-        console.log({credentials})
-        this.props.actions.connectUport(credentials)
-    })
+    const reqObj = { requested: ['name', 'phone', 'country'],
+                     notifications: true }
+    uportConnect.requestDisclosure(reqObj, ConnectReqID)
   }
 
   render () {
