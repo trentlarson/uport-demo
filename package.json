@@ -1,6 +1,6 @@
 {
   "name": "demo",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": true,
   "devDependencies": {
     "autoprefixer": "6.5.1",
@@ -59,7 +59,6 @@
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
     "styled-components": "^1.4.5",
-    "tweetnacl": "^1.0.0",
     "uport": "0.7.0-alpha-8",
     "uport-connect": "0.8.14-alpha-27",
     "web3": "^0.19.1"

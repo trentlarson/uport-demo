@@ -75,10 +75,7 @@ class SignTransaction extends Component {
     console.log('buyShares')
 
     let sharesNumber = this.props.sharesInput
-    const addr = checkAddressMNID(this.props.uport.nad)
-    const actions = this.props.actions
-
-    console.log({sharesNumber, addr, actions})
+    console.log({sharesNumber, addr: this.props.uport.address, actions: this.props.actions})
 
     this.props.actions.buySharesREQUEST(sharesNumber)
 
