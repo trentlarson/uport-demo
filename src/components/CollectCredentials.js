@@ -4,6 +4,7 @@ import { uportConnect } from '../utilities/uportSetup'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
+import { withRouter, Link } from 'react-router-dom'
 
 import styled from 'styled-components'
 
@@ -107,7 +108,11 @@ class CollectCredentials extends Component {
               </tr>
             </tbody>
           </CredsTable>
-          <NextButton onClick={this.props.actions.credentialsDemoComplete}>Next</NextButton>
+          <Link to="/register">
+            <NextButton onClick={this.props.actions.credentialsDemoComplete}>
+              Next
+            </NextButton>
+          </Link>
         </CredentialsArea>
         <SubText>Credentials take a moment to appear on your device.</SubText>
       </CredentialsWrap>
@@ -126,4 +131,4 @@ const mapDispatchToProps = (dispatch) => {
     actions: bindActionCreators(AppActions, dispatch)
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(CollectCredentials)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CollectCredentials))

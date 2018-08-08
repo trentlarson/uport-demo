@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { withRouter, Link } from 'react-router-dom'
 
 // Actions
 import * as AppActions from '../actions/AppActions'
@@ -13,7 +14,7 @@ const NavBar = styled.nav`
   padding: 20px 40px;
   font-size: 18px;
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
 `
 const LogoLink = styled.a`
@@ -22,17 +23,19 @@ const LogoLink = styled.a`
 `
 const DemoText = styled.span`
   font-weight: bold;
+  text-decoration: none
 `
 
 const LeftArea = styled.div`
   display: block;
+  text-decoration: none
 `
 const RightArea = styled.div`
   display: block;
   text-align: left;
 `
 
-const UportAvatarWrap = styled.div` 
+const UportAvatarWrap = styled.div`
 `
 
 const UserName = styled.span`
@@ -57,12 +60,13 @@ class AppNavbar extends Component {
   render () {
     return (
       <NavBar>
-        
+        <Link to="/">
         <LeftArea>
-          <LogoLink href='/'>uport</LogoLink>
+          <LogoLink >uport</LogoLink>
           <span> | </span>
           <DemoText>Demo</DemoText>
         </LeftArea>
+        </Link>
 
         <RightArea>
           {
@@ -93,4 +97,4 @@ function mapStateToProps (state, props) {
 function mapDispatchToProps (dispatch) {
   return { actions: bindActionCreators(AppActions, dispatch) }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(AppNavbar)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AppNavbar))
