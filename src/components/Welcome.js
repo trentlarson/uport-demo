@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
+import { withRouter, Link } from 'react-router-dom'
 
 
 const ConnectReqID = 'ConnectRequest'
@@ -26,6 +27,7 @@ class Welcome extends Component {
       console.log(payload.res)
       const resObj = Object.assign(payload.res, {address: uportConnect.address, did: uportConnect.did, mnid: uportConnect.mnid})
       this.props.actions.connectUport(resObj)
+      this.props.history.push('/signclaim')
     })
   }
 
@@ -40,8 +42,7 @@ class Welcome extends Component {
       <WelcomeWrap>
         <h4>Build a Better dApp</h4>
         <SubText>Identity and transaction infrastructure for Ethereum</SubText>
-        <ConnectUport
-          onClick={this.connectUport}>
+        <ConnectUport  onClick={this.connectUport}>
           Connect with uPort
         </ConnectUport>
       </WelcomeWrap>
@@ -57,4 +58,5 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
   return { actions: bindActionCreators(AppActions, dispatch) }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Welcome)
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Welcome))

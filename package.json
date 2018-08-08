@@ -57,10 +57,11 @@
     "react-dom": "^15.4.2",
     "react-json-editor-ajrm": "^2.4.4",
     "react-redux": "^5.0.2",
+    "react-router-dom": "^4.3.1",
     "redux": "^3.6.0",
     "styled-components": "^1.4.5",
     "uport": "0.7.0-alpha-8",
-    "uport-connect": "0.8.14-alpha-27",
+    "uport-connect": "0.8.14-alpha-33",
     "web3": "^0.19.1"
   },
   "scripts": {

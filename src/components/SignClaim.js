@@ -7,6 +7,8 @@ import styled from 'styled-components'
 import { uportServer, uportConnect } from '../utilities/uportSetup'
 import { decodeJWT, verifyJWT } from 'did-jwt'
 import JSONInput from 'react-json-editor-ajrm'
+import { withRouter, Link } from 'react-router-dom'
+
 
 const SignReqID = 'SignRequest'
 const WelcomeWrap = styled.section``
@@ -334,15 +336,15 @@ class SignClaim extends Component {
             </JSONWrapper>
           </div>}
         </div>
-        <ConnectUport
-          onClick={this.signClaim}>
+        <ConnectUport onClick={this.signClaim}>
           Sign Claim
         </ConnectUport>
         <div>
-        <NextButton
-          onClick={this.props.actions.signClaim}>
-          Next
-        </NextButton>
+        <Link to="/transaction">
+          <NextButton>
+            Next
+          </NextButton>
+        </Link>
         </div>
       </WelcomeWrap>
     )
@@ -357,4 +359,4 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
   return { actions: bindActionCreators(AppActions, dispatch) }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(SignClaim)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignClaim))
