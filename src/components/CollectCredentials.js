@@ -6,8 +6,6 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import { withRouter, Link } from 'react-router-dom'
 
-import { transport } from 'uport-core'
-
 import styled from 'styled-components'
 
 const CredentialsWrap = styled.section`

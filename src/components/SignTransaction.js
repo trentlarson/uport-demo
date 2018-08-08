@@ -58,6 +58,7 @@ class SignTransaction extends Component {
         (total) => {
           console.log('waitForMined complete')
           this.props.actions.buySharesSUCCESS(txHash, total)
+          this.props.history.push('/credentials')
         }
       )
     }).catch(error => {
