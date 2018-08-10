@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
+import { withRouter, Link } from 'react-router-dom'
 
 import { SharesContract } from '../utilities/SharesContract'
 import waitForMined from '../utilities/waitForMined'
@@ -57,6 +58,7 @@ class SignTransaction extends Component {
         (total) => {
           console.log('waitForMined complete')
           this.props.actions.buySharesSUCCESS(txHash, total)
+          this.props.history.push('/credentials')
         }
       )
     }).catch(error => {
@@ -130,8 +132,7 @@ class SignTransaction extends Component {
                   </FormRow>
                   <FormRow>
                     <br />
-                    <BtnBuyShares
-                      onClick={this.buyShares}>
+                    <BtnBuyShares onClick={this.buyShares}>
                       Buy Shares
                     </BtnBuyShares>
                   </FormRow>
@@ -152,12 +153,11 @@ class SignTransaction extends Component {
             ? <div>Please confirm the transaction card on your phone</div>
             : null
         }
-
-              <NextButton
-                onClick={this.props.actions.buySharesDemoComplete}>
-                Next
-              </NextButton>
-
+              <Link to="/credentials">
+                <NextButton onClick={this.props.actions.buySharesDemoComplete}>
+                  Next
+                </NextButton>
+              </Link>
       </SharesWrap>
     )
   }
@@ -178,4 +178,4 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
   return { actions: bindActionCreators(AppActions, dispatch) }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(SignTransaction)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignTransaction))

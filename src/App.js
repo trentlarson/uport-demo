@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from './actions/AppActions'
+import { Route, Switch,  withRouter } from 'react-router-dom'
 
 import styled from 'styled-components'
 
@@ -15,6 +16,7 @@ import CollectCredentials from './components/CollectCredentials'
 import RegisterYourApp from './components/RegisterYourApp'
 import LogOut from './components/LogOut'
 import SignClaim from './components/SignClaim'
+import { uportConnect } from './utilities/uportSetup'
 
 const AppWrap = styled.div`
   display: flex;
@@ -34,46 +36,22 @@ const AppBody = styled.div`
 `
 
 class App extends Component {
+  constructor (props) {
+    super(props)
+    this.props.actions.connectUport(uportConnect.state)
+  }
+
   render () {
     return (
       <AppWrap>
         <AppNavbar />
         <AppBody>
-          {
-            !this.props.uport &&
-            !this.props.signClaimPage
-              ? <Welcome />
-              : null
-          }
-          {
-            this.props.signClaimPage === true &&
-            !this.props.signTransactionPage
-              ? <SignClaim />
-              : null
-          }
-          {
-            this.props.signTransactionPage === true &&
-            !this.props.collectCredentialsPage
-              ? <SignTransaction />
-              : null
-          }
-          {
-            this.props.collectCredentialsPage &&
-            !this.props.registerYourAppPage
-              ? <CollectCredentials />
-              : null
-          }
-          {
-            this.props.registerYourAppPage &&
-            !this.props.logOutPage
-              ? <RegisterYourApp />
-              : null
-          }
-          {
-            this.props.logOutPage
-              ? <LogOut />
-              : null
-          }
+          <Route exact path='/' component={Welcome}/>
+          <Route path='/signclaim' component={SignClaim}/>
+          <Route path='/transaction' component={SignTransaction}/>
+          <Route path='/credentials' component={CollectCredentials}/>
+          <Route path='/register' component={RegisterYourApp}/>
+          <Route path='/logout' component={LogOut}/>
         </AppBody>
       </AppWrap>
     )
@@ -93,4 +71,4 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
   return { actions: bindActionCreators(AppActions, dispatch) }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))

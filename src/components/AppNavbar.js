@@ -2,6 +2,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { withRouter, Link } from 'react-router-dom'
+import { uportConnect } from '../utilities/uportSetup'
 
 // Actions
 import * as AppActions from '../actions/AppActions'
@@ -13,7 +15,7 @@ const NavBar = styled.nav`
   padding: 20px 40px;
   font-size: 18px;
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
 `
 const LogoLink = styled.a`
@@ -22,17 +24,19 @@ const LogoLink = styled.a`
 `
 const DemoText = styled.span`
   font-weight: bold;
+  text-decoration: none
 `
 
 const LeftArea = styled.div`
   display: block;
+  text-decoration: none
 `
 const RightArea = styled.div`
   display: block;
   text-align: left;
 `
 
-const UportAvatarWrap = styled.div` 
+const UportAvatarWrap = styled.div`
 `
 
 const UserName = styled.span`
@@ -54,26 +58,40 @@ const UportAvatar = styled.img`
 `
 
 class AppNavbar extends Component {
+
+  constructor (props) {
+    super(props)
+    this.logout = this.logout.bind(this)
+  }
+
+  logout () {
+    uportConnect.logout()
+    this.props.actions.connectUport(uportConnect.state)
+    this.props.history.push('/logout')
+  }
+
   render () {
     return (
       <NavBar>
-        
+        <Link to="/">
         <LeftArea>
-          <LogoLink href='/'>uport</LogoLink>
+          <LogoLink >uport</LogoLink>
           <span> | </span>
           <DemoText>Demo</DemoText>
         </LeftArea>
+        </Link>
 
         <RightArea>
           {
-            this.props.uport !== null &&
-            this.props.uport !== undefined &&
-            this.props.uport.avatar
-              ? (
+            this.props.uport && this.props.uport.name
+              ? (<div>
                 <UportAvatarWrap>
                   <UserName>{this.props.uport.name}</UserName>
-                  <UportAvatar alt='user-img' src={this.props.uport.avatar.uri} />
                 </UportAvatarWrap>
+                <LogoLink onClick={this.logout}>
+                  Logout
+                </LogoLink>
+                </div>
               )
               : null
           }
@@ -93,4 +111,4 @@ function mapStateToProps (state, props) {
 function mapDispatchToProps (dispatch) {
   return { actions: bindActionCreators(AppActions, dispatch) }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(AppNavbar)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AppNavbar))
