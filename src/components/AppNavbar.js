@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter, Link } from 'react-router-dom'
+import { uportConnect } from '../utilities/uportSetup'
 
 // Actions
 import * as AppActions from '../actions/AppActions'
@@ -57,6 +58,18 @@ const UportAvatar = styled.img`
 `
 
 class AppNavbar extends Component {
+
+  constructor (props) {
+    super(props)
+    this.logout = this.logout.bind(this)
+  }
+
+  logout () {
+    uportConnect.logout()
+    this.props.actions.connectUport(uportConnect.state)
+    this.props.history.push('/logout')
+  }
+
   render () {
     return (
       <NavBar>
@@ -70,14 +83,15 @@ class AppNavbar extends Component {
 
         <RightArea>
           {
-            this.props.uport !== null &&
-            this.props.uport !== undefined &&
-            this.props.uport.avatar
-              ? (
+            this.props.uport && this.props.uport.name
+              ? (<div>
                 <UportAvatarWrap>
                   <UserName>{this.props.uport.name}</UserName>
-                  <UportAvatar alt='user-img' src={this.props.uport.avatar.uri} />
                 </UportAvatarWrap>
+                <LogoLink onClick={this.logout}>
+                  Logout
+                </LogoLink>
+                </div>
               )
               : null
           }
