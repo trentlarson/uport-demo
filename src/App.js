@@ -38,10 +38,7 @@ const AppBody = styled.div`
 class App extends Component {
   constructor (props) {
     super(props)
-    // Load existing state
-    const resObj = {pushToken: uportConnect.pushToken, publicEncKey: uportConnect.publicEncKey, address: uportConnect.address, did: uportConnect.did, mnid: uportConnect.mnid}
-    this.props.actions.connectUport(resObj)
-    // TODO  if props.uport.did  then     this.props.history.push('/credentials ')
+    this.props.actions.connectUport(uportConnect.state)
   }
 
   render () {

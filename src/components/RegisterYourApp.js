@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import { withRouter, Link } from 'react-router-dom'
+import { uportConnect } from '../utilities/uportSetup'
 
 const RegisterYourAppWrap = styled.section``
 const NextButton = styled.button`
@@ -16,6 +17,17 @@ const LinkB = styled.a`
 `
 
 class RegisterYourApp extends Component {
+  constructor (props) {
+    super(props)
+    this.logout = this.logout.bind(this)
+  }
+
+  logout () {
+    uportConnect.logout()
+    this.props.actions.connectUport(uportConnect.state)
+    this.props.history.push('/logout')
+  }
+
   render () {
     return (
       <RegisterYourAppWrap>
@@ -33,11 +45,9 @@ class RegisterYourApp extends Component {
           Click here to read the 'How To' Guide for App Manager
         </LinkB>
         <br/>
-        <Link to="/logout">
-          <NextButton onClick={this.props.actions.registerAppAreaComplete}>
-            Next
-          </NextButton>
-        </Link>
+        <NextButton onClick={this.logout}>
+          Logout
+        </NextButton>
       </RegisterYourAppWrap>
     )
   }
