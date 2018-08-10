@@ -26,10 +26,8 @@ class Welcome extends Component {
     this.connectUport = this.connectUport.bind(this)
 
     uportConnect.onResponse(ConnectReqID).then(payload => {
-      console.log(uportConnect)
       console.log(payload.res)
-      const resObj = Object.assign(payload.res, {address: uportConnect.address, did: uportConnect.did, mnid: uportConnect.mnid})
-      this.props.actions.connectUport(resObj)
+      this.props.actions.connectUport(uportConnect.state)
       this.props.history.push('/signclaim')
     })
   }
@@ -45,9 +43,23 @@ class Welcome extends Component {
       <WelcomeWrap>
         <h4>Build a Better dApp</h4>
         <SubText>Identity and transaction infrastructure for Ethereum</SubText>
-        <ConnectUport  onClick={this.connectUport}>
-          Connect with uPort
-        </ConnectUport>
+        {
+          this.props.uport && this.props.uport.name
+            ? (<div>
+                <p>Welcome back {this.props.uport.name}</p>
+                <Link to="/signclaim">
+                  <NextButton >
+                    Continue
+                  </NextButton>
+                </Link>
+              </div>
+            )
+            : (
+              <ConnectUport  onClick={this.connectUport}>
+                Connect with uPort
+              </ConnectUport>
+            )
+        }
       </WelcomeWrap>
     )
   }

@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter, Link } from 'react-router-dom'
+import { uportConnect } from '../utilities/uportSetup'
 
 // Actions
 import * as AppActions from '../actions/AppActions'
