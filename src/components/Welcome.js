@@ -25,8 +25,9 @@ class Welcome extends Component {
     super(props)
     this.connectUport = this.connectUport.bind(this)
 
-    uportConnect.onResponse(ConnectReqID).then(payload => {
-      console.log(payload.res)
+    uportConnect.onResponse(ConnectReqID).then(res => {
+      console.log("res.payload")
+      console.log(res.payload)
       this.props.actions.connectUport(uportConnect.state)
       this.props.history.push('/signclaim')
     })
