@@ -45,8 +45,8 @@ class SignTransaction extends Component {
     this.buyShares = this.buyShares.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)
 
-    uportConnect.onResponse('updateShares').then(payload => {
-      const txHash = payload.res
+    uportConnect.onResponse('updateShares').then(res => {
+      const txHash = res.payload
       console.log(txHash)
       const addr = this.props.uport.address
       const actions = this.props.actions
