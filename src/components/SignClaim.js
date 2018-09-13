@@ -262,12 +262,12 @@ class SignClaim extends Component {
 
   }
 
-  handleSignedClaim(payload) {
-    console.log(payload)
-    verifyJWT(payload.res).then(json => {
+  handleSignedClaim(res) {
+    console.log(res)
+    verifyJWT(res.payload).then(json => {
       console.log('json', json)
       this.setState({
-        responseJWT: payload.res,
+        responseJWT: res.payload,
         responseJSON: json.payload
       })
     })
@@ -277,21 +277,9 @@ class SignClaim extends Component {
 
   signClaim () {
     this.setState({responseJWT: null})
-
-    const reqObj = { unsignedClaim: this.state.unsignedClaim,
-                     sub: this.state.sub }
-    uportConnect.createVerificationRequest(reqObj, SignReqID)
-
-    // uportConnect.createVerificationRequest(this.state.unsignedClaim, this.state.sub, this.state.aud).then(jwt => {
-    //   console.log(jwt)
-    //   uportConnect.request(jwt, SignReqID, {type: 'redirect'})
-    //   uportConnect.onResponse(SignReqID)
-    //   .then(this.handleSignedClaim)
-    //   .catch(error => {
-    //     this.setState({responseJWT: error})
-    //   })
-    // })
-    // .catch(e => window.alert(e))
+    const unsignedClaim = this.state.unsignedClaim
+    const sub = this.state.sub
+    uportConnect.requestVerificationSignature(unsignedClaim, sub, SignReqID)
   }
 
   render () {

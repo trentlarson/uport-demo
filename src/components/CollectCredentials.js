@@ -56,23 +56,23 @@ class CollectCredentials extends Component {
     this.credentialsbtnClickA = this.credentialsbtnClickA.bind(this)
     this.credentialsbtnClickB = this.credentialsbtnClickB.bind(this)
     this.credentialsbtnClickC = this.credentialsbtnClickC.bind(this)
-    uportConnect.onResponse(credAReq).then(payload => {
+    uportConnect.onResponse(credAReq).then(res => {
       // TODO this request doesn't close qr code??
-      console.log(payload)
+      console.log(res)
     })
     this.credentialCreate = credentialFactory (this.props.uport.did, Time30Days())
   }
 
   credentialsbtnClickA () {
-    uportConnect.attest(this.credentialCreate({Name: this.props.uport.name}), credAReq)
+    uportConnect.sendVerification(this.credentialCreate({Name: this.props.uport.name}), credAReq)
   }
 
   credentialsbtnClickB () {
-    uportConnect.attest(this.credentialCreate({Relationship: RELATIONSHIPCLAIM}), credBReq)
+    uportConnect.sendVerification(this.credentialCreate({Relationship: RELATIONSHIPCLAIM}), credBReq)
   }
 
   credentialsbtnClickC () {
-    uportConnect.attest(this.credentialCreate({Certificate: CERTIFICATECLAIM}), credCReq)
+    uportConnect.sendVerification(this.credentialCreate({Certificate: CERTIFICATECLAIM}), credCReq)
   }
 
   render (props) {

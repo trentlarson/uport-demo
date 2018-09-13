@@ -60,8 +60,8 @@
     "react-router-dom": "^4.3.1",
     "redux": "^3.6.0",
     "styled-components": "^1.4.5",
-    "uport": "0.7.0-alpha-8",
-    "uport-connect": "0.8.14-alpha-50",
+    "uport": "0.7.0-alpha-12",
+    "uport-connect": "^1.0.0-alpha-3",
     "web3": "^0.19.1"
   },
   "scripts": {
