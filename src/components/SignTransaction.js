@@ -7,6 +7,7 @@ import * as AppActions from '../actions/AppActions'
 import { withRouter, Link } from 'react-router-dom'
 
 import { SharesContract } from '../utilities/SharesContract'
+import { CommunityTokenFactory, CommunityTokenFactoryWeb3, Erc20, Erc20Web3 } from '../utilities/TokensContracts'
 import waitForMined from '../utilities/waitForMined'
 import checkAddressMNID from '../utilities/checkAddressMNID'
 import getShares from '../utilities/getShares'
@@ -65,6 +66,44 @@ class SignTransaction extends Component {
       if (error) { this.props.actions.buySharesERROR(error) }
     })
 
+    uportConnect.onResponse('createERC20TokenResp').then(res => {
+      const txHash = res.payload
+      console.log(txHash)
+      const addr = this.props.uport.address
+      const actions = this.props.actions
+
+      waitForMined(addr, txHash, { blockNumber: null }, actions,
+        () => {
+          console.log('pending ')
+        },
+        (result) => {
+          console.log('waitForMined complete', result)
+
+        }
+      )
+    }).catch(error => {
+      if (error) { console.log(error) }
+    })
+
+    uportConnect.onResponse('transferERC20TokenResp').then(res => {
+      const txHash = res.payload
+      console.log(txHash)
+      const addr = this.props.uport.address
+      const actions = this.props.actions
+
+      waitForMined(addr, txHash, { blockNumber: null }, actions,
+        () => {
+          console.log('pending ')
+        },
+        (result) => {
+          console.log('waitForMined complete', result)
+
+        }
+      )
+    }).catch(error => {
+      if (error) { console.log(error) }
+    })
+    
   }
 
   getCurrentShares () {
@@ -82,6 +121,42 @@ class SignTransaction extends Component {
     this.props.actions.buySharesREQUEST(sharesNumber)
 
     SharesContract.updateShares(sharesNumber, 'updateShares')
+  }
+
+  createErc20Token (e) {
+    e.preventDefault()
+
+    console.log('create token')
+
+    CommunityTokenFactory.createERC20Token('Love coin', 0, 'LOV', '100000', 'createERC20TokenResp')
+  }
+
+  createErc20TokenWeb3 (e) {
+    e.preventDefault()
+
+    console.log('create token web3')
+
+    CommunityTokenFactoryWeb3.createERC20Token('Love coin', 0, 'LOV', '100000', (a, b) => {
+      console.log({a, b})
+    })
+  }
+
+  transferErc20Token (e) {
+    e.preventDefault()
+
+    console.log('send erc20 token')
+
+    Erc20.transfer('0x19711cd19e609febdbf607960220898268b7e24b', 10, 'transferERC20TokenResp')
+  }
+
+  transferErc20TokenWeb3 (e) {
+    e.preventDefault()
+
+    console.log('send erc20 token web3')
+
+    Erc20Web3.transfer('0x19711cd19e609febdbf607960220898268b7e24b', 10, (a, b) => {
+      console.log({a, b})
+    })
   }
 
   handleInputChange (event) {
@@ -134,6 +209,30 @@ class SignTransaction extends Component {
                     <br />
                     <BtnBuyShares onClick={this.buyShares}>
                       Buy Shares
+                    </BtnBuyShares>
+                  </FormRow>
+                  <FormRow>
+                    <br />
+                    <BtnBuyShares onClick={this.createErc20Token}>
+                      Create ERC20 token
+                    </BtnBuyShares>
+                  </FormRow>
+                  <FormRow>
+                    <br />
+                    <BtnBuyShares onClick={this.createErc20TokenWeb3}>
+                      Create ERC20 token (web3)
+                    </BtnBuyShares>
+                  </FormRow>
+                  <FormRow>
+                    <br />
+                    <BtnBuyShares onClick={this.transferErc20Token}>
+                      Transfer ERC20 token
+                    </BtnBuyShares>
+                  </FormRow>
+                  <FormRow>
+                    <br />
+                    <BtnBuyShares onClick={this.transferErc20TokenWeb3}>
+                      Transfer ERC20 token (web3)
                     </BtnBuyShares>
                   </FormRow>
                   <FormRow>
