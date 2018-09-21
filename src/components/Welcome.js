@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
-import { uportConnect } from '../utilities/uportSetup'
+import { uportConnect, getBrandingJWT } from '../utilities/uportSetup'
 import { withRouter, Link } from 'react-router-dom'
 
 
@@ -34,8 +34,11 @@ class Welcome extends Component {
   }
 
   connectUport () {
-    const reqObj = { requested: ['name', 'phone', 'country'],
-                     notifications: true }
+    const reqObj = { 
+      requested: ['name', 'phone', 'country'],
+      notifications: true,
+      vc: [getBrandingJWT()]
+     }
     uportConnect.requestDisclosure(reqObj, ConnectReqID)
   }
 

@@ -9,8 +9,33 @@ import Web3 from 'web3'
 
 const uportConnect = new Connect('DemoApp', {network: 'rinkeby', accountType: 'keypair'})
 
+let brandingJWT
+
+console.log(uportConnect.credentials)
+
+uportConnect.credentials.signJWT({
+  iat: Math.floor(Date.now() / 1000),
+  sub: uportConnect.credentials.did,
+  claim: {
+    name: "uPort Demo",
+    description: "uPort demo app",
+    url: "https://demo.uport.me",
+    profileImage: {"/": "/ipfs/Qmez4bdFmxPknbAoGzHmpjpLjQFChq39h5UMPGiwUHgt8f"},
+    bannerImage: {"/": "/ipfs/QmUA7P9tTx3eQQi7k6VfGMADmDDyvG6xdn5P4yXxcMJs7a"},
+  }
+}).then((jwt) => {
+  console.log(jwt)
+  brandingJWT = jwt
+})
+
+const getBrandingJWT = () => {
+  return brandingJWT
+}
+
+
+
 const web3 = new Web3(uportConnect.getProvider())
 web3.eth.defaultAccount = '0xB42E70a3c6dd57003f4bFe7B06E370d21CDA8087'
 console.log(uportConnect.state)
 
-export { web3, uportConnect}
+export { web3, uportConnect, getBrandingJWT}
