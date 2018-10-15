@@ -97,8 +97,8 @@ class SignTypedData extends Component {
 
   signTypedData () {
     this.setState({responseJWT: null})
-    const typedData = typedData
-    uportConnect.requestVerificationSignature(typedData, TypedDataSigReqID)
+    const { typedData } = this.state
+    uportConnect.requestTypedDataSignature(typedData, TypedDataSigReqID)
   }
 
   render() {
