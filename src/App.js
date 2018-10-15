@@ -16,6 +16,7 @@ import CollectCredentials from './components/CollectCredentials'
 import RegisterYourApp from './components/RegisterYourApp'
 import LogOut from './components/LogOut'
 import SignClaim from './components/SignClaim'
+import SignTypedData from './components/SignTypedData'
 import { uportConnect } from './utilities/uportSetup'
 
 const AppWrap = styled.div`
@@ -48,6 +49,7 @@ class App extends Component {
         <AppBody>
           <Route exact path='/' component={Welcome}/>
           <Route path='/signclaim' component={SignClaim}/>
+          <Route path='/signtypeddata' component={SignTypedData}/>
           <Route path='/transaction' component={SignTransaction}/>
           <Route path='/credentials' component={CollectCredentials}/>
           <Route path='/register' component={RegisterYourApp}/>

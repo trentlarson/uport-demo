@@ -9,7 +9,6 @@ import { decodeJWT, verifyJWT } from 'did-jwt'
 import JSONInput from 'react-json-editor-ajrm'
 import { withRouter, Link } from 'react-router-dom'
 
-
 const SignReqID = 'SignRequest'
 const WelcomeWrap = styled.section``
 const JSONWrap = styled.section`
@@ -259,7 +258,6 @@ class SignClaim extends Component {
     .catch(error => {
       this.setState({responseJWT: error})
     })
-
   }
 
   handleSignedClaim(res) {
@@ -340,7 +338,7 @@ class SignClaim extends Component {
           Sign Claim
         </ConnectUport>
         <div>
-        <Link to="/transaction">
+        <Link to="/signtypeddata">
           <NextButton>
             Next
           </NextButton>
