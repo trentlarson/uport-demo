@@ -77,6 +77,7 @@ class SignTypedData extends Component {
     this.signTypedData = this.signTypedData.bind(this)
     this.handleSignedData = this.handleSignedData.bind(this)
 
+    console.log('constructing...')
     uportConnect.onResponse(TypedDataSigReqID)
       .then(this.handleSignedData)
       .catch(error => {
@@ -85,7 +86,7 @@ class SignTypedData extends Component {
   }
 
   handleSignedData(res) {
-    console.log(res)
+    console.log('handling response', res)
     verifyJWT(res.payload).then(json => {
       console.log('json', json)
       this.setState({
@@ -98,11 +99,13 @@ class SignTypedData extends Component {
   signTypedData () {
     this.setState({responseJWT: null})
     const { typedData } = this.state
+    console.log('sending request')
     uportConnect.requestTypedDataSignature(typedData, TypedDataSigReqID)
   }
 
   render() {
     const { typedData, responseJSON, responseJWT } = this.state
+    console.log('rendering')
     return (
       <WelcomeWrap>
         <h4>Sign the following piece of ERC712 Typed Data: </h4>
