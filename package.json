@@ -60,14 +60,14 @@
     "react-router-dom": "^4.3.1",
     "redux": "^3.6.0",
     "styled-components": "^1.4.5",
-    "uport": "0.7.0-alpha-12",
     "uport-connect": "1.1.0-alpha.12",
     "web3": "^0.19.1"
   },
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "pre-deploy": "npm run build",
+    "override": "./override.sh",
+    "pre-deploy": "npm i && npm run build",
     "safe-deploy": "bash ./safe-deploy.sh",
     "deploy-production": "npm run pre-deploy && npm run deploy-to-s3 demo.uport.me && npm run invalidate E2QS4BB2HWFFZ2",
     "deploy-space": "npm run pre-deploy && npm run deploy-to-s3 demo.uport.space && npm run invalidate E3PKUGAQ52BBOT",

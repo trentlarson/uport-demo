@@ -6,13 +6,12 @@
 override() {
   echo "
     Building and copying $1 to node_modules...
-  ";
+  "
   cd $1 \
-    && npm i && npm run build:es5 \
-    && cp -r src ../node_modules/$1/src \
-    && cp -r lib ../node_modules/$1/lib \
+    && npm run build:es5 \
+    && cp -r src lib package.json ../node_modules/$1/ \
     && cd ..;
-  if $?; then 
+  if [ $? -ne 0 ]; then 
     echo "
       ERROR: Failed to build $1
     ";
@@ -21,6 +20,8 @@ override() {
 }
 
 # Override each of the uport libraries
-override uport-connect;
-override uport-credentials; 
-override uport-transports; 
+for arg in "$@"; do
+  if [ *"$arg" == "uport-transports" ]; then override uport-transports; fi;
+  if [ *"$arg" == "uport-connect" ]; then override uport-connect; fi;
+  if [ *"$arg" == "uport-credentials" ]; then override uport-credentials; fi;
+done;
