@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import JSONInput from 'react-json-editor-ajrm'
 import { withRouter, Link } from 'react-router-dom'
-import { verifyJWT } from 'did-jwt'
 
 import * as AppActions from '../actions/AppActions'
 import { uportConnect } from '../utilities/uportSetup'
@@ -69,7 +68,6 @@ class SignTypedData extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      responseJWT: null,
       responseJSON: null,
       typedData: MAIL_REQ
     }
@@ -81,19 +79,15 @@ class SignTypedData extends Component {
     uportConnect.onResponse(TypedDataSigReqID)
       .then(this.handleSignedData)
       .catch(error => {
-        this.setState({responseJWT: error})
+        this.setState({responseJSON: error})
+        throw error
       })
   }
 
-  handleSignedData(res) {
-    console.log('handling response', res)
-    verifyJWT(res.payload).then(json => {
-      console.log('json', json)
-      this.setState({
-        responseJWT: res.payload,
-        responseJSON: json.payload
-      })
-    }).catch(window.alert)
+  handleSignedData({payload}) {
+    this.setState({
+      responseJSON: payload.signature,
+    })
   }
 
   signTypedData () {
@@ -104,7 +98,7 @@ class SignTypedData extends Component {
   }
 
   render() {
-    const { typedData, responseJSON, responseJWT } = this.state
+    const { typedData, responseJSON } = this.state
     console.log('rendering')
     return (
       <WelcomeWrap>
@@ -131,11 +125,9 @@ class SignTypedData extends Component {
               this.setState({typedData: MAIL_REQ})
             }}>Reset</ClaimButton>
           </div>
-          {responseJWT && (
+          {responseJSON && (
             <div>
-              <h3>Response JWT: </h3>
-              <input type='text' style={{width: '500px'}} value={responseJWT}/>
-              <h3>Parsed JWT: </h3>
+              <h3>Signature: </h3>
               <JSONWrapper>
               <JSONInput
                   id          = 'response'
