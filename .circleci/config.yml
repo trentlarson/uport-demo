@@ -16,7 +16,8 @@ jobs:
           name: install-awscli-and-dependencies
           command: |
             sudo apt-get update && sudo apt-get install awscli
-            yarn
+            yarn --ignore-engines
+            #./override.sh transports credentials connect
 
       - run:
           name: deploy-to-s3
