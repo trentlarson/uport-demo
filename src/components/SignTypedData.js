@@ -145,7 +145,7 @@ class SignTypedData extends Component {
           Sign Claim
         </ConnectUport>
         <div>
-        <Link to="/transaction">
+        <Link to="/personalsign">
           <NextButton>
             Next
           </NextButton>
