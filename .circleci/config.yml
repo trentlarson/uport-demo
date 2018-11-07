@@ -3,10 +3,9 @@ jobs:
   build:
     working_directory: ~/demo
     docker:
-      - image: circleci/node:6.10
+      - image: circleci/node:9.11.1
     steps:
       - checkout
-
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -23,10 +22,10 @@ jobs:
           name: deploy-to-s3
           command: |
             if [ "${CIRCLE_BRANCH}" == "develop" ]; then
-              npm run deploy-space
+              yarn deploy-space
             fi
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              npm run deploy-production
+              yarn deploy-production
             fi
 
       - save_cache:
