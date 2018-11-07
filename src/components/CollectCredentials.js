@@ -81,11 +81,11 @@ class CollectCredentials extends Component {
   }
 
   credentialsbtnClickD () {
-    uportConnect.sendVerification(this.credentialCreate(complexClaim), credCReq)
+    uportConnect.sendVerification(this.credentialCreate(complexClaim), credDReq)
   }
 
   credentialsbtnClickE () {
-    uportConnect.sendVerification(this.credentialCreate({trafficAccident: trafficAccidentClaim}), credCReq)
+    uportConnect.sendVerification(this.credentialCreate({trafficAccident: trafficAccidentClaim}), credEReq)
   }
 
   render (props) {

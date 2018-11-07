@@ -48,14 +48,14 @@ const UserName = styled.span`
   margin-right: 1em;
 `
 
-const UportAvatar = styled.img`
-  display: inline-block;
-  vertical-align: middle;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  border: 2px solid white;
-`
+// const UportAvatar = styled.img`
+//   display: inline-block;
+//   vertical-align: middle;
+//   border-radius: 50%;
+//   width: 50px;
+//   height: 50px;
+//   border: 2px solid white;
+// `
 
 class AppNavbar extends Component {
 

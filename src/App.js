@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from './actions/AppActions'
-import { Route, Switch,  withRouter } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom'
 
 import styled from 'styled-components'
 
