@@ -4,16 +4,14 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
-import { uportServer, uportConnect } from '../utilities/uportSetup'
-import { decodeJWT, verifyJWT } from 'did-jwt'
+import { uportConnect } from '../utilities/uportSetup'
+import { verifyJWT } from 'did-jwt'
 import JSONInput from 'react-json-editor-ajrm'
 import { withRouter, Link } from 'react-router-dom'
 
 const SignReqID = 'SignRequest'
 const WelcomeWrap = styled.section``
-const JSONWrap = styled.section`
-  text-align: left
-`
+
 const JSONWrapper = styled.div`
   font-family: monospace !important
 `
@@ -27,11 +25,6 @@ const ClaimButton = styled.button`
   margin-bottom: 10px;
   font-size: 12pt;
   padding: 10px;
-`
-
-const SubText = styled.p`
-  margin: 0 auto 3em auto;
-  font-size: 18px;
 `
 
 const simpleClaim = {
@@ -293,10 +286,10 @@ class SignClaim extends Component {
           <h3>Claim: </h3>
             <JSONWrapper>
             {!this.state.unsignedClaim !== null && <JSONInput
-                id          = 'request'
-                placeholder = { this.state.unsignedClaim }
-                height      = '300px'
-                width      = '500px'
+                id='request'
+                placeholder={ this.state.unsignedClaim }
+                height='300px'
+                width='500px'
                 onChange={(value) => {
                   if (value.jsObject !== undefined) {
                     this.setState({unsignedClaim: value.jsObject})
@@ -324,10 +317,10 @@ class SignClaim extends Component {
             <h3>Parsed JWT: </h3>
             <JSONWrapper>
             <JSONInput
-                id          = 'response'
-                placeholder = { this.state.responseJSON }
-                height      = '300px'
-                width      = '500px'
+                id='response'
+                placeholder={ this.state.responseJSON }
+                height='300px'
+                width='500px'
                 viewOnly
                 style={{body: {'fontSize': '10pt', textAlign: 'left'}}}
             />
