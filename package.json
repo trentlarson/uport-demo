@@ -67,7 +67,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "override": "./override.sh",
-    "pre-deploy": "yarn && yarn override -- transports credentials connect && yarn build",
+    "pre-deploy": "yarn --ignore-engines && yarn override -- transports credentials connect && yarn build",
     "safe-deploy": "bash ./safe-deploy.sh",
     "deploy-production": "yarn pre-deploy && yarn deploy-to-s3 demo.uport.me && yarn invalidate E2QS4BB2HWFFZ2",
     "deploy-space": "yarn pre-deploy && yarn deploy-to-s3 demo.uport.space && yarn invalidate E3PKUGAQ52BBOT",

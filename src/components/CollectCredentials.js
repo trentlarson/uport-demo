@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import { withRouter, Link } from 'react-router-dom'
+import { trafficAccidentClaim, complexClaim } from './SignClaim'
 
 import styled from 'styled-components'
 
@@ -45,6 +46,8 @@ const Time30Days = () => Math.floor(new Date().getTime() / 1000) + 30 * 24 * 60 
 const credAReq ='credAReq'
 const credBReq ='credBReq'
 const credCReq ='credCReq'
+const credDReq ='credDReq'
+const credEReq ='credEReq'
 
 const credentialFactory = (sub, exp) => (claim) => ({sub, exp, claim})
 
@@ -56,6 +59,8 @@ class CollectCredentials extends Component {
     this.credentialsbtnClickA = this.credentialsbtnClickA.bind(this)
     this.credentialsbtnClickB = this.credentialsbtnClickB.bind(this)
     this.credentialsbtnClickC = this.credentialsbtnClickC.bind(this)
+    this.credentialsbtnClickD = this.credentialsbtnClickD.bind(this)
+    this.credentialsbtnClickE = this.credentialsbtnClickE.bind(this)
     uportConnect.onResponse(credAReq).then(res => {
       // TODO this request doesn't close qr code??
       console.log(res)
@@ -73,6 +78,14 @@ class CollectCredentials extends Component {
 
   credentialsbtnClickC () {
     uportConnect.sendVerification(this.credentialCreate({Certificate: CERTIFICATECLAIM}), credCReq)
+  }
+
+  credentialsbtnClickD () {
+    uportConnect.sendVerification(this.credentialCreate(complexClaim), credDReq)
+  }
+
+  credentialsbtnClickE () {
+    uportConnect.sendVerification(this.credentialCreate({trafficAccident: trafficAccidentClaim}), credEReq)
   }
 
   render (props) {
@@ -104,6 +117,22 @@ class CollectCredentials extends Component {
                 </td>
                 <td>
                   <CredsButton onClick={this.credentialsbtnClickC}>Get</CredsButton>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <CredsLabel>Complex</CredsLabel>
+                </td>
+                <td>
+                  <CredsButton onClick={this.credentialsbtnClickD}>Get</CredsButton>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <CredsLabel>Traffic Accident</CredsLabel>
+                </td>
+                <td>
+                  <CredsButton onClick={this.credentialsbtnClickE}>Get</CredsButton>
                 </td>
               </tr>
             </tbody>

@@ -31,7 +31,7 @@ const simpleClaim = {
   name: 'John'
 }
 
-const complexClaim = {
+export const complexClaim = {
   names: {
     firstName: 'John',
     lastName: 'Smith'
@@ -71,7 +71,7 @@ const complexClaim = {
   age: 30
 }
 
-const trafficAccidentClaim = {
+export const trafficAccidentClaim = {
   generalInfo: {
     accidentDate: '2018-06-12 16:20',
     address: {
