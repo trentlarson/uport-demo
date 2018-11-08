@@ -60,13 +60,14 @@
     "react-router-dom": "^4.3.1",
     "redux": "^3.6.0",
     "styled-components": "^1.4.5",
-    "uport-connect": "^1.0.1",
+    "uport-connect": "1.1.0-alpha.12",
     "web3": "^0.19.1"
   },
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "pre-deploy": "yarn build",
+    "override": "./override.sh",
+    "pre-deploy": "yarn --ignore-engines && yarn override -- transports credentials connect && yarn build",
     "safe-deploy": "bash ./safe-deploy.sh",
     "deploy-production": "yarn pre-deploy && yarn deploy-to-s3 demo.uport.me && yarn invalidate E2QS4BB2HWFFZ2",
     "deploy-space": "yarn pre-deploy && yarn deploy-to-s3 demo.uport.space && yarn invalidate E3PKUGAQ52BBOT",
