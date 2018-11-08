@@ -108,10 +108,10 @@ class SignTypedData extends Component {
           <h3>Typed Data: </h3>
             <JSONWrapper>
             {(typedData !== null) && <JSONInput
-                id          = 'request'
-                placeholder = { typedData }
-                height      = '300px'
-                width       = '500px'
+                id="request"
+                placeholder={ typedData }
+                height="300px"
+                width="500px"
                 onChange={(value) => {
                   if (value.jsObject !== undefined) {
                     this.setState({typedData: value.jsObject})
@@ -130,12 +130,12 @@ class SignTypedData extends Component {
               <h3>Signature: </h3>
               <JSONWrapper>
               <JSONInput
-                  id          = 'response'
-                  placeholder = { responseJSON }
-                  height      = '300px'
-                  width      = '500px'
-                  viewOnly
-                  style={{body: {fontSize: '10pt', textAlign: 'left'}}}
+                id="response"
+                placeholder={ responseJSON }
+                height="300px"
+                width="500px"
+                viewOnly
+                style={{body: {fontSize: '10pt', textAlign: 'left'}}}
               />
               </JSONWrapper>
             </div>
