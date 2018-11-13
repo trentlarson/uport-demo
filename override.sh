@@ -8,6 +8,7 @@ override() {
     Building and copying $1 to node_modules...
   "
   cd $1 \
+    && cat package.json | grep build \
     && yarn build:es5 \
     && cp -r src lib package.json ../node_modules/$1/ \
     && cd ..;
