@@ -8,7 +8,7 @@ override() {
     Building and copying $1 to node_modules...
   "
   cd $1 \
-    && npm run build:es5 \
+    && yarn build:es5 \
     && cp -r src lib package.json ../node_modules/$1/ \
     && cd ..;
   if [ $? -ne 0 ]; then 
@@ -21,7 +21,7 @@ override() {
 
 # Override each of the uport libraries
 for arg in "$@"; do
-  if [ *"$arg" == "uport-transports" ]; then override uport-transports; fi;
-  if [ *"$arg" == "uport-connect" ]; then override uport-connect; fi;
-  if [ *"$arg" == "uport-credentials" ]; then override uport-credentials; fi;
+  if [ *"$arg"* == "uport-transports" ]; then override uport-transports; fi;
+  if [ *"$arg"* == "uport-connect" ]; then override uport-connect; fi;
+  if [ *"$arg"* == "uport-credentials" ]; then override uport-credentials; fi;
 done;
