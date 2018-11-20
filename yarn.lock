@@ -3812,14 +3812,6 @@ https-browserify@0.0.1:
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-0.0.1.tgz#3f91365cabe60b77ed0ebba24b454e3e09d95a82"
   integrity sha1-P5E2XKvmC3ftDruiS0VOPgnZWoI=
 
-https-did-resolver@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/https-did-resolver/-/https-did-resolver-0.0.3.tgz#00fd634042cebf468fe45ecec2a45c1b85a9263a"
-  integrity sha512-Cne1BMKMKGR0F6hMJqanybLCQ8J4RZ1rvIpWazzt8BYxKYEsAc/qpGyIV+8hsGvA8x3qof15GrLatrf59fsV4w==
-  dependencies:
-    did-resolver "^0.0.4"
-    xmlhttprequest "^1.8.0"
-
 hyphenate-style-name@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/hyphenate-style-name/-/hyphenate-style-name-1.0.2.tgz#31160a36930adaf1fc04c6074f7eb41465d4ec4b"
@@ -7026,7 +7018,7 @@ rx-lite@^3.1.2:
   resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-3.1.2.tgz#19ce502ca572665f3b647b10939f97fd1615f102"
   integrity sha1-Gc5QLKVyZl87ZHsQk5+X/RYV8QI=
 
-s3-deploy@^0.7.3:
+s3-deploy@^0.7.6:
   version "0.7.6"
   resolved "https://registry.yarnpkg.com/s3-deploy/-/s3-deploy-0.7.6.tgz#889673542c8946b4184617c62b9d0af171a555f8"
   integrity sha1-iJZzVCyJRrQYRhfGK50K8XGlVfg=
@@ -7857,10 +7849,10 @@ unset-value@^1.0.0:
     has-value "^0.3.1"
     isobject "^3.0.0"
 
-uport-connect@1.1.0-alpha.12:
-  version "1.1.0-alpha.12"
-  resolved "https://registry.yarnpkg.com/uport-connect/-/uport-connect-1.1.0-alpha.12.tgz#4f1328b9b6a899e2a82f00c960e586e3da7ec1bc"
-  integrity sha512-FYv7I8oe7GheOV7FdeGXPMuEPTZo/tS8xg5YMEGddkSbzXu2Hm2ADw81PUUni0A4pTFMRog+2teOesqcY34g6g==
+uport-connect@^1.1.0-alpha.13:
+  version "1.1.0-alpha-3"
+  resolved "https://registry.yarnpkg.com/uport-connect/-/uport-connect-1.1.0-alpha-3.tgz#42664c6b920600480da357af56b601a87895490b"
+  integrity sha512-UEyojkCoGRuGVE12+zk/khXpy6sVZJhDJHoGsNrbWeLjQSyNnRnhVM1Mzgn/2LnTfUKcAlX8gnSITYeUKrF/3Q==
   dependencies:
     did-jwt "^0.0.8"
     ethjs-abi "^0.2.1"
@@ -7871,21 +7863,20 @@ uport-connect@1.1.0-alpha.12:
     pubsub-js "^1.6.0"
     qs "^6.2.1"
     store "^2.0.12"
-    uport-credentials "^1.1.0-alpha.3"
+    uport-credentials "1.1.0-alpha-2"
     uport-did-resolver "0.0.3"
     uport-lite "^1.0.2"
-    uport-transports "^0.2.0-alpha.6"
+    uport-transports "0.0.65"
 
-uport-credentials@^1.1.0-alpha.3:
-  version "1.1.0-alpha-4"
-  resolved "https://registry.yarnpkg.com/uport-credentials/-/uport-credentials-1.1.0-alpha-4.tgz#6958b0a0209ffb1a441767a76e30880802174bc3"
-  integrity sha512-aAo/CBJvBxGXOg2845fyOK4LuV1i1+WoA1gGR/ZeF6LeKAwW91QOyTBvY3OPWrYJViXsu7cqhjr6JDFqG5Vm0Q==
+uport-credentials@1.1.0-alpha-2:
+  version "1.1.0-alpha-2"
+  resolved "https://registry.yarnpkg.com/uport-credentials/-/uport-credentials-1.1.0-alpha-2.tgz#615ca142f7ab7a8d1d3190047e36fbd7dc08deb8"
+  integrity sha512-iHilnDUUg9vq47YcCKev54TfeangrE0GdNFUOC33Ggbv8Im7aTvwXU8RwpI28aH9f4CzZjDm0r7SmM2pKVAFcA==
   dependencies:
     did-jwt "^0.0.7"
     did-resolver "^0.0.4"
     ethjs-util "^0.1.3"
     ethr-did-resolver "^0.1.1"
-    https-did-resolver "^0.0.3"
     jsontokens "^0.7.8"
     mnid "^0.1.1"
     muport-did-resolver "^0.1.0"
@@ -7923,10 +7914,10 @@ uport-registry@^5.1.0:
   resolved "https://registry.yarnpkg.com/uport-registry/-/uport-registry-5.1.0.tgz#2f310ce0d154f07450453d559e3cf3da3114794c"
   integrity sha1-LzEM4NFU8HRQRT1Vnjzz2jEUeUw=
 
-uport-transports@^0.2.0-alpha.6:
-  version "0.2.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/uport-transports/-/uport-transports-0.2.0-alpha.6.tgz#b95ea119f608402f3ca0b9dc13a620841e193c27"
-  integrity sha512-6+BzKP0nd7HLTE931FC70ullkzHP5dF143VREl8J3QvYIk5yS4TJ4d4Ft7/v0FuZnF8xLLEZb5ICo21NKG9bNg==
+uport-transports@0.0.65:
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/uport-transports/-/uport-transports-0.0.65.tgz#ee585632456ffea9a4059df8f665e40502ac42c1"
+  integrity sha512-V+VVsl5EExgakyLnRH43TWK1djbxgaCMZ8ol+CmxNUbQ1yq7srzaz5ESZa5Gfi2IKfouOxloZCkyfGkfeHNSvA==
   dependencies:
     async "^2.6.0"
     base64url "^3.0.0"
