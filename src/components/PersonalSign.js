@@ -45,7 +45,7 @@ class PersonalSign extends Component {
 
   render() {
     const {signature, data} = this.state
-
+    const {r,s,v} = signature || {}
     return (
       <WelcomeWrap>
         <h4>Sign the following message:</h4>
@@ -62,7 +62,9 @@ class PersonalSign extends Component {
           {signature && (
             <div>
               <h3>Signature: </h3>
-              <div>{signature}</div>
+              <div>r: {r}</div>
+              <div>s: {s}</div>
+              <div>v: {v}</div>
             </div>
           )}
         </div>
