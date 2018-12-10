@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { withRouter, Link } from 'react-router-dom'
 
+import { recoverPersonalSignature } from '../utilities/ethUtils'
 import * as AppActions from '../actions/AppActions'
 import { uportConnect } from '../utilities/uportSetup'
 
@@ -29,7 +30,9 @@ class PersonalSign extends Component {
 
     this.state = {
       data: MESSAGE,
-      signature: null
+      signature: null,
+      signedBy: null,
+      recovered: null,
     }
 
     this.handleResponse = this.handleResponse.bind(this)
@@ -39,12 +42,18 @@ class PersonalSign extends Component {
       .catch(console.error)
   }
 
-  handleResponse({payload}) {
-    this.setState({signature: payload.signature})
+  handleResponse({ payload }) {
+    console.log(payload)
+    const recovered = recoverPersonalSignature(payload.data, payload.signature)
+    this.setState({
+      signature: payload.signature,
+      signedBy: payload.did,
+      recovered,
+    })
   }
 
   render() {
-    const {signature, data} = this.state
+    const {signature, data, signedBy, recovered} = this.state
     const {r,s,v} = signature || {}
     return (
       <WelcomeWrap>
@@ -59,12 +68,16 @@ class PersonalSign extends Component {
               this.setState({signature: null, data: MESSAGE})
             }}>Reset</ClaimButton>
           </div>
-          {signature && (
+          {(recovered !== null && signedBy === recovered) && (
             <div>
+              <h3>Signed by:</h3>
+              <div>{signedBy}</div>
               <h3>Signature: </h3>
               <div>r: {r}</div>
               <div>s: {s}</div>
               <div>v: {v}</div>
+              <h3>Address recovered from signature:</h3>
+              <div>{recovered}</div>
             </div>
           )}
         </div>

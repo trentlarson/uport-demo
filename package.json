@@ -50,6 +50,7 @@
   },
   "dependencies": {
     "did-jwt": "0.0.8",
+    "ethereumjs-util": "^6.0.0",
     "kjua": "^0.1.2",
     "mnid": "^0.1.1",
     "qrious": "^2.2.0",

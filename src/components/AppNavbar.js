@@ -18,7 +18,7 @@ const NavBar = styled.nav`
   justify-content: space-between;
   align-items: center;
 `
-const LogoLink = styled.a`
+const LogoLink = styled.span`
   color: #FFFFFF;
   text-decoration: none;
 `
@@ -75,7 +75,7 @@ class AppNavbar extends Component {
       <NavBar>
         <Link to="/">
         <LeftArea>
-          <LogoLink >uport</LogoLink>
+          <LogoLink>uport</LogoLink>
           <span> | </span>
           <DemoText>Demo</DemoText>
         </LeftArea>
