@@ -47,7 +47,7 @@ class PersonalSign extends Component {
     const recovered = recoverPersonalSignature(payload.data, payload.signature)
     this.setState({
       signature: payload.signature,
-      signedBy: payload.did,
+      signedBy: payload.did.substr(9),
       recovered,
     })
   }
