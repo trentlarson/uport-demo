@@ -47,7 +47,7 @@ class PersonalSign extends Component {
     const recovered = recoverPersonalSignature(payload.data, payload.signature)
     this.setState({
       signature: payload.signature,
-      signedBy: payload.did.substr(9),
+      signedBy: payload.did,
       recovered,
     })
   }
@@ -68,7 +68,7 @@ class PersonalSign extends Component {
               this.setState({signature: null, data: MESSAGE})
             }}>Reset</ClaimButton>
           </div>
-          {(recovered !== null && signedBy === recovered) && (
+          {(recovered !== null) && (
             <div>
               <h3>Signed by:</h3>
               <div>{signedBy}</div>
