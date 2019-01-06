@@ -233,6 +233,17 @@ export const trafficAccidentClaim = {
   },
   sketchOfAccidentWhenImpactOccuredURL: 'https://i.imgur.com/iK0aJJg.jpg'
 }
+
+const ClaimButtons = ({jwts}) => {
+  const claimButtons = jwts.map(jwt =>
+                                <ClaimButton key={jwt.id} onClick={() => {
+                                  this.setState({unsignedClaim: null})
+                                  this.setState({unsignedClaim: jwt})
+                                }}>{jwt.claimType}</ClaimButton>
+                               )
+  return <span>{claimButtons}</span>
+}
+
 class SignClaim extends Component {
 
   constructor (props) {
@@ -242,7 +253,8 @@ class SignClaim extends Component {
       responseJSON: null,
       sub: 'did:uport:2oze6gbJDBVsvvBpzghEhCJsWMazvKmwUCD',
       aud: '',
-      unsignedClaim: { name: 'Bob'}
+      unsignedClaim: { name: 'Bob'},
+      otherClaimsToSign: []
     }
     this.signClaim = this.signClaim.bind(this)
     this.handleSignedClaim = this.handleSignedClaim.bind(this)
@@ -254,6 +266,14 @@ class SignClaim extends Component {
     })
 
   }
+
+  componentDidMount() {
+    fetch('http://localhost:3001/api/jwt', {
+      headers: {
+        "Content-Type": "application/json"
+      }})
+      .then(response => response.json())
+      .then(data => this.setState({ otherClaimsToSign: data }))}
 
   handleSignedClaim(res) {
     console.log(res)
@@ -300,6 +320,7 @@ class SignClaim extends Component {
                 style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
             />}
             </JSONWrapper>
+            <ClaimButtons jwts={this.state.otherClaimsToSign}/>
             <ClaimButton onClick={()=>{
               this.setState({unsignedClaim: null})
               this.setState({unsignedClaim: simpleClaim})
