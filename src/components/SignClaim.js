@@ -234,14 +234,9 @@ export const trafficAccidentClaim = {
   sketchOfAccidentWhenImpactOccuredURL: 'https://i.imgur.com/iK0aJJg.jpg'
 }
 
-const ClaimButtons = ({jwts}) => {
-  const claimButtons = jwts.map(jwt =>
-                                <ClaimButton key={jwt.id} onClick={() => {
-                                  this.setState({unsignedClaim: null})
-                                  this.setState({unsignedClaim: jwt})
-                                }}>{jwt.claimType}</ClaimButton>
-                               )
-  return <span>{claimButtons}</span>
+// insert a space in front of any capital letters
+function insertSpace(text) {
+  return text[0] + text.substr(1).replace(/([A-Z])/g, ' $1')
 }
 
 class SignClaim extends Component {
@@ -296,6 +291,16 @@ class SignClaim extends Component {
   }
 
   render () {
+
+    const claimButtons = this.state
+          .otherClaimsToSign
+          .map(jwt =>
+               <ClaimButton key={jwt.id} onClick={() => {
+                 this.setState({unsignedClaim: null})
+                 this.setState({unsignedClaim: jwt})
+               }}>{insertSpace(jwt.claimType)}<br/>{jwt.subject}</ClaimButton>
+              )
+
     return (
       <WelcomeWrap>
         <h4>Sign the following claim: </h4>
@@ -320,7 +325,9 @@ class SignClaim extends Component {
                 style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
             />}
             </JSONWrapper>
-            <ClaimButtons jwts={this.state.otherClaimsToSign}/>
+
+            <span>{claimButtons}</span><br/>
+
             <ClaimButton onClick={()=>{
               this.setState({unsignedClaim: null})
               this.setState({unsignedClaim: simpleClaim})
