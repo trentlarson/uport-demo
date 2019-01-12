@@ -28,211 +28,24 @@ const ClaimButton = styled.button`
   padding: 10px;
 `
 
-const simpleClaim = {
-  name: 'John'
+const attendedClaim = {
+  '@context': 'http://schema.org',
+  '@type': 'AttendedAction',
+  'agent':
+  { '@type': 'Person',
+    'did': 'did:ethr:0xdf0d8e5fd234086f6649f77bb0059de1aebd143e' },
+  object:
+  { '@type': 'Event',
+    'name': 'Bountiful Voluntaryist Community Saturday morning meeting',
+    'startTime': '2018-12-29T08:00:00-07' }
 }
 
-export const complexClaim = {
-  names: {
-    firstName: 'John',
-    lastName: 'Smith'
-  },
-  location: {
-    address: '49 Bogart St #22, Brooklyn',
-    state: 'NY',
-    zipCode: '11206',
-    country: 'US',
-    coordinates: {
-      lat: '40.7054060',
-      lon: '-73.9335480'
-    }
-  },
-  children: [
-    {
-      firstName: 'Jane',
-      lastName: 'Smith',
-      address: {
-        street: 'Second str. 324-2',
-        city: 'London',
-        country: 'UK',
-      }
-    },
-    {
-      firstName: 'Sam',
-      lastName: 'Smith',
-      address: {
-        street: 'First str. 324-2',
-        city: 'Dublin',
-        country: 'IR',
-      }
-    }
-  ],
-  favouriteColor: 'Blue',
-  isBlockChainExpert: true,
-  age: 30
+export const confirmClaim = {
+  '@context': 'http://endorser.ch',
+  '@type': 'ConfirmClaim',
+  'payload': '...'
 }
 
-export const trafficAccidentClaim = {
-  generalInfo: {
-    accidentDate: '2018-06-12 16:20',
-    address: {
-      street: 'Main str. 123',
-      city: 'Vilnius',
-      country: 'LT',
-    },
-    injuriesEvenIfSlight: false,
-  },
-  materialDamage: {
-    otherThanToVehiclesAAndB: false,
-    objectsOtherThanVehicles: false,
-  },
-  witnesses: [
-    {
-      name: 'John Smith',
-      phoneNumber: '+123242324',
-      address: {
-        street: 'Second str. 324-2',
-        city: 'London',
-        country: 'UK',
-      }
-    },
-    {
-      name: 'Jane Doe',
-      phoneNumber: '+43523234',
-      address: {
-        street: 'Some av. 43-6',
-        city: 'Dublin',
-        country: 'IR',
-      }
-    },
-  ],
-  vehicleA: {
-    policyHolder: {
-      nameOrCompanyName: 'Karuzas',
-      firstName: 'Simonas',
-      personalCodeOrRegNr: '543589343',
-      address: {
-        postalCode: 'LT-34423',
-        street: 'Some str. 554-2',
-        city: 'Vilnius',
-        country: 'LT',
-      },
-      phoneNumber: '+37098234423',
-      email: 'simonas.karuzas@gmail.com',
-    },
-    vehicle: {
-      make: 'Toyota',
-      type: 'RAV4',
-      registrationNr: 'ABC123',
-      countryOfRegistration: 'LT',
-      trailer: false,
-    },
-    insuranceCompany: {
-      country: 'LT',
-      name: 'Super Insurance',
-      policyNr: '989483',
-      greenCardNr: '545423',
-      validFrom: '2017-01-01',
-      validTo: '2022-01-01',
-      agencyOrBroker: 'Your Local Insurance Agent',
-      address: 'Real str. 82, Vilnius, Lithuania',
-      phoneNumber: '+3704234235',
-      email: 'agent@gmail.com',
-      doesThePolicyCoverMaterialDamageToTheVehicle: false,
-    },
-    driver: {
-      name: 'Doe',
-      firstName: 'John',
-      dateOfBirth: '1987-01-05',
-      personalCode: '234423423',
-      address: 'Third str 3-5, Vilnius',
-      country: 'LT',
-      phoneNumber: '+370983249234',
-      email: 'john.doe@gmail.com',
-      drivingLicenseNr: '2324234',
-      category: [
-        'A',
-        'B'
-      ],
-      validFrom: '2010-01-01',
-      validTo: '2022-01-01',
-    },
-    pointOfInitialImpactToVehicleA: 98,
-    visibleDamageToVehicleA: [
-      'Right front door',
-      'Right rear wheel'
-    ],
-    additionalDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sit amet ante consequat, feugiat tellus at, fringilla mi. Phasellus egestas, metus sit amet suscipit scelerisque, arcu lorem mollis metus, dignissim gravida nunc velit quis lorem. Phasellus maximus, lorem lobortis cursus molestie, libero lorem venenatis metus, at congue lorem metus quis risus. Vivamus accumsan leo purus, vel mollis lectus mollis vel. Nunc orci nisi, fermentum a lorem non, sodales lobortis lorem. Nullam blandit varius felis in consequat. Vivamus tincidunt viverra mauris, id scelerisque urna tempor auctor. Etiam sed efficitur dolor. Suspendisse pulvinar enim id libero posuere cursus molestie quis purus. Duis at mauris eget augue interdum elementum eget in lacus.',
-    circumstances: [
-      'Parked',
-      'Opening the door'
-    ],
-    liableForCausingDamage: false,
-  },
-  vehicleB: {
-    policyHolder: {
-      nameOrCompanyName: 'Doe',
-      firstName: 'Jane',
-      personalCodeOrRegNr: '4534534',
-      address: {
-        postalCode: 'LT-36663',
-        street: 'Other str. 555-2',
-        city: 'Vilnius',
-        country: 'LT',
-      },
-      phoneNumber: '+37098234423',
-      email: 'jane.doe@gmail.com',
-    },
-    vehicle: {
-      make: 'WV',
-      type: 'Golf',
-      registrationNr: 'KUS934',
-      countryOfRegistration: 'LT',
-      trailer: false,
-    },
-    insuranceCompany: {
-      country: 'LT',
-      name: 'Super Insurance',
-      policyNr: '234234234',
-      greenCardNr: '543a4',
-      validFrom: '2016-01-01',
-      validTo: '2023-01-01',
-      agencyOrBroker: 'Your Local Insurance Agent',
-      address: 'Real str. 82, Vilnius, Lithuania',
-      phoneNumber: '+3704234235',
-      email: 'agent@gmail.com',
-      doesThePolicyCoverMaterialDamageToTheVehicle: true,
-    },
-    driver: {
-      name: 'Doe',
-      firstName: 'John',
-      dateOfBirth: '1987-01-05',
-      personalCode: '234423423',
-      address: 'Third str 3-5, Vilnius',
-      country: 'LT',
-      phoneNumber: '+370983249234',
-      email: 'john.doe@gmail.com',
-      drivingLicenseNr: '2324234',
-      category: [
-        'A',
-        'B'
-      ],
-      validFrom: '2010-01-01',
-      validTo: '2022-01-01',
-    },
-    pointOfInitialImpactToVehicleB: 98,
-    visibleDamageToVehicleB: [
-      'Left front door',
-      'Left rear wheel'
-    ],
-    additionalDescription: 'Etiam sagittis sem elementum tempus tempor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer aliquam libero ac erat mollis, in malesuada urna vestibulum. Nulla fermentum urna ac malesuada tempus. Donec dignissim risus a hendrerit aliquam. Cras ultricies odio a felis maximus, ac sodales ligula lacinia. Cras ullamcorper mi vel arcu vulputate volutpat. Aliquam sagittis interdum enim, id varius libero lobortis in. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque sit amet urna lacinia, ullamcorper urna sit amet, ultrices orci. Aenean eu ex porttitor, tristique tellus nec, tempus purus. Curabitur non urna posuere, tempus turpis nec, ullamcorper nisl. In hendrerit purus et interdum finibus. Praesent feugiat, augue sed fringilla laoreet, quam eros commodo dui, non sodales mi quam ut eros.',
-    circumstances: [
-      'Entering parking garage',
-    ],
-    liableForCausingDamage: true,
-  },
-  sketchOfAccidentWhenImpactOccuredURL: 'https://i.imgur.com/iK0aJJg.jpg'
-}
 
 // insert a space in front of any capital letters
 function insertSpace(text) {
@@ -325,21 +138,16 @@ class SignClaim extends Component {
                 style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
             />}
             </JSONWrapper>
-
-            <span>{claimButtons}</span><br/>
-
             <ClaimButton onClick={()=>{
               this.setState({unsignedClaim: null})
-              this.setState({unsignedClaim: simpleClaim})
-            }}>Simple</ClaimButton>
+              this.setState({unsignedClaim: attendedClaim})
+            }}>Attended</ClaimButton>
             <ClaimButton onClick={()=>{
               this.setState({unsignedClaim: null})
-              this.setState({unsignedClaim: complexClaim})
-            }}>Complex</ClaimButton>
-            <ClaimButton onClick={()=>{
-              this.setState({unsignedClaim: null})
-              this.setState({unsignedClaim: trafficAccidentClaim})
-            }}>Too big for QR</ClaimButton>
+              this.setState({unsignedClaim: confirmClaim})
+            }}>Confirm</ClaimButton>
+            <br/>
+            <span>{claimButtons}</span>
           </div>
           {this.state.responseJWT && <div >
             <h3>Response JWT: </h3>
