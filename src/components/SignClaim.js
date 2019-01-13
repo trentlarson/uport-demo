@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
 import { verifyJWT } from 'did-jwt'
 import JSONInput from 'react-json-editor-ajrm'
-import { withRouter, Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { DateTime } from 'luxon'
 
 
@@ -18,9 +18,6 @@ const JSONWrapper = styled.div`
   font-family: monospace !important
 `
 const ConnectUport = styled.button``
-const NextButton = styled.button`
-  margin-top: 20px;
-`
 const ClaimButton = styled.button`
   margin-right: 20px;
   margin-top: 10px;
@@ -72,7 +69,8 @@ class SignClaim extends Component {
       sub: subject,
       aud: '',
       unsignedClaim: unsignedClaim,
-      otherClaimsToSign: []
+      otherClaimsToSign: [],
+      otherClaimConfirmations: []
     }
     this.signClaim = this.signClaim.bind(this)
     this.handleSignedClaim = this.handleSignedClaim.bind(this)
@@ -86,12 +84,20 @@ class SignClaim extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/api/claim', {
+    fetch('http://localhost:3000/api/claim?claimType=JoinAction', {
       headers: {
         "Content-Type": "application/json"
       }})
       .then(response => response.json())
-      .then(data => this.setState({ otherClaimsToSign: data }))}
+      .then(data => this.setState({ otherClaimsToSign: data }))
+
+    fetch('http://localhost:3000/api/claim?claimType=Confirmation', {
+      headers: {
+        "Content-Type": "application/json"
+      }})
+      .then(response => response.json())
+      .then(data => this.setState({ otherClaimConfirmations: data }))
+  }
 
   handleSignedClaim(res) {
     console.log(res)
@@ -123,6 +129,10 @@ class SignClaim extends Component {
                  this.setState({unsignedClaim: jwt})
                }}>{insertSpace(jwt.claimType)}<br/>{jwt.subject}</ClaimButton>
               )
+
+    const confirmedClaims = this.state
+          .otherClaimConfirmations
+          .map(jwt => <li>{jwt.subject}</li>)
 
     return (
       <WelcomeWrap>
@@ -156,8 +166,16 @@ class SignClaim extends Component {
               this.setState({unsignedClaim: null})
               this.setState({unsignedClaim: confirmClaim})
             }}>Confirm</ClaimButton>
+            <ConnectUport onClick={this.signClaim}>
+              Sign Claim
+            </ConnectUport>
             <br/>
+
             <span>{claimButtons}</span>
+
+            <h3>Confirmed Claims: </h3>
+             <span><ul>{confirmedClaims}</ul></span>
+
           </div>
           {this.state.responseJWT && <div >
             <h3>Response JWT: </h3>
@@ -174,16 +192,6 @@ class SignClaim extends Component {
             />
             </JSONWrapper>
           </div>}
-        </div>
-        <ConnectUport onClick={this.signClaim}>
-          Sign Claim
-        </ConnectUport>
-        <div>
-        <Link to="/transaction">
-          <NextButton>
-            Next
-          </NextButton>
-        </Link>
         </div>
       </WelcomeWrap>
     )
