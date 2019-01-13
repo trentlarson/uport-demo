@@ -86,7 +86,7 @@ class SignClaim extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3001/api/jwt', {
+    fetch('http://localhost:3000/api/claim', {
       headers: {
         "Content-Type": "application/json"
       }})
