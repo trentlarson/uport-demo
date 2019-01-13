@@ -69,6 +69,7 @@ class SignClaim extends Component {
       sub: subject,
       aud: '',
       unsignedClaim: unsignedClaim,
+      claimWrapper: null,
       otherClaimsToSign: [],
       otherClaimConfirmations: []
     }
@@ -125,25 +126,39 @@ class SignClaim extends Component {
           .otherClaimsToSign
           .map(jwt =>
                <ClaimButton key={jwt.id} onClick={() => {
-                 this.setState({unsignedClaim: null})
-                 this.setState({unsignedClaim: jwt})
-               }}>{insertSpace(jwt.claimType)}<br/>{jwt.subject}</ClaimButton>
+                 this.setState({unsignedClaim: {}});
+                 fetch('http://localhost:3000/api/claim/' + jwt.id, {
+                   headers: {
+                     "Content-Type": "application/json"
+                   }})
+                   .then(response => response.json())
+                   // extract the claim and decode it
+                   .then(json => JSON.parse(atob(json.claimEncoded)))
+                   .then(data => this.setState({ claimWrapper: data, unsignedClaim: data })
+                 )
+               }}>{insertSpace(jwt.claimType)}<br/>{jwt.subject}<br/>{jwt.issuedAt}</ClaimButton>
               )
 
     const confirmedClaims = this.state
           .otherClaimConfirmations
-          .map(jwt => <li>{jwt.subject}</li>)
+          .map(jwt => <li key={jwt.id}>{jwt.subject}</li>)
 
     return (
       <WelcomeWrap>
         <h4>Sign the following claim: </h4>
         <div style={{display: 'flex', flex: 1, flexDirection: 'row', justifyContent: 'center', textAlign: 'left', marginBottom: '20px'}}>
           <div style={{marginRight: '20px'}}>
-          <h3>Subject: </h3>
-          <input type='text' style={{width: '500px'}} value={this.state.sub} onChange={(e) => this.setState({sub: e.target.value !== '' ? e.target.value : null})} />
-          <h3>Audience: </h3>
-          <input type='text' style={{width: '500px'}} value={this.state.aud} onChange={(e) => this.setState({aud: e.target.value !== '' ? e.target.value : null})} />
-          <h3>Claim: </h3>
+          <table>
+            <tr>
+              <td>
+                <h3>Subject&nbsp;</h3>
+              </td>
+              <td>
+                <input type='text' style={{width: '500px'}} value={this.state.sub} onChange={(e) => this.setState({sub: e.target.value !== '' ? e.target.value : null})} />
+              </td>
+            </tr>
+          </table>
+          <h3>Claim</h3>
             <JSONWrapper>
             {!this.state.unsignedClaim !== null && <JSONInput
                 id='request'
@@ -158,6 +173,7 @@ class SignClaim extends Component {
                 style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
             />}
             </JSONWrapper>
+            <div>{this.state.claimWrapper ? JSON.stringify(this.state.claimWrapper) : ""}</div>
             <ClaimButton onClick={()=>{
               this.setState({unsignedClaim: null})
               this.setState({unsignedClaim: attendedClaim})
