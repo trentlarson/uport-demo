@@ -30,22 +30,21 @@ const ClaimButton = styled.button`
 `
 
 const attendedClaim = {
-  '@context': 'http://schema.org',
-  '@type': 'AttendedAction',
-  // note that there is constructor code that sets "did" inside "agent"
-  'agent':
-  { '@type': 'Person',
-    'did': 'did:ethr:0xdf0d8e5fd234086f6649f77bb0059de1aebd143e' },
-  object:
-  { '@type': 'Event',
-    'name': 'Bountiful Voluntaryist Community Saturday morning meeting',
-    'startTime': '2019-01-05T08:00:00-07' }
+  "@context": "http://schema.org",
+  "@type": "JoinAction",
+  // note that there is constructor code below that sets "did" inside "agent"
+  "agent": { "did": "did:ethr:0xdf0d8e5fd234086f6649f77bb0059de1aebd143e" },
+  "event": {
+    "organizer": { "name": "Bountiful Voluntaryist Community" },
+    "name": "Saturday Morning Meeting",
+    "startTime": "2018-12-29T08:00:00.000-07:00"
+  }
 }
 
 export const confirmClaim = {
   '@context': 'http://endorser.ch',
-  '@type': 'ConfirmClaim',
-  'payload': '...'
+  '@type': 'Confirmation',
+  'claimEncoded': '...'
 }
 
 
@@ -59,14 +58,13 @@ class SignClaim extends Component {
   constructor (props) {
     super(props)
 
-    let previousHour = DateTime.local().startOf("hour").toISO()
-    attendedClaim.object.startTime = previousHour
+    attendedClaim.event.startTime = DateTime.local().startOf("hour").toISO()
 
     var subject = 'did:uport:2oze6gbJDBVsvvBpzghEhCJsWMazvKmwUCD'
     var unsignedClaim = attendedClaim
     if (uportConnect.did) {
       subject = uportConnect.did
-      attendedClaim.agent = uportConnect.did
+      attendedClaim.agent.did = uportConnect.did
     }
     this.state = {
       responseJWT: null,
