@@ -8,6 +8,7 @@ import { uportConnect } from '../utilities/uportSetup'
 import { verifyJWT } from 'did-jwt'
 import JSONInput from 'react-json-editor-ajrm'
 import { withRouter, Link } from 'react-router-dom'
+import { DateTime } from 'luxon'
 
 
 const SignReqID = 'SignRequest'
@@ -31,13 +32,14 @@ const ClaimButton = styled.button`
 const attendedClaim = {
   '@context': 'http://schema.org',
   '@type': 'AttendedAction',
+  // note that there is constructor code that sets "did" inside "agent"
   'agent':
   { '@type': 'Person',
     'did': 'did:ethr:0xdf0d8e5fd234086f6649f77bb0059de1aebd143e' },
   object:
   { '@type': 'Event',
     'name': 'Bountiful Voluntaryist Community Saturday morning meeting',
-    'startTime': '2018-12-29T08:00:00-07' }
+    'startTime': '2019-01-05T08:00:00-07' }
 }
 
 export const confirmClaim = {
@@ -56,12 +58,22 @@ class SignClaim extends Component {
 
   constructor (props) {
     super(props)
+
+    let previousHour = DateTime.local().startOf("hour").toISO()
+    attendedClaim.object.startTime = previousHour
+
+    var subject = 'did:uport:2oze6gbJDBVsvvBpzghEhCJsWMazvKmwUCD'
+    var unsignedClaim = attendedClaim
+    if (uportConnect.did) {
+      subject = uportConnect.did
+      attendedClaim.agent = uportConnect.did
+    }
     this.state = {
       responseJWT: null,
       responseJSON: null,
-      sub: 'did:uport:2oze6gbJDBVsvvBpzghEhCJsWMazvKmwUCD',
+      sub: subject,
       aud: '',
-      unsignedClaim: { name: 'Bob'},
+      unsignedClaim: unsignedClaim,
       otherClaimsToSign: []
     }
     this.signClaim = this.signClaim.bind(this)
