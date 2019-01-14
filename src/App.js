@@ -11,6 +11,7 @@ import styled from 'styled-components'
 // Components
 import AppNavbar from './components/AppNavbar'
 import Welcome from './components/Welcome'
+import ExploreConfirms from './components/ExploreConfirms'
 import SignTransaction from './components/SignTransaction'
 import CollectCredentials from './components/CollectCredentials'
 import RegisterYourApp from './components/RegisterYourApp'
@@ -48,6 +49,7 @@ class App extends Component {
         <AppBody>
           <Route exact path='/' component={Welcome}/>
           <Route path='/signclaim' component={SignClaim}/>
+          <Route path='/explore' component={ExploreConfirms}/>
           <Route path='/transaction' component={SignTransaction}/>
           <Route path='/credentials' component={CollectCredentials}/>
           <Route path='/register' component={RegisterYourApp}/>

@@ -50,7 +50,12 @@ class Welcome extends Component {
                 <p>Welcome back {this.props.uport.name}</p>
                 <Link to="/signclaim">
                   <NextButton >
-                    Continue
+                    Claim &amp; Confirm
+                  </NextButton>
+                </Link>
+                <Link to="/explore">
+                  <NextButton >
+                    Explore
                   </NextButton>
                 </Link>
               </div>
