@@ -38,10 +38,12 @@ const attendedClaim = {
   }
 }
 
-export const confirmClaim = {
-  '@context': 'http://endorser.ch',
-  '@type': 'Confirmation',
-  'claimEncoded': '...'
+function confirmClaim(claimEncoded) {
+  return {
+    '@context': 'http://endorser.ch',
+    '@type': 'Confirmation',
+    'claimEncoded': claimEncoded
+  }
 }
 
 
@@ -66,10 +68,11 @@ class SignClaim extends Component {
     this.state = {
       responseJWT: null,
       responseJSON: null,
+      claimStored: "",
       sub: subject,
       aud: '',
       unsignedClaim: unsignedClaim,
-      claimWrapper: null,
+      embeddedClaim: null,
       otherClaimsToSign: [],
       otherClaimConfirmations: []
     }
@@ -101,13 +104,28 @@ class SignClaim extends Component {
   }
 
   handleSignedClaim(res) {
-    console.log(res)
+    //console.log(res) // format: { id: "SignRequest", payload: "...", data: undefined }
     verifyJWT(res.payload).then(json => {
-      console.log('json', json)
+
+      // json format: https://github.com/uport-project/did-jwt/blob/288b8a57b44706036ad440c1e0ea7dde06365810/src/JWT.js#L103
+      // { "payload":{"iat":1547430185,"exp":1547516585,"sub":"did:ethr:...","claim":{...},"iss":"did:ethr:..."},
+      //   "doc":{"@context":"https://w3id.org/did/v1","id":"did:ethr:...","publicKey":[{"id":"did:ethr:...#owner","type":"Secp256k1VerificationKey2018","owner":"did:ethr:...","ethereumAddress":"..."}],"authentication":[{"type":"Secp256k1SignatureAuthentication2018","publicKey":"did:ethr:...#owner"}]},
+      //    "issuer":"did:ethr:...",
+      //    "signer":{"id":"did:ethr:...#owner","type":"Secp256k1VerificationKey2018","owner":"did:ethr:...","ethereumAddress":"..."},"jwt":"..."}
+      //console.log('json', JSON.stringify(json))
+
       this.setState({
         responseJWT: res.payload,
         responseJSON: json.payload
       })
+      fetch('http://localhost:3000/api/claim', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({jwtEncoded:res.payload})})
+        .then(response => response.json())
+        .then(data => this.setState({ claimStored: "Saved with ID " + data }))
     })
     .catch(window.alert)
 
@@ -133,10 +151,10 @@ class SignClaim extends Component {
                    }})
                    .then(response => response.json())
                    // extract the claim and decode it
-                   .then(json => JSON.parse(atob(json.claimEncoded)))
-                   .then(data => this.setState({ claimWrapper: data, unsignedClaim: data })
+                   //.then(json => {claim:, claimEncoded:json.claimEncoded})
+                   .then(json => this.setState({ unsignedClaim: confirmClaim(json.claimEncoded), embeddedClaim: JSON.parse(atob(json.claimEncoded)) })
                  )
-               }}>{insertSpace(jwt.claimType)}<br/>{jwt.subject}<br/>{jwt.issuedAt}</ClaimButton>
+               }}>{insertSpace(jwt.claimType)}<br/>{jwt.subject}</ClaimButton>
               )
 
     const confirmedClaims = this.state
@@ -144,48 +162,65 @@ class SignClaim extends Component {
           .map(jwt => <li key={jwt.id}>{jwt.subject}</li>)
 
     return (
-      <WelcomeWrap>
+        <WelcomeWrap>
         <h4>Sign the following claim: </h4>
         <div style={{display: 'flex', flex: 1, flexDirection: 'row', justifyContent: 'center', textAlign: 'left', marginBottom: '20px'}}>
           <div style={{marginRight: '20px'}}>
           <table>
+            <tbody>
             <tr>
               <td>
                 <h3>Subject&nbsp;</h3>
               </td>
               <td>
-                <input type='text' style={{width: '500px'}} value={this.state.sub} onChange={(e) => this.setState({sub: e.target.value !== '' ? e.target.value : null})} />
+                <input type='text' style={{width: '400px'}} value={this.state.sub} onChange={(e) => this.setState({sub: e.target.value !== '' ? e.target.value : null})} />
               </td>
             </tr>
+            </tbody>
           </table>
           <h3>Claim</h3>
             <JSONWrapper>
-            {!this.state.unsignedClaim !== null && <JSONInput
+            <JSONInput
                 id='request'
                 placeholder={ this.state.unsignedClaim }
                 height='300px'
-                width='500px'
+                width='550px'
                 onChange={(value) => {
                   if (value.jsObject !== undefined) {
                     this.setState({unsignedClaim: value.jsObject})
                   }
                 }}
                 style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
-            />}
+             locale='en'
+            />
             </JSONWrapper>
-            <div>{this.state.claimWrapper ? JSON.stringify(this.state.claimWrapper) : ""}</div>
             <ClaimButton onClick={()=>{
-              this.setState({unsignedClaim: null})
-              this.setState({unsignedClaim: attendedClaim})
+              this.setState({unsignedClaim: null, embeddedClaim: null})
+              this.setState({unsignedClaim: attendedClaim, embeddedClaim: null})
             }}>Attended</ClaimButton>
             <ClaimButton onClick={()=>{
-              this.setState({unsignedClaim: null})
-              this.setState({unsignedClaim: confirmClaim})
+              this.setState({unsignedClaim: null, embeddedClaim: null})
+              this.setState({unsignedClaim: confirmClaim('...'), embeddedClaim: null})
             }}>Confirm</ClaimButton>
             <ConnectUport onClick={this.signClaim}>
               Sign Claim
             </ConnectUport>
             <br/>
+
+            <JSONWrapper>
+            {!this.state.embeddedClaim ? "" : <JSONInput
+             id='claimContents'
+             viewOnly='true'
+             confirmGood=''
+             placeholder={ this.state.embeddedClaim ? this.state.embeddedClaim : "" }
+             height='300px'
+             width='550px'
+             theme='light_mitsuketa_tribute'
+             colors={{'background':'#D4D4D4'}}
+             style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
+             locale='en'
+             />}
+            </JSONWrapper>
 
             <span>{claimButtons}</span>
 
@@ -195,18 +230,20 @@ class SignClaim extends Component {
           </div>
           {this.state.responseJWT && <div >
             <h3>Response JWT: </h3>
-            <input type='text' style={{width: '500px'}} value={this.state.responseJWT}/>
+            <input type='text' style={{width: '550px'}} value={this.state.responseJWT}/>
             <h3>Parsed JWT: </h3>
             <JSONWrapper>
             <JSONInput
                 id='response'
                 placeholder={ this.state.responseJSON }
                 height='300px'
-                width='500px'
+                width='550px'
                 viewOnly
                 style={{body: {'fontSize': '10pt', textAlign: 'left'}}}
+                locale='en'
             />
             </JSONWrapper>
+            <div style={{'textAlign':'right'}}><span>{this.state.claimStored}</span></div>
           </div>}
         </div>
       </WelcomeWrap>
