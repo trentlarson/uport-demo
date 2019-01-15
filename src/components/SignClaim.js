@@ -74,7 +74,7 @@ class SignClaim extends Component {
       unsignedClaim: unsignedClaim,
       embeddedClaim: null,
       otherClaimsToSign: [],
-      otherClaimConfirmations: []
+      otherConfirmations: []
     }
     this.signClaim = this.signClaim.bind(this)
     this.handleSignedClaim = this.handleSignedClaim.bind(this)
@@ -88,7 +88,7 @@ class SignClaim extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/api/claim?claimType=JoinAction', {
+    fetch('http://localhost:3000/api/claim?excludeConfirmations=1', {
       headers: {
         "Content-Type": "application/json"
       }})
@@ -100,7 +100,7 @@ class SignClaim extends Component {
         "Content-Type": "application/json"
       }})
       .then(response => response.json())
-      .then(data => this.setState({ otherClaimConfirmations: data }))
+      .then(data => this.setState({ otherConfirmations: data }))
   }
 
   handleSignedClaim(res) {
@@ -150,36 +150,35 @@ class SignClaim extends Component {
                      "Content-Type": "application/json"
                    }})
                    .then(response => response.json())
-                   // extract the claim and decode it
-                   //.then(json => {claim:, claimEncoded:json.claimEncoded})
-                   .then(json => this.setState({ unsignedClaim: confirmClaim(json.claimEncoded), embeddedClaim: JSON.parse(atob(json.claimEncoded)) })
+                   .then(json => {
+                     var embeddedInfo = {}
+                     embeddedInfo[json.claimEncoded] = JSON.parse(atob(json.claimEncoded))
+                     return { confirmClaim: confirmClaim(json.claimEncoded), embeddedInfo: embeddedInfo } })
+                   .then(moarJson => this.setState({ unsignedClaim: moarJson.confirmClaim, embeddedClaim: moarJson.embeddedInfo })
                  )
                }}>{insertSpace(jwt.claimType)}<br/>{jwt.subject}</ClaimButton>
               )
 
     const confirmedClaims = this.state
-          .otherClaimConfirmations
+          .otherConfirmations
           .map(jwt => <li key={jwt.id}>{jwt.subject}</li>)
 
     return (
         <WelcomeWrap>
-        <h4>Sign the following claim: </h4>
+        <h4>Claim to Sign</h4>
         <div style={{display: 'flex', flex: 1, flexDirection: 'row', justifyContent: 'center', textAlign: 'left', marginBottom: '20px'}}>
           <div style={{marginRight: '20px'}}>
-          <table>
-            <tbody>
-            <tr>
-              <td>
-                <h3>Subject&nbsp;</h3>
-              </td>
-              <td>
-                <input type='text' style={{width: '400px'}} value={this.state.sub} onChange={(e) => this.setState({sub: e.target.value !== '' ? e.target.value : null})} />
-              </td>
-            </tr>
-            </tbody>
-          </table>
+          <h3>Subject&nbsp;&nbsp;&nbsp;<input type='text' style={{width: '350px'}} value={this.state.sub} onChange={(e) => this.setState({sub: e.target.value !== '' ? e.target.value : null})} /></h3>
+
+          <div style={{textAlign: 'center'}}>
+            <ConnectUport onClick={this.signClaim}>
+              Sign Claim
+            </ConnectUport>
+          </div>
+
           <h3>Claim</h3>
-            <JSONWrapper>
+          <JSONWrapper>
+
             <JSONInput
                 id='request'
                 placeholder={ this.state.unsignedClaim }
@@ -193,41 +192,41 @@ class SignClaim extends Component {
                 style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
              locale='en'
             />
-            </JSONWrapper>
+          </JSONWrapper>
+
+          <JSONWrapper>
+          {!this.state.embeddedClaim ? "" : <JSONInput
+           id='claimContents'
+           viewOnly='true'
+           confirmGood=''
+           placeholder={ this.state.embeddedClaim ? this.state.embeddedClaim : "" }
+           height='300px'
+           width='550px'
+           theme='light_mitsuketa_tribute'
+           colors={{'background':'#D4D4D4'}}
+           style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
+           locale='en'
+           />}
+          </JSONWrapper>
+
             <ClaimButton onClick={()=>{
               this.setState({unsignedClaim: null, embeddedClaim: null})
               this.setState({unsignedClaim: attendedClaim, embeddedClaim: null})
-            }}>Attended</ClaimButton>
+            }}>Attended Template</ClaimButton>
             <ClaimButton onClick={()=>{
               this.setState({unsignedClaim: null, embeddedClaim: null})
               this.setState({unsignedClaim: confirmClaim('...'), embeddedClaim: null})
-            }}>Confirm</ClaimButton>
-            <ConnectUport onClick={this.signClaim}>
-              Sign Claim
-            </ConnectUport>
+            }}>Confirmation Template</ClaimButton>
             <br/>
 
-            <JSONWrapper>
-            {!this.state.embeddedClaim ? "" : <JSONInput
-             id='claimContents'
-             viewOnly='true'
-             confirmGood=''
-             placeholder={ this.state.embeddedClaim ? this.state.embeddedClaim : "" }
-             height='300px'
-             width='550px'
-             theme='light_mitsuketa_tribute'
-             colors={{'background':'#D4D4D4'}}
-             style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
-             locale='en'
-             />}
-            </JSONWrapper>
+          <h3>Claims</h3>
+          <span>{claimButtons}</span>
 
-            <span>{claimButtons}</span>
-
-            <h3>Confirmed Claims: </h3>
-             <span><ul>{confirmedClaims}</ul></span>
+          <h3>Confirmed Claims</h3>
+          <span><ul>{confirmedClaims}</ul></span>
 
           </div>
+
           {this.state.responseJWT && <div >
             <h3>Response JWT: </h3>
             <input type='text' style={{width: '550px'}} value={this.state.responseJWT}/>

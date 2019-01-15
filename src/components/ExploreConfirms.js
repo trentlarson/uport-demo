@@ -31,6 +31,10 @@ const attendedClaim = {
   }
 }
 
+function insertSpacesBeforeCaps(text) {
+  return text[0] + text.substr(1).replace(/([A-Z])/g, ' $1')
+}
+
 class ExploreConfirms extends Component {
 
   constructor (props) {
@@ -47,25 +51,32 @@ class ExploreConfirms extends Component {
 
     this.state = {
       claim: claim,
+      claims: [],
       confirmations: [],
       subject: subject
     }
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/api/claim?subject=' + this.state.subject + '&claimType=Confirmation', {
+    fetch('http://localhost:3000/api/claim?subject=' + this.state.subject, {
       headers: {
         "Content-Type": "application/json"
       }})
       .then(response => response.json())
       .then(data => {
-        for (var k in data) {
-          let d = data[k]
-          let claim2Encoded = JSON.parse(atob(d.claimEncoded)).claimEncoded
-          let claim = JSON.parse(atob(claim2Encoded))
-          data[k].claim = claim
+        var claims = [], confirmations = []
+        for (var i = 0; i < data.length; i++) {
+          let d = data[i]
+          var claimInside = JSON.parse(atob(d.claimEncoded))
+          if (d.claimType === 'Confirmation') {
+            claimInside = JSON.parse(atob(claimInside.claimEncoded))
+            confirmations.push(d)
+          } else {
+            claims.push(d)
+          }
+          d.claim = claimInside
         }
-        this.setState({ confirmations: data }) 
+        this.setState({ claims: claims, confirmations: confirmations })
       })
   }
 
@@ -81,6 +92,8 @@ class ExploreConfirms extends Component {
           <JSONInput
             id='request'
             placeholder={ this.state.claim }
+            viewOnly='true'
+            confirmGood=''
             height='300px'
             width='550px'
             onChange={(value) => {
@@ -93,13 +106,13 @@ class ExploreConfirms extends Component {
           />
           </JSONWrapper>
         </div>
-        <h3>Confirmations by You</h3>
+        <h3>Your Claims</h3>
         {
           this.state
-            .confirmations
+            .claims
             .map(jwt =>
                    <li key={jwt.id}>
-                     {jwt.subject}
+                     {insertSpacesBeforeCaps(jwt.claimType)}
                      <ul>
                        <li>{jwt.claim.event.organizer.name}</li>
                        <li>{jwt.claim.event.name}</li>
