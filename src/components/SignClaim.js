@@ -182,8 +182,8 @@ class SignClaim extends Component {
             <JSONInput
                 id='request'
                 placeholder={ this.state.unsignedClaim }
-                height='300px'
-                width='550px'
+                height='320px'
+                width='570px'
                 onChange={(value) => {
                   if (value.jsObject !== undefined) {
                     this.setState({unsignedClaim: value.jsObject})
@@ -195,18 +195,18 @@ class SignClaim extends Component {
           </JSONWrapper>
 
           <JSONWrapper>
-          {!this.state.embeddedClaim ? "" : <JSONInput
+          <JSONInput
            id='claimContents'
            viewOnly='true'
            confirmGood=''
            placeholder={ this.state.embeddedClaim ? this.state.embeddedClaim : "" }
-           height='300px'
-           width='550px'
+           height='320px'
+           width='570px'
            theme='light_mitsuketa_tribute'
-           colors={{'background':'#D4D4D4'}}
+           colors={{'background':'#D4D4D4', 'string':'#70CE35'}}
            style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
            locale='en'
-           />}
+           />
           </JSONWrapper>
 
             <ClaimButton onClick={()=>{
@@ -222,21 +222,21 @@ class SignClaim extends Component {
           <h3>Claims</h3>
           <span>{claimButtons}</span>
 
-          <h3>Confirmed Claims</h3>
+          <h3>Confirmations</h3>
           <span><ul>{confirmedClaims}</ul></span>
 
           </div>
 
-          {this.state.responseJWT && <div >
+          {<div >
             <h3>Response JWT: </h3>
-            <input type='text' style={{width: '550px'}} value={this.state.responseJWT}/>
+            <input type='text' style={{width: '570px'}} value={this.state.responseJWT}/>
             <h3>Parsed JWT: </h3>
             <JSONWrapper>
             <JSONInput
                 id='response'
                 placeholder={ this.state.responseJSON }
-                height='300px'
-                width='550px'
+                height='320px'
+                width='570px'
                 viewOnly
                 style={{body: {'fontSize': '10pt', textAlign: 'left'}}}
                 locale='en'
