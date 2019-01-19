@@ -74,8 +74,7 @@ class SignClaim extends Component {
       claimStored: '',
       unsignedClaim: unsignedClaim,
       embeddedClaim: null,
-      otherClaimsToSign: [],
-      otherConfirmations: []
+      otherClaimsToSign: []
     }
     this.signClaim = this.signClaim.bind(this)
     this.handleSignedClaim = this.handleSignedClaim.bind(this)
@@ -95,13 +94,6 @@ class SignClaim extends Component {
       }})
       .then(response => response.json())
       .then(data => this.setState({ otherClaimsToSign: data }))
-
-    fetch('http://localhost:3000/api/claim?claimType=Confirmation', {
-      headers: {
-        "Content-Type": "application/json"
-      }})
-      .then(response => response.json())
-      .then(data => this.setState({ otherConfirmations: data }))
   }
 
   handleSignedClaim(res) {
@@ -168,10 +160,6 @@ class SignClaim extends Component {
                }}>{insertSpace(jwt.claimType)}<br/>{jwt.subject}</ClaimButton>
               )
 
-    const confirmedClaims = this.state
-          .otherConfirmations
-          .map(jwt => <li key={jwt.id}>{jwt.subject}</li>)
-
     return (
         <WelcomeWrap>
         <h4>Claim to Sign</h4>
@@ -229,9 +217,6 @@ class SignClaim extends Component {
 
           <h3>Claims</h3>
           <span>{claimButtons}</span>
-
-          <h3>Confirmations</h3>
-          <span><ul>{confirmedClaims}</ul></span>
 
           </div>
 
