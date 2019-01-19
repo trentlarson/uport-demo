@@ -52,6 +52,11 @@ function insertSpace(text) {
   return text[0] + text.substr(1).replace(/([A-Z])/g, ' $1')
 }
 
+// return first 3 chars + "..." + last 3 chars
+function firstAndLast3(text) {
+  return text.slice(0,3) + "..." + text.slice(-3)
+}
+
 class SignClaim extends Component {
 
   constructor (props) {
@@ -59,18 +64,14 @@ class SignClaim extends Component {
 
     attendedClaim.event.startTime = DateTime.local().startOf("hour").toISO()
 
-    var subject = 'did:uport:2oze6gbJDBVsvvBpzghEhCJsWMazvKmwUCD'
     var unsignedClaim = attendedClaim
     if (uportConnect.did) {
-      subject = uportConnect.did
       attendedClaim.agent.did = uportConnect.did
     }
     this.state = {
-      responseJWT: null,
+      responseJWT: '',
       responseJSON: null,
-      claimStored: "",
-      sub: subject,
-      aud: '',
+      claimStored: '',
       unsignedClaim: unsignedClaim,
       embeddedClaim: null,
       otherClaimsToSign: [],
@@ -134,8 +135,16 @@ class SignClaim extends Component {
   signClaim () {
     this.setState({responseJWT: null})
     const unsignedClaim = this.state.unsignedClaim
-    const sub = this.state.sub
-    uportConnect.requestVerificationSignature(unsignedClaim, sub, SignReqID)
+    var subject = uportConnect.did
+    if (unsignedClaim.agent && unsignedClaim.agent.did) {
+      subject = unsignedClaim.agent.did
+    } else if (unsignedClaim['@type'] === 'Confirmation' && unsignedClaim.claimEncoded) {
+      let embeddedClaim = JSON.parse(atob(unsignedClaim.claimEncoded))
+      if (embeddedClaim.agent && embeddedClaim.agent.did) {
+        subject = embeddedClaim.agent.did
+      }
+    }
+    uportConnect.requestVerificationSignature(unsignedClaim, subject, SignReqID)
   }
 
   render () {
@@ -152,7 +161,7 @@ class SignClaim extends Component {
                    .then(response => response.json())
                    .then(json => {
                      var embeddedInfo = {}
-                     embeddedInfo[json.claimEncoded] = JSON.parse(atob(json.claimEncoded))
+                     embeddedInfo[firstAndLast3(json.claimEncoded)] = JSON.parse(atob(json.claimEncoded))
                      return { confirmClaim: confirmClaim(json.claimEncoded), embeddedInfo: embeddedInfo } })
                    .then(moarJson => this.setState({ unsignedClaim: moarJson.confirmClaim, embeddedClaim: moarJson.embeddedInfo })
                  )
@@ -168,7 +177,6 @@ class SignClaim extends Component {
         <h4>Claim to Sign</h4>
         <div style={{display: 'flex', flex: 1, flexDirection: 'row', justifyContent: 'center', textAlign: 'left', marginBottom: '20px'}}>
           <div style={{marginRight: '20px'}}>
-          <h3>Subject&nbsp;&nbsp;&nbsp;<input type='text' style={{width: '350px'}} value={this.state.sub} onChange={(e) => this.setState({sub: e.target.value !== '' ? e.target.value : null})} /></h3>
 
           <div style={{textAlign: 'center'}}>
             <ConnectUport onClick={this.signClaim}>
@@ -210,12 +218,12 @@ class SignClaim extends Component {
           </JSONWrapper>
 
             <ClaimButton onClick={()=>{
-              this.setState({unsignedClaim: null, embeddedClaim: null})
-              this.setState({unsignedClaim: attendedClaim, embeddedClaim: null})
+              this.setState({unsignedClaim: null, embeddedClaim: {}})
+              this.setState({unsignedClaim: attendedClaim})
             }}>Attended Template</ClaimButton>
             <ClaimButton onClick={()=>{
-              this.setState({unsignedClaim: null, embeddedClaim: null})
-              this.setState({unsignedClaim: confirmClaim('...'), embeddedClaim: null})
+              this.setState({unsignedClaim: null, embeddedClaim: {}})
+              this.setState({unsignedClaim: confirmClaim('...')})
             }}>Confirmation Template</ClaimButton>
             <br/>
 
