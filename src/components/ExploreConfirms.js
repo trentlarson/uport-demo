@@ -7,10 +7,10 @@ import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
 import { withRouter } from 'react-router-dom'
 import JSONInput from 'react-json-editor-ajrm'
-import { DateTime } from 'luxon'
 
 
 const WelcomeWrap = styled.section``
+const ChoiceButton = styled.button``
 const SubText = styled.p`
   margin: 0 auto 3em auto;
   font-size: 18px;
@@ -19,20 +19,14 @@ const JSONWrapper = styled.div`
   font-family: monospace !important
 `
 
-const attendedClaim = {
-  "@context": "http://schema.org",
-  "@type": "JoinAction",
-  // note that there is constructor code below that sets "did" inside "agent"
-  "agent": { "did": "did:ethr:0xdf0d8e5fd234086f6649f77bb0059de1aebd143e" },
-  "event": {
-    "organizer": { "name": "Bountiful Voluntaryist Community" },
-    "name": "Saturday Morning Meeting",
-    "startTime": "2018-12-29T08:00:00.000-07:00"
-  }
-}
-
+// insert a space in front of any capital letters
 function insertSpacesBeforeCaps(text) {
   return text[0] + text.substr(1).replace(/([A-Z])/g, ' $1')
+}
+
+// return first 3 chars + "..." + last 3 chars
+function firstAndLast3(text) {
+  return text.slice(0,3) + "..." + text.slice(-3)
 }
 
 class ExploreConfirms extends Component {
@@ -40,19 +34,16 @@ class ExploreConfirms extends Component {
   constructor (props) {
     super(props)
 
-    attendedClaim.event.startTime = DateTime.local().startOf("hour").toISO()
-
-    var subject = 'did:uport:2oze6gbJDBVsvvBpzghEhCJsWMazvKmwUCD'
-    var claim = attendedClaim
+    var subject = 'INVALID DID... ARE YOU NOT LOGGED IN?'
     if (uportConnect.did) {
       subject = uportConnect.did
-      claim.agent.did = uportConnect.did
     }
 
     this.state = {
-      claim: claim,
+      claim: {},
       claims: [],
       confirmations: [],
+      embeddedClaimInfo: null,
       subject: subject
     }
   }
@@ -67,14 +58,11 @@ class ExploreConfirms extends Component {
         var claims = [], confirmations = []
         for (var i = 0; i < data.length; i++) {
           let d = data[i]
-          var claimInside = JSON.parse(atob(d.claimEncoded))
           if (d.claimType === 'Confirmation') {
-            claimInside = JSON.parse(atob(claimInside.claimEncoded))
             confirmations.push(d)
           } else {
             claims.push(d)
           }
-          d.claim = claimInside
         }
         this.setState({ claims: claims, confirmations: confirmations })
       })
@@ -94,31 +82,65 @@ class ExploreConfirms extends Component {
             placeholder={ this.state.claim }
             viewOnly='true'
             confirmGood=''
-            height='300px'
+            height='320px'
             width='550px'
-            onChange={(value) => {
-              if (value.jsObject !== undefined) {
-                this.setState({claim: value.jsObject})
-              }
-            }}
             style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
             locale='en'
           />
           </JSONWrapper>
+
+          <JSONWrapper>
+          <JSONInput
+            id='claimContents'
+            viewOnly='true'
+            confirmGood=''
+            placeholder={ this.state.embeddedClaimInfo ? this.state.embeddedClaimInfo : "" }
+            height='320px'
+            width='570px'
+            theme='light_mitsuketa_tribute'
+            colors={{'background':'#D4D4D4', 'string':'#70CE35'}}
+            style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
+            locale='en'
+          />
+          </JSONWrapper>
+
         </div>
+
         <h3>Your Claims</h3>
         {
           this.state
             .claims
             .map(jwt =>
-                   <li key={jwt.id}>
-                     {insertSpacesBeforeCaps(jwt.claimType)}
+                 {
+                   let claim = JSON.parse(atob(jwt.claimEncoded))
+                   return <div key={jwt.id}>
+                     <ChoiceButton key={jwt.id+"_button"} onClick={() => { this.setState({claim:claim, embeddedClaimInfo:{}}) }}>{insertSpacesBeforeCaps(jwt.claimType)}</ChoiceButton>
                      <ul>
-                       <li>{jwt.claim.event.organizer.name}</li>
-                       <li>{jwt.claim.event.name}</li>
-                       <li>{jwt.claim.event.startTime}</li>
+                       <li>{claim.event.organizer.name}</li>
+                       <li>{claim.event.name}</li>
+                       <li>{claim.event.startTime}</li>
                      </ul>
-                   </li>
+                   </div>
+                 }
+                )
+        }
+
+        {
+          this.state
+            .confirmations
+            .map(jwt =>
+                 {
+                   let claim = JSON.parse(atob(jwt.claimEncoded))
+                   let embeddedClaim = JSON.parse(atob(claim.claimEncoded))
+                   var embeddedClaimInfo = {}
+                   embeddedClaimInfo[firstAndLast3(claim.claimEncoded)] = JSON.parse(atob(claim.claimEncoded))
+                   return <div key={jwt.id}>
+                     <ChoiceButton key={jwt.id+"_button"} onClick={() => { this.setState({claim:claim, embeddedClaimInfo:embeddedClaimInfo}) }}>{jwt.claimType}</ChoiceButton>
+                     <ul>
+                     <li>{insertSpacesBeforeCaps(embeddedClaim['@type'])}</li>
+                     </ul>
+                     </div>
+                 }
                 )
         }
       </WelcomeWrap>
