@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
+import { insertSpacesBeforeCaps, firstAndLast3 } from '../utilities/claims.js'
 import { verifyJWT } from 'did-jwt'
 import JSONInput from 'react-json-editor-ajrm'
 import { withRouter } from 'react-router-dom'
@@ -46,16 +47,6 @@ function confirmClaim(claimEncoded) {
   }
 }
 
-
-// insert a space in front of any capital letters
-function insertSpace(text) {
-  return text[0] + text.substr(1).replace(/([A-Z])/g, ' $1')
-}
-
-// return first 3 chars + "..." + last 3 chars
-function firstAndLast3(text) {
-  return text.slice(0,3) + "..." + text.slice(-3)
-}
 
 class SignClaim extends Component {
 
@@ -157,7 +148,7 @@ class SignClaim extends Component {
                      return { confirmClaim: confirmClaim(json.claimEncoded), embeddedInfo: embeddedInfo } })
                    .then(moarJson => this.setState({ unsignedClaim: moarJson.confirmClaim, embeddedClaim: moarJson.embeddedInfo })
                  )
-               }}>{insertSpace(jwt.claimType)}<br/>{jwt.subject}</ClaimButton>
+               }}>{insertSpacesBeforeCaps(jwt.claimType)}<br/>{jwt.subject}</ClaimButton>
               )
 
     return (

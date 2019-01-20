@@ -12,6 +12,7 @@ import styled from 'styled-components'
 import AppNavbar from './components/AppNavbar'
 import Welcome from './components/Welcome'
 import ExploreConfirms from './components/ExploreConfirms'
+import Reports from './components/Reports'
 import SignTransaction from './components/SignTransaction'
 import CollectCredentials from './components/CollectCredentials'
 import RegisterYourApp from './components/RegisterYourApp'
@@ -50,6 +51,7 @@ class App extends Component {
           <Route exact path='/' component={Welcome}/>
           <Route path='/signclaim' component={SignClaim}/>
           <Route path='/explore' component={ExploreConfirms}/>
+          <Route path='/reports' component={Reports}/>
           <Route path='/transaction' component={SignTransaction}/>
           <Route path='/credentials' component={CollectCredentials}/>
           <Route path='/register' component={RegisterYourApp}/>
