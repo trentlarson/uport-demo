@@ -19,10 +19,35 @@ const JSONWrapper = styled.div`
   font-family: monospace !important
 `
 
+/**
+ props: eventId
+ */
+class EventDetails extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { event:props.event, actionClaimsAndConfirmations:[] }
+  }
+  render() {
+    return <div>
+      <ChoiceButton
+        onClick={() => {
+          this.props.onChoice(this.state.event)
+        }}
+      >{this.state.event.name}</ChoiceButton>
+      <ul>
+        <li>{this.state.event.orgName}</li>
+        <li>{this.state.event.startTime}</li>
+      </ul>
+      </div>
+  }
+}
+
 class Reports extends Component {
 
   constructor (props) {
     super(props)
+
+    this.setEventPayload = this.setEventPayload.bind(this)
 
     var subject = 'INVALID DID... ARE YOU NOT LOGGED IN?'
     if (uportConnect.did) {
@@ -47,6 +72,10 @@ class Reports extends Component {
       })
   }
 
+  setEventPayload(claimedEvent) {
+    this.setState({event:claimedEvent})
+  }
+
   render () {
 
     return (
@@ -59,19 +88,12 @@ class Reports extends Component {
             .events
             .map(event =>
                  {
-                   return <div key={event.id}>
-                     <ChoiceButton key={event.id+"_button"} onClick={() => { this.setState({event:event}) }}>{event.name}</ChoiceButton>
-                     <ul>
-                       <li>{event.orgName}</li>
-                       <li>{event.name}</li>
-                       <li>{event.startTime}</li>
-                     </ul>
-                   </div>
+                   return <EventDetails key={event.id} event={event} onChoice={this.setEventPayload} />
                  }
                 )
         }
 
-        <h3>Claim</h3>
+        <h3>Details</h3>
         <div style={{display: 'flex', flex: 1, flexDirection: 'row', justifyContent: 'center', textAlign: 'left', marginBottom: '20px'}}>
           <JSONWrapper>
           <JSONInput
@@ -95,7 +117,7 @@ class Reports extends Component {
             height='320px'
             width='570px'
             theme='light_mitsuketa_tribute'
-            colors={{'background':'#D4D4D4', 'string':'#70CE35'}}
+            colors={{'background':'#D4D4D4'}}
             style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
             locale='en'
           />
