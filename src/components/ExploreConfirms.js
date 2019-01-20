@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
+import { insertSpacesBeforeCaps, firstAndLast3 } from '../utilities/claims.js'
 import { withRouter } from 'react-router-dom'
 import JSONInput from 'react-json-editor-ajrm'
 
@@ -18,16 +19,6 @@ const SubText = styled.p`
 const JSONWrapper = styled.div`
   font-family: monospace !important
 `
-
-// insert a space in front of any capital letters
-function insertSpacesBeforeCaps(text) {
-  return text[0] + text.substr(1).replace(/([A-Z])/g, ' $1')
-}
-
-// return first 3 chars + "..." + last 3 chars
-function firstAndLast3(text) {
-  return text.slice(0,3) + "..." + text.slice(-3)
-}
 
 class ExploreConfirms extends Component {
 
@@ -72,8 +63,8 @@ class ExploreConfirms extends Component {
 
     return (
       <WelcomeWrap>
-        <h4>Explore Confirmations</h4>
-        <SubText>Browse network of confirmations by identites</SubText>
+        <h4>Your Claims</h4>
+        <SubText>See the contents of your most recent claims & confirmations</SubText>
         <h3>Claim</h3>
         <div style={{display: 'flex', flex: 1, flexDirection: 'row', justifyContent: 'center', textAlign: 'left', marginBottom: '20px'}}>
           <JSONWrapper>
