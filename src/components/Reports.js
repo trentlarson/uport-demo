@@ -61,7 +61,7 @@ class EventDetails extends Component {
           <li key={acac.action.id}>Went {truncAddrFromDid(acac.action.did)}
             <ul>
             <li>
-              <ul><li>Agreed by {acac.confirmation && truncAddrFromDid(acac.confirmation.did)}</li></ul>
+              <ul><li>Agreed by {acac.confirmations.length}</li></ul>
             </li>
             </ul>
           </li>
