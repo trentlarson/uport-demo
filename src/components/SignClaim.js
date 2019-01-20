@@ -190,7 +190,7 @@ class SignClaim extends Component {
            height='320px'
            width='570px'
            theme='light_mitsuketa_tribute'
-           colors={{'background':'#D4D4D4', 'string':'#70CE35'}}
+           colors={{'background':'#D4D4D4'}}
            style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
            locale='en'
            />
