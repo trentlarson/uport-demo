@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
+import { firstAndLast3 } from '../utilities/claims.js'
 import { withRouter } from 'react-router-dom'
 import JSONInput from 'react-json-editor-ajrm'
 
@@ -19,24 +20,55 @@ const JSONWrapper = styled.div`
   font-family: monospace !important
 `
 
+function truncAddrFromDid(did) {
+  return firstAndLast3(did.split(":")[2].substring(2))
+}
+
 /**
  props: eventId
  */
 class EventDetails extends Component {
   constructor(props) {
     super(props)
-    this.state = { event:props.event, actionClaimsAndConfirmations:[] }
+    // acac = actionClaimAndConfirmations
+    this.state = { event:props.event, acacList:null }
   }
   render() {
     return <div>
       <ChoiceButton
         onClick={() => {
           this.props.onChoice(this.state.event)
+          if (!this.state.acacList) {
+            let url = 'http://localhost:3000/api/event/' + this.state.event.id + '/actionClaimsAndConfirmations'
+            fetch(url, {
+              headers: {
+                "Content-Type": "application/json"
+              }})
+              .then(response => response.json())
+              .then(acacList => {
+                this.setState({ acacList: acacList })
+              })
+          }
         }}
       >{this.state.event.name}</ChoiceButton>
       <ul>
         <li>{this.state.event.orgName}</li>
         <li>{this.state.event.startTime}</li>
+        <li>
+          <ul>
+      {this.state.acacList && this.state.acacList.map(
+        acac =>
+          <li key={acac.action.id}>Went {truncAddrFromDid(acac.action.did)}
+            <ul>
+            <li>
+              <ul><li>Agreed by {acac.confirmation && truncAddrFromDid(acac.confirmation.did)}</li></ul>
+            </li>
+            </ul>
+          </li>
+        )
+      }
+          </ul>
+        </li>
       </ul>
       </div>
   }
