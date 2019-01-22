@@ -19,7 +19,7 @@ const NextButton = styled.button`
   margin-top: 20px;
 `
 
-class Welcome extends Component {
+class ReportList extends Component {
 
   constructor (props) {
     super(props)
@@ -47,15 +47,18 @@ class Welcome extends Component {
         {
           this.props.uport && this.props.uport.name
             ? (<div>
-                <p>Welcome back {this.props.uport.name}</p>
-                <Link to="/signclaim">
-                  <NextButton>Claim / Confirm</NextButton>
-                </Link>
-                <br/>
-                <Link to="/reportList">
-                  <NextButton>Reports</NextButton>
-                </Link>
-              </div>
+               <Link to="/reportBestAttendance">
+                 <NextButton>Best Attendance</NextButton>
+               </Link>
+               <br/>
+               <Link to="/reportConfirms">
+                 <NextButton>Meeting Confirmations</NextButton>
+               </Link>
+               <br/>
+               <Link to="/explore">
+                 <NextButton>Your Previous Claims / Confirmations</NextButton>
+               </Link>
+               </div>
             )
             : (
               <ConnectUport onClick={this.connectUport}>
@@ -77,4 +80,4 @@ const mapDispatchToProps = (dispatch) => {
   return { actions: bindActionCreators(AppActions, dispatch) }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Welcome))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ReportList))

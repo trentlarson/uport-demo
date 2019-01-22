@@ -54,6 +54,7 @@
     "luxon": "^1.10.0",
     "mnid": "^0.1.1",
     "qrious": "^2.2.0",
+    "ramda": "^0.26.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-json-editor-ajrm": "^2.4.4",
