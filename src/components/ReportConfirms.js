@@ -38,17 +38,15 @@ class EventDetails extends Component {
       <ChoiceButton
         onClick={() => {
           this.props.onChoice(this.state.event)
-          if (!this.state.acacList) {
-            let url = 'http://localhost:3000/api/event/' + this.state.event.id + '/actionClaimsAndConfirmations'
-            fetch(url, {
-              headers: {
-                "Content-Type": "application/json"
-              }})
-              .then(response => response.json())
-              .then(acacList => {
-                this.setState({ acacList: acacList })
-              })
-          }
+          let url = 'http://localhost:3000/api/event/' + this.state.event.id + '/actionClaimsAndConfirmations'
+          fetch(url, {
+            headers: {
+              "Content-Type": "application/json"
+            }})
+            .then(response => response.json())
+            .then(acacList => {
+              this.setState({ acacList: acacList })
+            })
         }}
       >{this.state.event.name}</ChoiceButton>
       <ul>
@@ -58,7 +56,7 @@ class EventDetails extends Component {
           <ul>
       {this.state.acacList && this.state.acacList.map(
         acac =>
-          <li key={acac.action.id}>Went {truncAddrFromDid(acac.action.did)}
+          <li key={acac.action.id}>{truncAddrFromDid(acac.action.did)} went
             <ul>
             <li>
               <ul><li>Agreed by {acac.confirmations.length}</li></ul>
