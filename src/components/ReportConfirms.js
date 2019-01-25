@@ -56,7 +56,7 @@ class EventDetails extends Component {
           <ul>
       {this.state.acacList && this.state.acacList.map(
         acac =>
-          <li key={acac.action.id}>{truncAddrFromDid(acac.action.did)} went
+          <li key={acac.action.id}>{truncAddrFromDid(acac.action.agentDid)} went
             <ul>
             <li>
               <ul><li>Agreed by {acac.confirmations.length}</li></ul>
