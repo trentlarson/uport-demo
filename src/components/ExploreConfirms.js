@@ -66,7 +66,7 @@ class ExploreConfirms extends Component {
         <h4>Your Claims</h4>
         <SubText>See the contents of your most recent claims & confirmations</SubText>
         <h3>Claim</h3>
-        <div style={{display: 'flex', flex: 1, flexDirection: 'row', justifyContent: 'center', textAlign: 'left', marginBottom: '20px'}}>
+        <div style={{display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', textAlign: 'left', marginBottom: '20px'}}>
           <JSONWrapper>
           <JSONInput
             id='request'
@@ -74,7 +74,7 @@ class ExploreConfirms extends Component {
             viewOnly='true'
             confirmGood=''
             height='320px'
-            width='550px'
+            width='570px'
             style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
             locale='en'
           />

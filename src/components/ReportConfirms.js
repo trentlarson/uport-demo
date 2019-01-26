@@ -138,21 +138,6 @@ class Reports extends Component {
           />
           </JSONWrapper>
 
-          <JSONWrapper>
-          <JSONInput
-            id='claimContents'
-            viewOnly='true'
-            confirmGood=''
-            placeholder={ this.state.embeddedClaimInfo ? this.state.embeddedClaimInfo : "" }
-            height='320px'
-            width='570px'
-            theme='light_mitsuketa_tribute'
-            colors={{'background':'#D4D4D4'}}
-            style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
-            locale='en'
-          />
-          </JSONWrapper>
-
         </div>
 
       </WelcomeWrap>

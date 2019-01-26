@@ -154,7 +154,7 @@ class SignClaim extends Component {
     return (
         <WelcomeWrap>
         <h4>Claim to Sign</h4>
-        <div style={{display: 'flex', flex: 1, flexDirection: 'row', justifyContent: 'center', textAlign: 'left', marginBottom: '20px'}}>
+        <div style={{display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', textAlign: 'left', marginBottom: '20px'}}>
           <div style={{marginRight: '20px'}}>
 
           <div style={{textAlign: 'center'}}>
