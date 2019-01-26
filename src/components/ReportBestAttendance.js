@@ -7,7 +7,6 @@ import R from 'ramda'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
-import { firstAndLast3 } from '../utilities/claims.js'
 import { withRouter } from 'react-router-dom'
 
 
@@ -56,10 +55,12 @@ class ReportBestAttendance extends Component {
           Object.keys(this.state.acacMap)
             .map(did =>
                  {
+                   let meets = this.state.acacMap[did].length
+                   let confs = R.sum(this.state.acacMap[did].map(action => action.confirmations.length))
                    return <div key={did}>
-                     <span>{did} 
-                     - {this.state.acacMap[did].length} meetings,
-                       {R.sum(this.state.acacMap[did].map(action => action.confirmations.length))} confirmations</span>
+                     <span>{did} &nbsp;
+                     - {meets} meeting{meets === 1 ? "" : "s"}, &nbsp;
+                       {confs} confirmation{confs === 1 ? "" : "s"}</span>
                      </div>
                  }
                 )
