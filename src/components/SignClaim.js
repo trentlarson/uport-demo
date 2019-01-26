@@ -176,27 +176,27 @@ class SignClaim extends Component {
             />
           </JSONWrapper>
 
-            <ClaimButton onClick={()=>{
-              this.setState({unsignedClaim: null})
-              this.setState({unsignedClaim: attendedClaim})
-            }}>Attended Template</ClaimButton>
-            <ClaimButton onClick={()=>{
-              this.setState({unsignedClaim: null})
-              this.setState({unsignedClaim: confirmClaim('...')})
-            }}>Confirmation Template</ClaimButton>
-            <br/>
-
-          <h3>Claims</h3>
+          <h3>Claims To Use</h3>
           <span>{claimButtons}</span>
+
+        <ClaimButton onClick={()=>{
+          this.setState({unsignedClaim: null})
+          this.setState({unsignedClaim: attendedClaim})
+        }}>Attended Template</ClaimButton>
+        <ClaimButton onClick={()=>{
+          this.setState({unsignedClaim: null})
+          this.setState({unsignedClaim: confirmClaim('...')})
+        }}>Confirmation Template</ClaimButton>
+        <br/>
 
           </div>
 
           {<div >
-            <h3>Response JWT: </h3>
-            <input type='text' style={{width: '570px'}} value={this.state.responseJWT}/>
-            <h3>Parsed JWT: </h3>
-            <JSONWrapper>
-            <JSONInput
+           <h3>Response (JWT)</h3>
+           <input type='text' style={{width: '570px'}} value={this.state.responseJWT}/>
+           <h3>Signed Claim Response (Parsed JWT)</h3>
+           <JSONWrapper>
+           <JSONInput
                 id='response'
                 placeholder={ this.state.responseJSON }
                 height='320px'
@@ -204,10 +204,10 @@ class SignClaim extends Component {
                 viewOnly
                 style={{body: {'fontSize': '10pt', textAlign: 'left'}}}
                 locale='en'
-            />
-            </JSONWrapper>
-            <div style={{'textAlign':'right'}}><span>{this.state.claimStored}</span></div>
-          </div>}
+           />
+           </JSONWrapper>
+           <div style={{'textAlign':'right'}}><span>{this.state.claimStored}</span></div>
+           </div>}
         </div>
       </WelcomeWrap>
     )
