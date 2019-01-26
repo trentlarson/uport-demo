@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
-import { insertSpacesBeforeCaps, firstAndLast3 } from '../utilities/claims.js'
+import { insertSpacesBeforeCaps } from '../utilities/claims.js'
 import { withRouter } from 'react-router-dom'
 import JSONInput from 'react-json-editor-ajrm'
 
@@ -34,13 +34,12 @@ class ExploreConfirms extends Component {
       claim: {},
       claims: [],
       confirmations: [],
-      embeddedClaimInfo: null,
       subject: subject
     }
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/api/claim?subject=' + this.state.subject, {
+    fetch('http://localhost:3000/api/claim?issuer=' + this.state.subject, {
       headers: {
         "Content-Type": "application/json"
       }})
@@ -80,21 +79,6 @@ class ExploreConfirms extends Component {
           />
           </JSONWrapper>
 
-          <JSONWrapper>
-          <JSONInput
-            id='claimContents'
-            viewOnly='true'
-            confirmGood=''
-            placeholder={ this.state.embeddedClaimInfo ? this.state.embeddedClaimInfo : "" }
-            height='320px'
-            width='570px'
-            theme='light_mitsuketa_tribute'
-            colors={{'background':'#D4D4D4'}}
-            style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
-            locale='en'
-          />
-          </JSONWrapper>
-
         </div>
 
         <h3>Your Claims</h3>
@@ -105,7 +89,7 @@ class ExploreConfirms extends Component {
                  {
                    let claim = JSON.parse(atob(jwt.claimEncoded))
                    return <div key={jwt.id}>
-                     <ChoiceButton onClick={() => { this.setState({claim:claim, embeddedClaimInfo:{}}) }}>{insertSpacesBeforeCaps(jwt.claimType)}</ChoiceButton>
+                     <ChoiceButton onClick={() => { this.setState({claim:claim}) }}>{insertSpacesBeforeCaps(jwt.claimType)}</ChoiceButton>
                      <ul>
                        <li>{claim.event.organizer.name}</li>
                        <li>{claim.event.name}</li>
@@ -122,11 +106,9 @@ class ExploreConfirms extends Component {
             .map(jwt =>
                  {
                    let claim = JSON.parse(atob(jwt.claimEncoded))
-                   let embeddedClaim = JSON.parse(atob(claim.claimEncoded))
-                   var embeddedClaimInfo = {}
-                   embeddedClaimInfo[firstAndLast3(claim.claimEncoded)] = JSON.parse(atob(claim.claimEncoded))
+                   let embeddedClaim = claim.originalClaim
                    return <div key={jwt.id}>
-                     <ChoiceButton onClick={() => { this.setState({claim:claim, embeddedClaimInfo:embeddedClaimInfo}) }}>{jwt.claimType}</ChoiceButton>
+                     <ChoiceButton onClick={() => { this.setState({claim:claim}) }}>{jwt.claimType}</ChoiceButton>
                      <ul>
                      <li>{insertSpacesBeforeCaps(embeddedClaim['@type'])}</li>
                      </ul>
