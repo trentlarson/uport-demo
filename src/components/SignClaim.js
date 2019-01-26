@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
-import { insertSpacesBeforeCaps, firstAndLast3 } from '../utilities/claims.js'
+import { insertSpacesBeforeCaps } from '../utilities/claims.js'
 import { verifyJWT } from 'did-jwt'
 import JSONInput from 'react-json-editor-ajrm'
 import { withRouter } from 'react-router-dom'
@@ -39,11 +39,11 @@ const attendedClaim = {
   }
 }
 
-function confirmClaim(claimEncoded) {
+function confirmClaim(originalClaim) {
   return {
     '@context': 'http://endorser.ch',
     '@type': 'Confirmation',
-    'claimEncoded': claimEncoded
+    'originalClaim': originalClaim
   }
 }
 
@@ -64,7 +64,6 @@ class SignClaim extends Component {
       responseJSON: null,
       claimStored: '',
       unsignedClaim: unsignedClaim,
-      embeddedClaim: null,
       otherClaimsToSign: []
     }
     this.signClaim = this.signClaim.bind(this)
@@ -121,10 +120,9 @@ class SignClaim extends Component {
     var subject = uportConnect.did
     if (unsignedClaim.agent && unsignedClaim.agent.did) {
       subject = unsignedClaim.agent.did
-    } else if (unsignedClaim['@type'] === 'Confirmation' && unsignedClaim.claimEncoded) {
-      let embeddedClaim = JSON.parse(atob(unsignedClaim.claimEncoded))
-      if (embeddedClaim.agent && embeddedClaim.agent.did) {
-        subject = embeddedClaim.agent.did
+    } else if (unsignedClaim['@type'] === 'Confirmation' && unsignedClaim.originalClaim) {
+      if (unsignedClaim.originalClaim.agent && unsignedClaim.originalClaim.agent.did) {
+        subject = unsignedClaim.originalClaim.agent.did
       }
     }
     uportConnect.requestVerificationSignature(unsignedClaim, subject, SignReqID)
@@ -142,12 +140,9 @@ class SignClaim extends Component {
                      "Content-Type": "application/json"
                    }})
                    .then(response => response.json())
-                   .then(json => {
-                     var embeddedInfo = {}
-                     embeddedInfo[firstAndLast3(json.claimEncoded)] = JSON.parse(atob(json.claimEncoded))
-                     return { confirmClaim: confirmClaim(json.claimEncoded), embeddedInfo: embeddedInfo } })
-                   .then(moarJson => this.setState({ unsignedClaim: moarJson.confirmClaim, embeddedClaim: moarJson.embeddedInfo })
-                 )
+                   .then(jwtJson => {
+                     let originalClaim = JSON.parse(atob(jwtJson.claimEncoded))
+                     this.setState({ unsignedClaim: confirmClaim(originalClaim) }) })
                }}>{insertSpacesBeforeCaps(jwt.claimType)}<br/>{jwt.subject}</ClaimButton>
               )
 
@@ -181,27 +176,12 @@ class SignClaim extends Component {
             />
           </JSONWrapper>
 
-          <JSONWrapper>
-          <JSONInput
-           id='claimContents'
-           viewOnly='true'
-           confirmGood=''
-           placeholder={ this.state.embeddedClaim ? this.state.embeddedClaim : "" }
-           height='320px'
-           width='570px'
-           theme='light_mitsuketa_tribute'
-           colors={{'background':'#D4D4D4'}}
-           style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
-           locale='en'
-           />
-          </JSONWrapper>
-
             <ClaimButton onClick={()=>{
-              this.setState({unsignedClaim: null, embeddedClaim: {}})
+              this.setState({unsignedClaim: null})
               this.setState({unsignedClaim: attendedClaim})
             }}>Attended Template</ClaimButton>
             <ClaimButton onClick={()=>{
-              this.setState({unsignedClaim: null, embeddedClaim: {}})
+              this.setState({unsignedClaim: null})
               this.setState({unsignedClaim: confirmClaim('...')})
             }}>Confirmation Template</ClaimButton>
             <br/>
