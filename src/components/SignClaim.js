@@ -18,7 +18,9 @@ const WelcomeWrap = styled.section``
 const JSONWrapper = styled.div`
   font-family: monospace !important
 `
-const ConnectUport = styled.button``
+const ConnectUport = styled.button`
+  background-color: #4C8F50;
+`
 const ClaimButton = styled.button`
   margin-right: 20px;
   margin-top: 10px;
@@ -143,7 +145,7 @@ class SignClaim extends Component {
                    .then(jwtJson => {
                      let originalClaim = JSON.parse(atob(jwtJson.claimEncoded))
                      this.setState({ unsignedClaim: confirmClaim(originalClaim) }) })
-               }}>{insertSpacesBeforeCaps(jwt.claimType)}<br/>{jwt.subject}</ClaimButton>
+               }}>Confirm {insertSpacesBeforeCaps(jwt.claimType)}<br/>{jwt.issuedAt}</ClaimButton>
               )
 
     return (
@@ -152,13 +154,23 @@ class SignClaim extends Component {
         <div style={{display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', textAlign: 'left', marginBottom: '20px'}}>
           <div style={{marginRight: '20px'}}>
 
+        <h3>Sample Claims</h3>
+
+        <ClaimButton onClick={()=>{
+          this.setState({unsignedClaim: null})
+          this.setState({unsignedClaim: attendedClaim})
+        }}>Sample Join Action</ClaimButton>
+
+        <span>{claimButtons}</span>
+
+        <h3>Claim</h3>
+
           <div style={{textAlign: 'center'}}>
             <ConnectUport onClick={this.signClaim}>
               Sign Claim
             </ConnectUport>
           </div>
 
-          <h3>Claim</h3>
           <JSONWrapper>
 
             <JSONInput
@@ -176,20 +188,12 @@ class SignClaim extends Component {
             />
           </JSONWrapper>
 
-          <h3>Claims To Use</h3>
-          <span>{claimButtons}</span>
-
-        <ClaimButton onClick={()=>{
-          this.setState({unsignedClaim: null})
-          this.setState({unsignedClaim: attendedClaim})
-        }}>Attended Template</ClaimButton>
-        <ClaimButton onClick={()=>{
-          this.setState({unsignedClaim: null})
-          this.setState({unsignedClaim: confirmClaim('...')})
-        }}>Confirmation Template</ClaimButton>
-        <br/>
-
           </div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
 
           {<div >
            <h3>Response (JWT)</h3>

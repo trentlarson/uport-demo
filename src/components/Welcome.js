@@ -42,8 +42,8 @@ class Welcome extends Component {
   render () {
     return (
       <WelcomeWrap>
-        <h4>Build a Better dApp</h4>
-        <SubText>Identity and transaction infrastructure for Ethereum</SubText>
+        <h4>Endorser Search</h4>
+        <SubText>Make claims, confirm other claims, and report on them. </SubText>
         {
           this.props.uport && this.props.uport.name
             ? (<div>

@@ -11,10 +11,6 @@ import { withRouter } from 'react-router-dom'
 
 
 const WelcomeWrap = styled.section``
-const SubText = styled.p`
-  margin: 0 auto 3em auto;
-  font-size: 18px;
-`
 
 class ReportBestAttendance extends Component {
 
@@ -27,7 +23,7 @@ class ReportBestAttendance extends Component {
     }
 
     this.state = {
-      acacMap: [],
+      acacMap: [], // list of { "did:ethr:...":[{ "action":{"agentDid":"did:...", "event..."...}, "confirmations":{"issuer":"did:...", actionId:N} ] }
       subject: subject
     }
   }
@@ -44,23 +40,31 @@ class ReportBestAttendance extends Component {
       })
   }
 
+  sortedClaims(acacMap) {
+    let claimListWithCounts =
+        Object.keys(acacMap)
+        .map(did => {
+          let meets = this.state.acacMap[did].length
+          let confs = R.sum(this.state.acacMap[did].map(action => action.confirmations.length))
+          return { meetingCount:meets, confirmCount:confs, did:did }
+        })
+    return R.sort((a,b) => b.meetingCount - a.meetingCount, claimListWithCounts)
+  }
+
   render () {
 
     return (
       <WelcomeWrap>
-        <h4>Event Reports</h4>
-        <SubText>See stats on recent events</SubText>
+        <h4>Best Attendance</h4>
         <h3>Recent Events</h3>
         {
-          Object.keys(this.state.acacMap)
-            .map(did =>
+          this.sortedClaims(this.state.acacMap)
+            .map(claimWithCounts =>
                  {
-                   let meets = this.state.acacMap[did].length
-                   let confs = R.sum(this.state.acacMap[did].map(action => action.confirmations.length))
-                   return <div key={did}>
-                     <span>{did} &nbsp;
-                     - {meets} meeting{meets === 1 ? "" : "s"}, &nbsp;
-                       {confs} confirmation{confs === 1 ? "" : "s"}</span>
+                   return <div key={claimWithCounts.did}>
+                     <span>{claimWithCounts.did} &nbsp;
+                     - {claimWithCounts.meetingCount} meeting{claimWithCounts.meetingCount === 1 ? "" : "s"}, &nbsp;
+                       {claimWithCounts.confirmCount} confirmation{claimWithCounts.confirmCount === 1 ? "" : "s"}</span>
                      </div>
                  }
                 )
