@@ -42,8 +42,7 @@ class ReportList extends Component {
   render () {
     return (
       <WelcomeWrap>
-        <h4>Build a Better dApp</h4>
-        <SubText>Identity and transaction infrastructure for Ethereum</SubText>
+        <h4>Reports</h4>
         {
           this.props.uport && this.props.uport.name
             ? (<div>
