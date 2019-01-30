@@ -45,7 +45,7 @@ function confirmClaim(originalClaim) {
   return {
     '@context': 'http://endorser.ch',
     '@type': 'Confirmation',
-    'originalClaim': originalClaim
+    'originalClaims': [originalClaim]
   }
 }
 
@@ -135,7 +135,8 @@ class SignClaim extends Component {
     const claimButtons = this.state
           .otherClaimsToSign
           .map(jwt =>
-               <ClaimButton key={jwt.id} onClick={() => {
+               <span key={jwt.id}>
+               <ClaimButton key="{'setClaim' + jwt.id}" onClick={() => {
                  this.setState({unsignedClaim: {}});
                  fetch('http://localhost:3000/api/claim/' + jwt.id, {
                    headers: {
@@ -146,6 +147,25 @@ class SignClaim extends Component {
                      let originalClaim = JSON.parse(atob(jwtJson.claimEncoded))
                      this.setState({ unsignedClaim: confirmClaim(originalClaim) }) })
                }}>Confirm {insertSpacesBeforeCaps(jwt.claimType)}<br/>{jwt.issuedAt}</ClaimButton>
+
+               <ClaimButton key="{'addClaim' + jwt.id}" onClick={() => {
+                 if (this.state.unsignedClaim.originalClaims) {
+                   fetch('http://localhost:3000/api/claim/' + jwt.id, {
+                     headers: {
+                       "Content-Type": "application/json"
+                     }})
+                     .then(response => response.json())
+                     .then(jwtJson => {
+                       var newConfirm = this.state.unsignedClaim
+                       this.setState({ unsignedClaim: {} })
+                       let originalClaim = JSON.parse(atob(jwtJson.claimEncoded))
+                       newConfirm.originalClaims.push(originalClaim)
+                       this.setState({ unsignedClaim: newConfirm }) })
+                 } else {
+                   alert('To add a confirm, select an original confirm first.')
+                 }
+               }}>(or <br/> add)</ClaimButton>
+               </span>
               )
 
     return (
@@ -160,6 +180,7 @@ class SignClaim extends Component {
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: attendedClaim})
         }}>Sample Join Action</ClaimButton>
+        <br/>
 
         <span>{claimButtons}</span>
 
@@ -176,7 +197,7 @@ class SignClaim extends Component {
             <JSONInput
                 id='request'
                 placeholder={ this.state.unsignedClaim }
-                height='320px'
+                height='400px'
                 width='570px'
                 onChange={(value) => {
                   if (value.jsObject !== undefined) {
