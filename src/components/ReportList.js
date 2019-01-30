@@ -11,10 +11,6 @@ import { withRouter, Link } from 'react-router-dom'
 const ConnectReqID = 'ConnectRequest'
 const WelcomeWrap = styled.section``
 const ConnectUport = styled.button``
-const SubText = styled.p`
-  margin: 0 auto 3em auto;
-  font-size: 18px;
-`
 const NextButton = styled.button`
   margin-top: 20px;
 `
