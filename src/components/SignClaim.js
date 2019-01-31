@@ -117,7 +117,7 @@ class SignClaim extends Component {
   }
 
   signClaim () {
-    this.setState({responseJWT: null})
+    this.setState({responseJWT: ''})
     const unsignedClaim = this.state.unsignedClaim
     var subject = uportConnect.did
     if (unsignedClaim.agent && unsignedClaim.agent.did) {
@@ -216,7 +216,7 @@ class SignClaim extends Component {
         <br/>
         <br/>
 
-          {<div >
+        <div >
            <h3>Response (JWT)</h3>
            <input type='text' style={{width: '570px'}} value={this.state.responseJWT}/>
            <h3>Signed Claim Response (Parsed JWT)</h3>
@@ -232,7 +232,7 @@ class SignClaim extends Component {
            />
            </JSONWrapper>
            <div style={{'textAlign':'right'}}><span>{this.state.claimStored}</span></div>
-           </div>}
+        </div>
         </div>
       </WelcomeWrap>
     )
