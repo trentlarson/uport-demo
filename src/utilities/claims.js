@@ -9,3 +9,8 @@ export const firstAndLast3 = (text) => {
   return text.slice(0,3) + "..." + text.slice(-3)
 }
 
+// take DID and extract address and return first and last 3 chars
+export const firstAndLast3OfDid = (did) => {
+  return firstAndLast3(did.split(":")[2].substring(2))
+}
+

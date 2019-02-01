@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
-import { uportConnect } from '../utilities/uportSetup'
 import { firstAndLast3 } from '../utilities/claims.js'
 import { withRouter } from 'react-router-dom'
 import JSONInput from 'react-json-editor-ajrm'
@@ -79,15 +78,9 @@ class Reports extends Component {
 
     this.setEventPayload = this.setEventPayload.bind(this)
 
-    var subject = 'INVALID DID... ARE YOU NOT LOGGED IN?'
-    if (uportConnect.did) {
-      subject = uportConnect.did
-    }
-
     this.state = {
       event: {},
-      events: [],
-      subject: subject
+      events: []
     }
   }
 
