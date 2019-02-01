@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
-import { insertSpacesBeforeCaps } from '../utilities/claims.js'
+import { firstAndLast3OfDid } from '../utilities/claims.js'
 import { verifyJWT } from 'did-jwt'
 import JSONInput from 'react-json-editor-ajrm'
 import { withRouter } from 'react-router-dom'
@@ -29,44 +29,28 @@ const ClaimButton = styled.button`
   padding: 10px;
 `
 
-const attendedClaim = {
-  "@context": "http://schema.org",
-  "@type": "JoinAction",
-  // note that there is constructor code below that sets "did" inside "agent"
-  "agent": { "did": "did:ethr:0xdf0d8e5fd234086f6649f77bb0059de1aebd143e" },
-  "event": {
-    "organizer": { "name": "Bountiful Voluntaryist Community" },
-    "name": "Saturday Morning Meeting",
-    "startTime": "2018-12-29T08:00:00.000-07:00"
-  }
-}
+const DEFAULT_ORG_NAME = "Bountiful Voluntaryist Community"
+const DEFAULT_EVENT_NAME = "Saturday Morning Meeting"
 
-function confirmClaim(originalClaim) {
+function confirmClaim(claims) {
   return {
-    '@context': 'http://endorser.ch',
-    '@type': 'Confirmation',
-    'originalClaims': [originalClaim]
+    "@context": "http://schema.org",
+    "@type": "Confirmation",
+    "originalClaims": claims
   }
 }
-
 
 class SignClaim extends Component {
 
   constructor (props) {
     super(props)
 
-    attendedClaim.event.startTime = DateTime.local().startOf("hour").toISO()
-
-    var unsignedClaim = attendedClaim
-    if (uportConnect.did) {
-      attendedClaim.agent.did = uportConnect.did
-    }
     this.state = {
       responseJWT: '',
       responseJSON: null,
-      claimStored: '',
-      unsignedClaim: unsignedClaim,
-      otherClaimsToSign: []
+      claimStoredResponse: '',
+      unsignedClaim: this.joinActionClaim(),
+      actionsToConfirm: []
     }
     this.signClaim = this.signClaim.bind(this)
     this.handleSignedClaim = this.handleSignedClaim.bind(this)
@@ -79,13 +63,39 @@ class SignClaim extends Component {
 
   }
 
+  joinActionClaim(eventOrgName, eventName, eventStartDate, agentDid) {
+    if (!eventOrgName) {
+      eventOrgName = DEFAULT_ORG_NAME
+    }
+    if (!eventName) {
+      eventName = DEFAULT_EVENT_NAME
+    }
+    if (!eventStartDate) {
+      eventStartDate = DateTime.local().startOf("hour").toISO()
+    }
+    if (!agentDid) {
+      agentDid = uportConnect.did
+    }
+    return {
+      "@context": "http://schema.org",
+      "@type": "JoinAction",
+      // note that there is constructor code below that sets "did" inside "agent"
+      "agent": { "did": agentDid },
+      "event": {
+        "organizer": { "name": eventOrgName },
+        "name": eventName,
+        "startTime": eventStartDate
+      }
+    }
+  }
+
   componentDidMount() {
-    fetch('http://localhost:3000/api/claim?excludeConfirmations=1', {
+    fetch('http://localhost:3000/api/action/', {
       headers: {
         "Content-Type": "application/json"
       }})
       .then(response => response.json())
-      .then(data => this.setState({ otherClaimsToSign: data }))
+      .then(data => this.setState({ actionsToConfirm: data }))
   }
 
   handleSignedClaim(res) {
@@ -110,7 +120,7 @@ class SignClaim extends Component {
         },
         body: JSON.stringify({jwtEncoded:res.payload})})
         .then(response => response.json())
-        .then(data => this.setState({ claimStored: "Saved with ID " + data }))
+        .then(data => this.setState({ claimStoredResponse: "Saved with ID " + data }))
     })
     .catch(window.alert)
 
@@ -118,55 +128,35 @@ class SignClaim extends Component {
 
   signClaim () {
     this.setState({responseJWT: ''})
-    const unsignedClaim = this.state.unsignedClaim
-    var subject = uportConnect.did
-    if (unsignedClaim.agent && unsignedClaim.agent.did) {
-      subject = unsignedClaim.agent.did
-    } else if (unsignedClaim['@type'] === 'Confirmation' && unsignedClaim.originalClaim) {
-      if (unsignedClaim.originalClaim.agent && unsignedClaim.originalClaim.agent.did) {
-        subject = unsignedClaim.originalClaim.agent.did
-      }
-    }
-    uportConnect.requestVerificationSignature(unsignedClaim, subject, SignReqID)
+    const claimToSign = this.state.unsignedClaim
+    uportConnect.requestVerificationSignature(claimToSign, uportConnect.did, SignReqID)
   }
 
   render () {
 
     const claimButtons = this.state
-          .otherClaimsToSign
-          .map(jwt =>
-               <span key={jwt.id}>
-               <ClaimButton key="{'setClaim' + jwt.id}" onClick={() => {
-                 this.setState({unsignedClaim: {}});
-                 fetch('http://localhost:3000/api/claim/' + jwt.id, {
-                   headers: {
-                     "Content-Type": "application/json"
-                   }})
-                   .then(response => response.json())
-                   .then(jwtJson => {
-                     let originalClaim = JSON.parse(atob(jwtJson.claimEncoded))
-                     this.setState({ unsignedClaim: confirmClaim(originalClaim) }) })
-               }}>Confirm {insertSpacesBeforeCaps(jwt.claimType)}<br/>{jwt.issuedAt}</ClaimButton>
-
-               <ClaimButton key="{'addClaim' + jwt.id}" onClick={() => {
-                 if (this.state.unsignedClaim.originalClaims) {
-                   fetch('http://localhost:3000/api/claim/' + jwt.id, {
+          .actionsToConfirm
+          .map(action => {
+            if (!this.state.unsignedClaim.originalClaims) {
+              return <span key={action.id}></span>
+            } else {
+              return <span key={action.id}>
+               <ClaimButton onClick={() => {
+                   fetch('http://localhost:3000/api/action/' + action.id, {
                      headers: {
                        "Content-Type": "application/json"
                      }})
                      .then(response => response.json())
-                     .then(jwtJson => {
+                     .then(actionJson => {
                        var newConfirm = this.state.unsignedClaim
                        this.setState({ unsignedClaim: {} })
-                       let originalClaim = JSON.parse(atob(jwtJson.claimEncoded))
-                       newConfirm.originalClaims.push(originalClaim)
+                       let newOriginalClaim = this.joinActionClaim(action.eventOrgName, action.eventName, action.eventStartTime, action.agentDid)
+                       newConfirm.originalClaims.push(newOriginalClaim)
                        this.setState({ unsignedClaim: newConfirm }) })
-                 } else {
-                   alert('To add a confirm, select an original confirm first.')
-                 }
-               }}>(or <br/> add)</ClaimButton>
-               </span>
-              )
+               }}>Join<br/>{firstAndLast3OfDid(action.agentDid)}<br/>{action.eventOrgName}<br/>{action.eventName}<br/>{action.eventStartTime}</ClaimButton>
+              </span>
+            }
+          })
 
     return (
         <WelcomeWrap>
@@ -178,8 +168,14 @@ class SignClaim extends Component {
 
         <ClaimButton onClick={()=>{
           this.setState({unsignedClaim: null})
-          this.setState({unsignedClaim: attendedClaim})
-        }}>Sample Join Action</ClaimButton>
+          this.setState({unsignedClaim: this.joinActionClaim()})
+        }}>Set to Join Action</ClaimButton>
+        <br/>
+
+        <ClaimButton onClick={()=>{
+          this.setState({unsignedClaim: null})
+          this.setState({unsignedClaim: confirmClaim([])})
+        }}>Set to Confirmation (empty)</ClaimButton>
         <br/>
 
         <span>{claimButtons}</span>
@@ -231,7 +227,7 @@ class SignClaim extends Component {
                 locale='en'
            />
            </JSONWrapper>
-           <div style={{'textAlign':'right'}}><span>{this.state.claimStored}</span></div>
+           <div style={{'textAlign':'right'}}><span>{this.state.claimStoredResponse}</span></div>
         </div>
         </div>
       </WelcomeWrap>

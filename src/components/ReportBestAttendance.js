@@ -6,7 +6,6 @@ import R from 'ramda'
 
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
-import { uportConnect } from '../utilities/uportSetup'
 import { withRouter } from 'react-router-dom'
 
 
@@ -17,14 +16,8 @@ class ReportBestAttendance extends Component {
   constructor (props) {
     super(props)
 
-    var subject = 'INVALID DID... ARE YOU NOT LOGGED IN?'
-    if (uportConnect.did) {
-      subject = uportConnect.did
-    }
-
     this.state = {
-      acacMap: [], // list of { "did:ethr:...":[{ "action":{"agentDid":"did:...", "event..."...}, "confirmations":{"issuer":"did:...", actionId:N} ] }
-      subject: subject
+      acacMap: [] // list of { "did:ethr:...":[{ "action":{"agentDid":"did:...", "event..."...}, "confirmations":{"issuer":"did:...", actionId:N} ] }
     }
   }
 
