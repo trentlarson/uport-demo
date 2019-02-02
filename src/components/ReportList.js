@@ -50,7 +50,7 @@ class ReportList extends Component {
                  <NextButton>Meeting Confirmations</NextButton>
                </Link>
                <br/>
-               <Link to="/explore">
+               <Link to="/reportClaims">
                  <NextButton>Your Previous Claims / Confirmations</NextButton>
                </Link>
                </div>

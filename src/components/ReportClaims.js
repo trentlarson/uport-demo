@@ -20,7 +20,7 @@ const JSONWrapper = styled.div`
   font-family: monospace !important
 `
 
-class ExploreConfirms extends Component {
+class ReportClaims extends Component {
 
   constructor (props) {
     super(props)
@@ -130,4 +130,4 @@ const mapDispatchToProps = (dispatch) => {
   return { actions: bindActionCreators(AppActions, dispatch) }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ExploreConfirms))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ReportClaims))

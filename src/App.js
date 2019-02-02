@@ -11,8 +11,8 @@ import styled from 'styled-components'
 // Components
 import AppNavbar from './components/AppNavbar'
 import Welcome from './components/Welcome'
-import ExploreConfirms from './components/ExploreConfirms'
 import ReportList from './components/ReportList'
+import ReportClaims from './components/ReportClaims'
 import ReportConfirms from './components/ReportConfirms'
 import ReportBestAttendance from './components/ReportBestAttendance'
 import SignTransaction from './components/SignTransaction'
@@ -52,8 +52,8 @@ class App extends Component {
         <AppBody>
           <Route exact path='/' component={Welcome}/>
           <Route path='/signclaim' component={SignClaim}/>
-          <Route path='/explore' component={ExploreConfirms}/>
           <Route path='/reportList' component={ReportList}/>
+          <Route path='/reportClaims' component={ReportClaims}/>
           <Route path='/reportConfirms' component={ReportConfirms}/>
           <Route path='/reportBestAttendance' component={ReportBestAttendance}/>
           <Route path='/transaction' component={SignTransaction}/>
