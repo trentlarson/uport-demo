@@ -106,13 +106,23 @@ class ReportClaims extends Component {
             .map(jwt =>
                  {
                    let claim = JSON.parse(atob(jwt.claimEncoded))
-                   let embeddedClaim = claim.originalClaim
-                   return <div key={jwt.id}>
-                     <ChoiceButton onClick={() => { this.setState({claim:claim}) }}>{jwt.claimType}</ChoiceButton>
-                     <ul>
-                     <li>{insertSpacesBeforeCaps(embeddedClaim['@type'])}</li>
-                     </ul>
-                     </div>
+                   let embeddedClaims = claim.originalClaims || []
+                   if (claim.originalClaim) {
+                     embeddedClaims.push(claim.originalClaim)
+                   }
+                   let result = []
+                   for (var i = 0; i < embeddedClaims.length; i++) {
+                     var embeddedClaim = embeddedClaims[i]
+                     result.push(
+                       <div key={jwt.id + "_" + i}>
+                         <ChoiceButton onClick={() => { this.setState({claim:claim}) }}>{jwt.claimType}</ChoiceButton>
+                         <ul>
+                         <li>{insertSpacesBeforeCaps(embeddedClaim['@type'])}</li>
+                         </ul>
+                       </div>
+                     )
+                   }
+                   return result
                  }
                 )
         }
