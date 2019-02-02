@@ -37,7 +37,7 @@ class EventDetails extends Component {
       <ChoiceButton
         onClick={() => {
           this.props.onChoice(this.state.event)
-          let url = 'http://localhost:3000/api/event/' + this.state.event.id + '/actionClaimsAndConfirmations'
+          let url = 'http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/event/' + this.state.event.id + '/actionClaimsAndConfirmations'
           fetch(url, {
             headers: {
               "Content-Type": "application/json"
@@ -85,7 +85,7 @@ class Reports extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/api/event', {
+    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/event', {
       headers: {
         "Content-Type": "application/json"
       }})

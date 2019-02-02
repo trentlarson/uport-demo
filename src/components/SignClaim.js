@@ -90,7 +90,7 @@ class SignClaim extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/api/action/', {
+    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/', {
       headers: {
         "Content-Type": "application/json"
       }})
@@ -113,7 +113,7 @@ class SignClaim extends Component {
         responseJWT: res.payload,
         responseJSON: json.payload
       })
-      fetch('http://localhost:3000/api/claim', {
+      fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"
@@ -142,7 +142,7 @@ class SignClaim extends Component {
             } else {
               return <span key={action.id}>
                <ClaimButton onClick={() => {
-                   fetch('http://localhost:3000/api/action/' + action.id, {
+                 fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/' + action.id, {
                      headers: {
                        "Content-Type": "application/json"
                      }})

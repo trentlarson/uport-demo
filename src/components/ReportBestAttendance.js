@@ -3,11 +3,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import R from 'ramda'
-
-import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 
+import * as AppActions from '../actions/AppActions'
+import { firstAndLast3OfDid } from '../utilities/claims.js'
 
 const WelcomeWrap = styled.section``
 
@@ -22,7 +22,7 @@ class ReportBestAttendance extends Component {
   }
 
   componentDidMount() {
-    let url = 'http://localhost:3000/api/report/actionClaimsAndConfirmationsSince?dateTime=2018-12-29T08:00:00.000-07:00'
+    let url = 'http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/report/actionClaimsAndConfirmationsSince?dateTime=2018-12-29T08:00:00.000-07:00'
     fetch(url, {
       headers: {
         "Content-Type": "application/json"
@@ -55,7 +55,7 @@ class ReportBestAttendance extends Component {
             .map(claimWithCounts =>
                  {
                    return <div key={claimWithCounts.did}>
-                     <span>{claimWithCounts.did} &nbsp;
+                     <span>{firstAndLast3OfDid(claimWithCounts.did)} &nbsp;
                      - {claimWithCounts.meetingCount} meeting{claimWithCounts.meetingCount === 1 ? "" : "s"}, &nbsp;
                        {claimWithCounts.confirmCount} confirmation{claimWithCounts.confirmCount === 1 ? "" : "s"}</span>
                      </div>
