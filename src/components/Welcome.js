@@ -63,6 +63,16 @@ class Welcome extends Component {
               </ConnectUport>
             )
         }
+
+        <br/>
+        <br/>
+        <a href="https://itunes.apple.com/us/app/uport-id/id1123434510?mt=8" target="_blank">
+          <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae108bd47cd15_app-store-badge.svg" alt=""/>
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.uportMobile&amp;hl=en" target="_blank">
+          <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae15b7047cd13_google-play-badge.svg" alt=""/>
+        </a>
+
       </WelcomeWrap>
     )
   }
