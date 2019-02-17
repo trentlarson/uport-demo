@@ -34,7 +34,7 @@ const DEFAULT_EVENT_NAME = "Saturday Morning Meeting"
 
 function confirmClaim(claims) {
   return {
-    "@context": "http://schema.org",
+    "@context": "http://endorser.ch",
     "@type": "Confirmation",
     "originalClaims": claims
   }
@@ -152,7 +152,8 @@ class SignClaim extends Component {
                        this.setState({ unsignedClaim: {} })
                        let newOriginalClaim = this.joinActionClaim(action.eventOrgName, action.eventName, action.eventStartTime, action.agentDid)
                        newConfirm.originalClaims.push(newOriginalClaim)
-                       this.setState({ unsignedClaim: newConfirm }) })
+                       this.setState({ unsignedClaim: newConfirm })
+                     })
                }}>Join<br/>{firstAndLast3OfDid(action.agentDid)}<br/>{action.eventOrgName}<br/>{action.eventName}<br/>{action.eventStartTime}</ClaimButton>
               </span>
             }
@@ -175,7 +176,7 @@ class SignClaim extends Component {
         <ClaimButton onClick={()=>{
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: confirmClaim([])})
-        }}>Set to Confirmation (empty)</ClaimButton>
+        }}>Reset to Confirmation...</ClaimButton>
         <br/>
 
         <span>{claimButtons}</span>
@@ -194,7 +195,7 @@ class SignClaim extends Component {
                 id='request'
                 placeholder={ this.state.unsignedClaim }
                 height='400px'
-                width='570px'
+                width='590px'
                 onChange={(value) => {
                   if (value.jsObject !== undefined) {
                     this.setState({unsignedClaim: value.jsObject})
@@ -214,14 +215,14 @@ class SignClaim extends Component {
 
         <div >
            <h3>Response (JWT)</h3>
-           <input type='text' style={{width: '570px'}} value={this.state.responseJWT}/>
+           <input type='text' style={{width: '590px'}} value={this.state.responseJWT}/>
            <h3>Signed Claim Response (Parsed JWT)</h3>
            <JSONWrapper>
            <JSONInput
                 id='response'
                 placeholder={ this.state.responseJSON }
                 height='320px'
-                width='570px'
+                width='590px'
                 viewOnly
                 style={{body: {'fontSize': '10pt', textAlign: 'left'}}}
                 locale='en'

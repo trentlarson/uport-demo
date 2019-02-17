@@ -73,7 +73,7 @@ class ReportClaims extends Component {
             viewOnly='true'
             confirmGood=''
             height='320px'
-            width='570px'
+            width='590px'
             style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
             locale='en'
           />
