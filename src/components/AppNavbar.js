@@ -75,9 +75,7 @@ class AppNavbar extends Component {
       <NavBar>
         <Link to="/">
         <LeftArea>
-          <LogoLink >uport</LogoLink>
-          <span> | </span>
-          <DemoText>Demo</DemoText>
+          <DemoText>Home</DemoText>
         </LeftArea>
         </Link>
 
