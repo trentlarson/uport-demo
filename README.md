@@ -7,7 +7,11 @@ This is for use with https://github.com/trentlarson/endorser-ch
 
 ###### Getting started
 ```
+# install dependencies
 npm ci
+
+# set up the environment
+cp .env.local .env
 ```
 
 ###### Development

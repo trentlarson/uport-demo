@@ -50,6 +50,8 @@ class SignClaim extends Component {
       responseJSON: null,
       claimStoredResponse: '',
       unsignedClaim: this.joinActionClaim(),
+      // for schema, see no-parameter result from: http://localhost:3000/api/action/
+      // API doc: http://localhost:3000/api-docs#/action/get_api_action_
       actionsToConfirm: []
     }
     this.signClaim = this.signClaim.bind(this)
@@ -148,13 +150,28 @@ class SignClaim extends Component {
                      }})
                      .then(response => response.json())
                      .then(actionJson => {
+
+                       // add this claim to the confirmation
                        var newConfirm = this.state.unsignedClaim
                        this.setState({ unsignedClaim: {} })
                        let newOriginalClaim = this.joinActionClaim(action.eventOrgName, action.eventName, action.eventStartTime, action.agentDid)
                        newConfirm.originalClaims.push(newOriginalClaim)
-                       this.setState({ unsignedClaim: newConfirm })
+
+                       // remove this claim from the buttons
+                       var newActions = this.state.actionsToConfirm
+                       let pos = newActions.indexOf(action)
+                       newActions.splice(pos, 1)
+
+                       // now set the state
+                       this.setState({ unsignedClaim: newConfirm, actionsToConfirm: newActions })
                      })
-               }}>Join<br/>{firstAndLast3OfDid(action.agentDid)}<br/>{action.eventOrgName}<br/>{action.eventName}<br/>{action.eventStartTime}</ClaimButton>
+               }}>
+                Join<br/>
+                {firstAndLast3OfDid(action.agentDid)}<br/>
+                {action.eventOrgName}<br/>
+                {action.eventName}<br/>
+                {action.eventStartTime}
+              </ClaimButton>
               </span>
             }
           })
@@ -176,7 +193,7 @@ class SignClaim extends Component {
         <ClaimButton onClick={()=>{
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: confirmClaim([])})
-        }}>Reset to Confirmation...</ClaimButton>
+        }}>Set to Confirmation...</ClaimButton>
         <br/>
 
         <span>{claimButtons}</span>
