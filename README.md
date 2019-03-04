@@ -1,11 +1,19 @@
 
-Endorser-ch UI
+# Endorser-ch UI
 
 A UI for recording claims and reporting on them
 
 This is for use with https://github.com/trentlarson/endorser-ch
 
-To run, see "Getting started" at the bottom.
+###### Getting started
+```
+npm ci
+```
+
+###### Development
+```
+npm run start
+```
 
 
 Cloned from (uPort Demo)[https://github.com/uport-project/demo]

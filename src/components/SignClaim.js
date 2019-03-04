@@ -71,7 +71,7 @@ class SignClaim extends Component {
       eventName = DEFAULT_EVENT_NAME
     }
     if (!eventStartDate) {
-      eventStartDate = DateTime.local().startOf("hour").toISO()
+      eventStartDate = DateTime.local().set({hour:8}).startOf("hour").toISO()
     }
     if (!agentDid) {
       agentDid = uportConnect.did
