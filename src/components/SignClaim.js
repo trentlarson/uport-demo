@@ -32,6 +32,8 @@ const ClaimButton = styled.button`
 const DEFAULT_ORG_NAME = "Bountiful Voluntaryist Community"
 const DEFAULT_EVENT_NAME = "Saturday Morning Meeting"
 
+const TODAY_START_TIME_STRING = DateTime.local().set({hour:0}).startOf("hour").toISO()
+
 function confirmClaim(claims) {
   return {
     "@context": "http://endorser.ch",
@@ -58,10 +60,10 @@ class SignClaim extends Component {
     this.handleSignedClaim = this.handleSignedClaim.bind(this)
 
     uportConnect.onResponse(SignReqID)
-    .then(this.handleSignedClaim)
-    .catch(error => {
-      this.setState({responseJWT: error})
-    })
+      .then(this.handleSignedClaim)
+      .catch(error => {
+        this.setState({responseJWT: error})
+      })
 
   }
 
@@ -92,7 +94,7 @@ class SignClaim extends Component {
   }
 
   componentDidMount() {
-    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/', {
+    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/?eventStartTime_greaterThanOrEqualTo=' + TODAY_START_TIME_STRING, {
       headers: {
         "Content-Type": "application/json"
       }})
@@ -143,29 +145,29 @@ class SignClaim extends Component {
               return <span key={action.id}></span>
             } else {
               return <span key={action.id}>
-               <ClaimButton onClick={() => {
-                 fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/' + action.id, {
-                     headers: {
-                       "Content-Type": "application/json"
-                     }})
-                     .then(response => response.json())
-                     .then(actionJson => {
+                <ClaimButton onClick={() => {
+                  fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/' + action.id, {
+                    headers: {
+                      "Content-Type": "application/json"
+                    }})
+                    .then(response => response.json())
+                    .then(actionJson => {
 
-                       // add this claim to the confirmation
-                       var newConfirm = this.state.unsignedClaim
-                       this.setState({ unsignedClaim: {} })
-                       let newOriginalClaim = this.joinActionClaim(action.eventOrgName, action.eventName, action.eventStartTime, action.agentDid)
-                       newConfirm.originalClaims.push(newOriginalClaim)
+                      // add this claim to the confirmation
+                      var newConfirm = this.state.unsignedClaim
+                      this.setState({ unsignedClaim: {} })
+                      let newOriginalClaim = this.joinActionClaim(action.eventOrgName, action.eventName, action.eventStartTime, action.agentDid)
+                      newConfirm.originalClaims.push(newOriginalClaim)
 
-                       // remove this claim from the buttons
-                       var newActions = this.state.actionsToConfirm
-                       let pos = newActions.indexOf(action)
-                       newActions.splice(pos, 1)
+                      // remove this claim from the buttons
+                      var newActions = this.state.actionsToConfirm
+                      let pos = newActions.indexOf(action)
+                      newActions.splice(pos, 1)
 
-                       // now set the state
-                       this.setState({ unsignedClaim: newConfirm, actionsToConfirm: newActions })
-                     })
-               }}>
+                      // now set the state
+                      this.setState({ unsignedClaim: newConfirm, actionsToConfirm: newActions })
+                    })
+                }}>
                 Join<br/>
                 {firstAndLast3OfDid(action.agentDid)}<br/>
                 {action.eventOrgName}<br/>
@@ -180,7 +182,7 @@ class SignClaim extends Component {
         <WelcomeWrap>
         <h4>Claim to Sign</h4>
         <div style={{display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', textAlign: 'left', marginBottom: '20px'}}>
-          <div style={{marginRight: '20px'}}>
+        <div style={{marginRight: '20px'}}>
 
         <h3>Sample Claims</h3>
 
