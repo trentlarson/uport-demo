@@ -21,6 +21,9 @@ const JSONWrapper = styled.div`
 const ConnectUport = styled.button`
   background-color: #4C8F50;
 `
+const MoreLink = styled.a`
+  text-color: #FFFFFF;
+`
 const ClaimButton = styled.button`
   margin-right: 20px;
   margin-top: 10px;
@@ -159,19 +162,19 @@ class SignClaim extends Component {
               return <span key={action.id}>
                 <ClaimButton onClick={() => {
 
-                      // add this claim to the confirmation
-                      // (Weird: without this clone it doesn't update in the setState, even though it does inside the old "fetch")
-                      var newConfirm = JSON.parse(JSON.stringify(this.state.unsignedClaim))
-                      this.setState({ unsignedClaim: {} })
-                      let newOriginalClaim = this.joinActionClaim(action.eventOrgName, action.eventName, action.eventStartTime, action.agentDid)
-                      newConfirm.originalClaims.push(newOriginalClaim)
+                  // add this claim to the confirmation
+                  // (Weird: without this clone it doesn't update in the setState, even though it does inside the old "fetch")
+                  var newConfirm = JSON.parse(JSON.stringify(this.state.unsignedClaim))
+                  this.setState({ unsignedClaim: {} })
+                  let newOriginalClaim = this.joinActionClaim(action.eventOrgName, action.eventName, action.eventStartTime, action.agentDid)
+                  newConfirm.originalClaims.push(newOriginalClaim)
 
-                      // remove this claim from the buttons
-                      var newActions = this.state.actionsToConfirm
-                      delete newActions[actionId]
+                  // remove this claim from the buttons
+                  var newActions = this.state.actionsToConfirm
+                  delete newActions[actionId]
 
-                      // now set the state
-                      this.setState({ unsignedClaim: newConfirm, actionsToConfirm: newActions })
+                  // now set the state
+                  this.setState({ unsignedClaim: newConfirm, actionsToConfirm: newActions })
 
                 }}>
                 Join<br/>
@@ -183,6 +186,26 @@ class SignClaim extends Component {
               </span>
             }
           })
+      }
+      {
+        (this.state.unsignedClaim.originalClaims && !this.state.loadedMore)
+          ?
+          <MoreLink href="#" onClick={()=>{
+            fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/?eventStartTime_lessThan=' + TODAY_START_TIME_STRING, {
+              headers: {
+                "Content-Type": "application/json"
+              }})
+              .then(response => response.json())
+              .then(data => {
+                let newActions = this.state.actionsToConfirm
+                for (var action of data) {
+                  newActions[action.id] = action
+                }
+                this.setState({ actionsToConfirm: newActions, loadedMore: true })
+              })
+          }}>Load More</MoreLink>
+          :
+          <span/>
       }
     </div>
 
