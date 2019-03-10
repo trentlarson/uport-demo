@@ -32,7 +32,7 @@ const ClaimButton = styled.button`
 const DEFAULT_ORG_NAME = "Bountiful Voluntaryist Community"
 const DEFAULT_EVENT_NAME = "Saturday Morning Meeting"
 
-const TODAY_START_TIME_STRING = DateTime.local().set({hour:0}).startOf("hour").toISO()
+const TODAY_START_TIME_STRING = DateTime.local().set({hour:0}).startOf("day").toISO()
 
 function confirmClaim(claims) {
   return {
@@ -40,6 +40,14 @@ function confirmClaim(claims) {
     "@type": "Confirmation",
     "originalClaims": claims
   }
+}
+
+function objectifyActionArray(actions) {
+  var result = {}
+  for (var action of actions) {
+    result[action.id] = action
+  }
+  return result
 }
 
 class SignClaim extends Component {
@@ -52,9 +60,11 @@ class SignClaim extends Component {
       responseJSON: null,
       claimStoredResponse: '',
       unsignedClaim: this.joinActionClaim(),
-      // for schema, see no-parameter result from: http://localhost:3000/api/action/
-      // API doc: http://localhost:3000/api-docs#/action/get_api_action_
-      actionsToConfirm: []
+      // For the type of actionsToConfirm, see no-parameter result from: http://localhost:3000/api/action/
+      // ... with API doc: http://localhost:3000/api-docs#/action/get_api_action_
+      // but where the array is turned into an object with keys of the "id" of each action.
+      actionsToConfirm: {},
+      loadedMore: false
     }
     this.signClaim = this.signClaim.bind(this)
     this.handleSignedClaim = this.handleSignedClaim.bind(this)
@@ -99,7 +109,7 @@ class SignClaim extends Component {
         "Content-Type": "application/json"
       }})
       .then(response => response.json())
-      .then(data => this.setState({ actionsToConfirm: data }))
+      .then(data => this.setState({ actionsToConfirm: objectifyActionArray(data) }))
   }
 
   handleSignedClaim(res) {
@@ -138,35 +148,31 @@ class SignClaim extends Component {
 
   render () {
 
-    const claimButtons = this.state
-          .actionsToConfirm
-          .map(action => {
+    const claimButtons = <div>
+      {
+        Object.keys(this.state.actionsToConfirm)
+          .map(actionId => {
+            let action = this.state.actionsToConfirm[actionId]
             if (!this.state.unsignedClaim.originalClaims) {
               return <span key={action.id}></span>
             } else {
               return <span key={action.id}>
                 <ClaimButton onClick={() => {
-                  fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/' + action.id, {
-                    headers: {
-                      "Content-Type": "application/json"
-                    }})
-                    .then(response => response.json())
-                    .then(actionJson => {
 
                       // add this claim to the confirmation
-                      var newConfirm = this.state.unsignedClaim
+                      // (Weird: without this clone it doesn't update in the setState, even though it does inside the old "fetch")
+                      var newConfirm = JSON.parse(JSON.stringify(this.state.unsignedClaim))
                       this.setState({ unsignedClaim: {} })
                       let newOriginalClaim = this.joinActionClaim(action.eventOrgName, action.eventName, action.eventStartTime, action.agentDid)
                       newConfirm.originalClaims.push(newOriginalClaim)
 
                       // remove this claim from the buttons
                       var newActions = this.state.actionsToConfirm
-                      let pos = newActions.indexOf(action)
-                      newActions.splice(pos, 1)
+                      delete newActions[actionId]
 
                       // now set the state
                       this.setState({ unsignedClaim: newConfirm, actionsToConfirm: newActions })
-                    })
+
                 }}>
                 Join<br/>
                 {firstAndLast3OfDid(action.agentDid)}<br/>
@@ -177,6 +183,8 @@ class SignClaim extends Component {
               </span>
             }
           })
+      }
+    </div>
 
     return (
         <WelcomeWrap>
