@@ -10,6 +10,7 @@ import { verifyJWT } from 'did-jwt'
 import JSONInput from 'react-json-editor-ajrm'
 import { withRouter } from 'react-router-dom'
 import { DateTime } from 'luxon'
+import R from 'ramda'
 
 
 const SignReqID = 'SignRequest'
@@ -217,27 +218,35 @@ class SignClaim extends Component {
 
         <h3>Sample Claims</h3>
 
+        <div style={{'textAlign':'right'}}><span>{this.state.claimStoredResponse}</span></div>
+
         <ClaimButton onClick={()=>{
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: this.joinActionClaim()})
         }}>Set to Join Action</ClaimButton>
+        <span>{ this.state.unsignedClaim['@type'] === 'JoinAction' ? <img src='/green-check.png'/> : "" }</span>
         <br/>
 
         <ClaimButton onClick={()=>{
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: confirmClaim([])})
         }}>Set to Confirmation...</ClaimButton>
+        <span>{ this.state.unsignedClaim['@type'] === 'Confirmation' ? R.repeat(<img src='/green-check.png'/>, this.state.unsignedClaim.originalClaims.length) : "" }</span>
         <br/>
 
         <span>{claimButtons}</span>
-
-        <h3>Claim</h3>
 
           <div style={{textAlign: 'center'}}>
             <ConnectUport onClick={this.signClaim}>
               Sign Claim
             </ConnectUport>
           </div>
+
+          <br/>
+          <br/>
+          <br/>
+
+          <h3>Claim Details</h3>
 
           <JSONWrapper>
 
@@ -278,7 +287,6 @@ class SignClaim extends Component {
                 locale='en'
            />
            </JSONWrapper>
-           <div style={{'textAlign':'right'}}><span>{this.state.claimStoredResponse}</span></div>
         </div>
         </div>
       </WelcomeWrap>
