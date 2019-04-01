@@ -186,6 +186,7 @@ class SignClaim extends Component {
               </span>
             }
           })
+          .reverse()
       }
       {
         (this.state.unsignedClaim.originalClaims && !this.state.loadedMore)
