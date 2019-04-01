@@ -221,7 +221,7 @@ class SignClaim extends Component {
 
         <div style={{'textAlign':'right'}}><span>{this.state.claimStoredResponse}</span></div>
 
-        <input type="radio" name="claimType" checked onClick={()=>{
+        <input type="radio" name="claimType" onClick={()=>{
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: this.joinActionClaim()})
         }}/> Set to Join Action
