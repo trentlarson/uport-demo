@@ -20,7 +20,7 @@ npm run start
 ```
 
 
-Cloned from (uPort Demo)[https://github.com/uport-project/demo]
+Cloned from [uPort Demo](https://github.com/uport-project/demo)
 
 # uPort Demo
 
