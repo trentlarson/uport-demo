@@ -8,7 +8,6 @@ import { uportConnect } from '../utilities/uportSetup'
 import { withRouter } from 'react-router-dom'
 import GoogleApiWrapper from './GoogleApiWrapper';
 
-const GOOGLE_MAPS_API_KEY=process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 const ConnectReqID = 'ConnectRequest'
 const WelcomeWrap = styled.section``
 const ConnectUport = styled.button``
@@ -46,7 +45,7 @@ class ReportResidences extends Component {
   render () {
     return (
       <WelcomeWrap>
-        <h4>Reports</h4>
+        <h4>Report Residences</h4>
         {
           this.props.uport && this.props.uport.name
             ? (
