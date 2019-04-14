@@ -5,23 +5,23 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
-import { withRouter, Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
+import Map from 'google-map-react';
 
-
+let GOOGLE_MAPS_API_KEY=process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 const ConnectReqID = 'ConnectRequest'
 const WelcomeWrap = styled.section``
 const ConnectUport = styled.button``
-const NextButton = styled.button`
-  margin-top: 20px;
-`
-const LeftSection = styled.section`
-  float: left;
-`
-const RightSection = styled.section`
-  float: right;
-`
 
-class ReportList extends Component {
+class ReportResidences extends Component {
+
+  static defaultProps = {
+    center: {
+      lng: -111.884787, lat: 40.883944
+    },
+    zoom: 19
+  }
+  //lat: 59.95, lng: 30.33
 
   constructor (props) {
     super(props)
@@ -33,6 +33,7 @@ class ReportList extends Component {
       this.props.actions.connectUport(uportConnect.state)
       this.props.history.push('/signclaim')
     })
+    this.state = {}
   }
 
   connectUport () {
@@ -47,26 +48,17 @@ class ReportList extends Component {
         <h4>Reports</h4>
         {
           this.props.uport && this.props.uport.name
-            ? (<div>
-               <LeftSection>
-                 <Link to="/reportResidences">
-                 <NextButton>Residences</NextButton>
-                 </Link>
-               </LeftSection>
-               <RightSection>
-                 <Link to="/reportBestAttendance">
-                   <NextButton>Best Attendance</NextButton>
-                 </Link>
-                 <br/>
-                 <Link to="/reportConfirms">
-                   <NextButton>Meeting Confirmations</NextButton>
-                 </Link>
-                 <br/>
-                 <Link to="/reportClaims">
-                   <NextButton>Your Previous Claims / Confirmations</NextButton>
-                 </Link>
-               </RightSection>
-               </div>
+            ? (
+                <div style={{ height: '100vh', width: '100%' }}>
+                <Map
+              bootstrapURLKeys={{ key: GOOGLE_MAPS_API_KEY }}
+                  defaultCenter={this.props.center}
+                  defaultZoom={this.props.zoom}
+                  yesIWantToUseGoogleMapApiInternals
+                  onGoogleApiLoaded={({ map, maps }) => { this.setState({ map: map, maps:maps, mapLoaded: true }) }}
+                >
+                </Map>
+                </div>
             )
             : (
               <ConnectUport onClick={this.connectUport}>
@@ -88,4 +80,4 @@ const mapDispatchToProps = (dispatch) => {
   return { actions: bindActionCreators(AppActions, dispatch) }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ReportList))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ReportResidences))
