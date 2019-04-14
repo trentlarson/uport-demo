@@ -33,6 +33,8 @@ const ClaimButton = styled.button`
   padding: 10px;
 `
 
+const DEFAULT_GEO_SHAPE = "40.883944,-111.884787 40.884088,-111.884787 40.884088,-111.884515 40.883944,-111.884515 40.883944,-111.884787"
+
 const DEFAULT_ORG_NAME = "Bountiful Voluntaryist Community"
 const DEFAULT_EVENT_NAME = "Saturday Morning Meeting"
 
@@ -105,6 +107,28 @@ class SignClaim extends Component {
         "startTime": eventStartDate
       }
     }
+  }
+
+  ownershipClaim(agentDid, polygon) {
+    if (!polygon) {
+      polygon = DEFAULT_GEO_SHAPE
+    }
+    let result = {
+      "@context": "http://endorser.ch",
+      "@type": "Tenure",
+      "spatialUnit": {
+        "geo": {
+          "@type": "GeoShape",
+          "polygon": polygon
+        }
+      }
+    }
+    if (agentDid) {
+      result.party = { "did": agentDid }
+    } else if (uportConnect.did) {
+      result.party = { "did": uportConnect.did }
+    }
+    return result
   }
 
   componentDidMount() {
@@ -227,6 +251,14 @@ class SignClaim extends Component {
         }}/> Set to Join Action
 
         <span>{ this.state.unsignedClaim['@type'] === 'JoinAction' ? <img src='/green-check.png'/> : "" }</span>
+        <br/>
+
+        <input type="radio" name="claimType" onClick={()=>{
+          this.setState({unsignedClaim: null})
+          this.setState({unsignedClaim: this.ownershipClaim()})
+        }}/> Set to Plot Ownership
+
+        <span>{ this.state.unsignedClaim['@type'] === 'Tenure' ? <img src='/green-check.png'/> : "" }</span>
         <br/>
 
         <input type="radio" name="claimType" onClick={()=>{
