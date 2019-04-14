@@ -5,23 +5,14 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
-import { withRouter, Link } from 'react-router-dom'
-
+import { withRouter } from 'react-router-dom'
+import GoogleApiWrapper from './GoogleApiWrapper';
 
 const ConnectReqID = 'ConnectRequest'
 const WelcomeWrap = styled.section``
 const ConnectUport = styled.button``
-const NextButton = styled.button`
-  margin-top: 20px;
-`
-const LeftSection = styled.section`
-  float: left;
-`
-const RightSection = styled.section`
-  float: right;
-`
 
-class ReportList extends Component {
+class ReportResidences extends Component {
 
   constructor (props) {
     super(props)
@@ -33,6 +24,16 @@ class ReportList extends Component {
       this.props.actions.connectUport(uportConnect.state)
       this.props.history.push('/signclaim')
     })
+
+    this.state = {
+      boundaryCoords: [
+        {lat:40.883944, lng:-111.884787},
+        {lat:40.884088, lng:-111.884787},
+        {lat:40.884088, lng:-111.884515},
+        {lat:40.883944, lng:-111.884515},
+        {lat:40.883944, lng:-111.884787}
+      ]
+    }
   }
 
   connectUport () {
@@ -44,29 +45,13 @@ class ReportList extends Component {
   render () {
     return (
       <WelcomeWrap>
-        <h4>Reports</h4>
+        <h4>Report Residences</h4>
         {
           this.props.uport && this.props.uport.name
-            ? (<div>
-               <LeftSection>
-                 <Link to="/reportResidences">
-                 <NextButton>Residences</NextButton>
-                 </Link>
-               </LeftSection>
-               <RightSection>
-                 <Link to="/reportBestAttendance">
-                   <NextButton>Best Attendance</NextButton>
-                 </Link>
-                 <br/>
-                 <Link to="/reportConfirms">
-                   <NextButton>Meeting Confirmations</NextButton>
-                 </Link>
-                 <br/>
-                 <Link to="/reportClaims">
-                   <NextButton>Your Previous Claims / Confirmations</NextButton>
-                 </Link>
-               </RightSection>
-               </div>
+            ? (
+                <div style={{ height: '100%', width: '100%' }}>
+                <GoogleApiWrapper boundaryCoords={this.state.boundaryCoords}/>
+                </div>
             )
             : (
               <ConnectUport onClick={this.connectUport}>
@@ -88,4 +73,4 @@ const mapDispatchToProps = (dispatch) => {
   return { actions: bindActionCreators(AppActions, dispatch) }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ReportList))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ReportResidences))
