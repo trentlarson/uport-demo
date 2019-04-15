@@ -29,11 +29,13 @@ export class MapContainer extends Component {
       }})
       .then(response => response.json())
       .then(data => {
-        if (data.length == 0) {
+        if (data.length === 0) {
           this.setState({ polygonPaths: [] })
         } else {
           this.setState({ polygonPaths: polygonPathsFromString(data[0].polygon) })
-          alert("Multiple found.  Only showing one.")
+          if (data.length > 1) {
+            alert("Multiple found.  Only showing one.")
+          }
         }
       })
   }
