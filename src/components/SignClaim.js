@@ -245,28 +245,34 @@ class SignClaim extends Component {
 
         <div style={{'textAlign':'right'}}><span>{this.state.claimStoredResponse}</span></div>
 
+
+        {/* Attendance */}
         <input type="radio" name="claimType" onClick={()=>{
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: this.joinActionClaim()})
         }}/> Set to Join Action
 
-        <span>{ this.state.unsignedClaim['@type'] === 'JoinAction' ? <img src='/green-check.png'/> : "" }</span>
+        <span>{ this.state.unsignedClaim['@type'] === 'JoinAction' ? <img src='/green-check.png' alt="selected"/> : "" }</span>
         <br/>
 
+
+        {/* Land Tenure */}
         <input type="radio" name="claimType" onClick={()=>{
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: this.ownershipClaim()})
         }}/> Set to Plot Ownership
 
-        <span>{ this.state.unsignedClaim['@type'] === 'Tenure' ? <img src='/green-check.png'/> : "" }</span>
+        <span>{ this.state.unsignedClaim['@type'] === 'Tenure' ? <img src='/green-check.png' alt="selected"/> : "" }</span>
         <br/>
 
+
+        {/* Confirmations */}
         <input type="radio" name="claimType" onClick={()=>{
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: confirmClaim([])})
         }}/> Set to Confirmation...
 
-        <span>{ this.state.unsignedClaim['@type'] === 'Confirmation' ? R.repeat(<img src='/green-check.png'/>, this.state.unsignedClaim.originalClaims.length) : "" }</span>
+        <span>{ this.state.unsignedClaim['@type'] === 'Confirmation' ? R.repeat(<img src='/green-check.png' alt="selected"/>, this.state.unsignedClaim.originalClaims.length) : "" }</span>
         <br/>
         <br/>
 
