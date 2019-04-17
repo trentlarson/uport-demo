@@ -27,22 +27,23 @@ export class MapContainer extends Component {
   mapClicked = (mapProps, map, e) => {
     let lat = e.latLng.lat(), lng = e.latLng.lng()
     this.setState({ markerPosition: { lat, lng  } })
-    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + `/api/report/tenureClaimsAtPoint?lat=${lat}&lon=${lng}`, {
+    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + `/api/report/tenureClaimsAndConfirmationsAtPoint?lat=${lat}&lon=${lng}`, {
       method: 'GET',
       headers: {
         "Content-Type": "application/json"
       }})
       .then(response => response.json())
       .then(data => {
+        console.log("tenures", data)
         if (data.length === 0) {
           this.setState({ polygonPaths: [] })
           this.props.setClaimants([])
         } else {
-          this.setState({ polygonPaths: polygonPathsFromString(data[0].polygon) })
-          this.props.setClaimants(R.map(R.compose(firstAndLast3OfDid, R.prop('partyDid')), data))
+          this.setState({ polygonPaths: polygonPathsFromString(data[0].tenure.polygon) })
           if (data.length > 1) {
             alert("Multiple found.  Only showing one.")
           }
+          this.props.setClaimants(data)
         }
       })
   }

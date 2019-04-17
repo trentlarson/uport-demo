@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
-import { firstAndLast3 } from '../utilities/claims.js'
+import { firstAndLast3OfDid } from '../utilities/claims.js'
 import { withRouter } from 'react-router-dom'
 import JSONInput from 'react-json-editor-ajrm'
 
@@ -18,10 +18,6 @@ const SubText = styled.p`
 const JSONWrapper = styled.div`
   font-family: monospace !important
 `
-
-function truncAddrFromDid(did) {
-  return firstAndLast3(did.split(":")[2].substring(2))
-}
 
 /**
  props: eventId
@@ -55,7 +51,7 @@ class EventDetails extends Component {
           <ul>
       {this.state.acacList && this.state.acacList.map(
         acac =>
-          <li key={acac.action.id}>{truncAddrFromDid(acac.action.agentDid)} went
+          <li key={acac.action.id}>{firstAndLast3OfDid(acac.action.agentDid)} went
             <ul>
             <li>
               <ul><li>Agreed by {acac.confirmations.length}</li></ul>

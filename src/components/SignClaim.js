@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
-import { firstAndLast3OfDid } from '../utilities/claims.js'
+import { claimDescription } from '../utilities/claims.js'
 import { verifyJWT } from 'did-jwt'
 import JSONInput from 'react-json-editor-ajrm'
 import { withRouter } from 'react-router-dom'
@@ -13,6 +13,8 @@ import { DateTime } from 'luxon'
 import R from 'ramda'
 
 
+const ACTION = "Action"
+const TENURE = "Tenure"
 const SignReqID = 'SignRequest'
 const WelcomeWrap = styled.section``
 
@@ -48,10 +50,18 @@ function confirmClaim(claims) {
   }
 }
 
-function objectifyActionArray(actions) {
+function objectifyClaimArray(type, claims) {
   var result = {}
-  for (var action of actions) {
-    result[action.id] = action
+  for (var claim of claims) {
+    result[type + ":" + claim.id] = claim
+  }
+  return result
+}
+
+function imgPerConfirm(num) {
+  var result = []
+  for (var i = 0; i < num; i++) {
+    result.push(<img src="/green-check.png" key={i} alt="selected"/>)
   }
   return result
 }
@@ -66,10 +76,10 @@ class SignClaim extends Component {
       responseJSON: null,
       claimStoredResponse: '',
       unsignedClaim: this.joinActionClaim(),
-      // For the type of actionsToConfirm, see no-parameter result from: http://localhost:3000/api/action/
+      // For the type of claimsToConfirm, see no-parameter result from: http://localhost:3000/api/action/
       // ... with API doc: http://localhost:3000/api-docs#/action/get_api_action_
-      // but where the array is turned into an object with keys of the "id" of each action.
-      actionsToConfirm: {},
+      // but where the array is turned into an object with keys of the "type:id" of each claim type & ID.
+      claimsToConfirm: {},
       loadedMore: false
     }
     this.signClaim = this.signClaim.bind(this)
@@ -137,7 +147,18 @@ class SignClaim extends Component {
         "Content-Type": "application/json"
       }})
       .then(response => response.json())
-      .then(data => this.setState({ actionsToConfirm: objectifyActionArray(data) }))
+      .then(data => this.setState({ claimsToConfirm: objectifyClaimArray(ACTION, data) }))
+      .then(nothing => {
+        fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/tenure', {
+          headers: {
+            "Content-Type": "application/json"
+          }})
+          .then(response => response.json())
+          .then(data => {
+            var newArray = R.merge(this.state.claimsToConfirm, objectifyClaimArray(TENURE, data))
+            this.setState({ claimsToConfirm: newArray })
+          })
+      })
   }
 
   handleSignedClaim(res) {
@@ -178,37 +199,46 @@ class SignClaim extends Component {
 
     const claimButtons = <div>
       {
-        Object.keys(this.state.actionsToConfirm)
-          .map(actionId => {
-            let action = this.state.actionsToConfirm[actionId]
+        Object.keys(this.state.claimsToConfirm)
+          .map(claimId => {
             if (!this.state.unsignedClaim.originalClaims) {
-              return <span key={action.id}></span>
+              return <span key={claimId}></span>
             } else {
-              return <span key={action.id}>
-                <ClaimButton onClick={() => {
+              let apiClaim = this.state.claimsToConfirm[claimId]
+              var originalClaim = undefined
+              if (claimId.startsWith(ACTION)) {
+                originalClaim = this.joinActionClaim(apiClaim.eventOrgName, apiClaim.eventName, apiClaim.eventStartTime, apiClaim.agentDid)
+              } else if (claimId.startsWith(TENURE)) {
+                originalClaim = this.ownershipClaim(apiClaim.partyDid, apiClaim.polygon)
+              } else {
+                console.log("Unknown claim type of " + claimId + " won't be added to confirmations.")
+              }
+              if (!originalClaim) {
+                return ""
+              } else {
+                return <span key={claimId}>
+                  <ClaimButton onClick={() => {
 
-                  // add this claim to the confirmation
-                  // (Weird: without this clone it doesn't update in the setState, even though it does inside the old "fetch")
-                  var newConfirm = JSON.parse(JSON.stringify(this.state.unsignedClaim))
-                  this.setState({ unsignedClaim: {} })
-                  let newOriginalClaim = this.joinActionClaim(action.eventOrgName, action.eventName, action.eventStartTime, action.agentDid)
-                  newConfirm.originalClaims.push(newOriginalClaim)
+                    // add this claim to the confirmation
+                    // (Weird: without this clone it doesn't update in the setState, even though it does inside the old "fetch")
+                    var newConfirm = JSON.parse(JSON.stringify(this.state.unsignedClaim))
+                    this.setState({ unsignedClaim: {} })
+                    newConfirm.originalClaims.push(originalClaim)
 
-                  // remove this claim from the buttons
-                  var newActions = this.state.actionsToConfirm
-                  delete newActions[actionId]
+                    // remove this claim from the buttons
+                    var newClaims = this.state.claimsToConfirm
+                    delete newClaims[claimId]
 
-                  // now set the state
-                  this.setState({ unsignedClaim: newConfirm, actionsToConfirm: newActions })
+                    // now set the state
+                    this.setState({ unsignedClaim: newConfirm, claimsToConfirm: newClaims })
 
-                }}>
-                Join<br/>
-                {firstAndLast3OfDid(action.agentDid)}<br/>
-                {action.eventOrgName}<br/>
-                {action.eventName}<br/>
-                {action.eventStartTime}
-              </ClaimButton>
-              </span>
+                  }}>
+                  {claimId.substring(0, claimId.indexOf(":"))}<br/>
+                  {claimDescription(originalClaim)}
+                  </ClaimButton>
+                  </span>
+
+              }
             }
           })
           .reverse()
@@ -223,11 +253,8 @@ class SignClaim extends Component {
               }})
               .then(response => response.json())
               .then(data => {
-                let newActions = this.state.actionsToConfirm
-                for (var action of data) {
-                  newActions[action.id] = action
-                }
-                this.setState({ actionsToConfirm: newActions, loadedMore: true })
+                let newClaims = R.merge(this.state.claimsToConfirm, objectifyClaimArray(ACTION, data))
+                this.setState({ claimsToConfirm: newClaims, loadedMore: true })
               })
           }}>Load More</MoreLink>
           :
@@ -272,7 +299,11 @@ class SignClaim extends Component {
           this.setState({unsignedClaim: confirmClaim([])})
         }}/> Set to Confirmation...
 
-        <span>{ this.state.unsignedClaim['@type'] === 'Confirmation' ? R.repeat(<img src='/green-check.png' alt="selected"/>, this.state.unsignedClaim.originalClaims.length) : "" }</span>
+        <span>{
+          this.state.unsignedClaim['@type'] === 'Confirmation' 
+            ? imgPerConfirm(this.state.unsignedClaim.originalClaims.length)
+            : ""
+        }</span>
         <br/>
         <br/>
 
@@ -314,7 +345,7 @@ class SignClaim extends Component {
         <br/>
         <br/>
 
-        <div >
+        <div>
            <h3>Response (JWT)</h3>
            <input type='text' style={{width: '590px'}} value={this.state.responseJWT}/>
            <h3>Signed Claim Response (Parsed JWT)</h3>

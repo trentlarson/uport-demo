@@ -92,7 +92,7 @@ class ReportClaims extends Component {
                      <ChoiceButton onClick={() => { this.setState({claim:claim}) }}>{insertSpacesBeforeCaps(jwt.claimType)}</ChoiceButton>
                      <ul>
                      <li>
-                       <span>{claimDescription(jwt.claimType, claim)}</span>
+                     <span>{claimDescription(claim)}</span>
                      </li>
                      </ul>
                    </div>

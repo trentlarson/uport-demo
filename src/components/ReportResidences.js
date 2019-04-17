@@ -4,9 +4,9 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
+import { firstAndLast3OfDid } from '../utilities/claims'
 import { uportConnect } from '../utilities/uportSetup'
 import { withRouter } from 'react-router-dom'
-import R from 'ramda'
 import GoogleApiWrapper from './GoogleApiWrapper';
 
 const ConnectReqID = 'ConnectRequest'
@@ -59,7 +59,9 @@ class ReportResidences extends Component {
                   this.state.claimants.length === 0 ? "" : "Claims:"
                 }
                 {
-                  this.state.claimants.map((id)=><li key={id}>{id}</li>)
+                  this.state.claimants.map((tenureAndConf)=><li key={tenureAndConf.confirmation.id}>{
+                    firstAndLast3OfDid(tenureAndConf.tenure.partyDid) + " by " + firstAndLast3OfDid(tenureAndConf.confirmation.issuer)
+                  }</li>)
                 }
                   </ul>
                   </RightSection>
