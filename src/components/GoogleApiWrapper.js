@@ -34,7 +34,6 @@ export class MapContainer extends Component {
       }})
       .then(response => response.json())
       .then(data => {
-        console.log("tenures", data)
         if (data.length === 0) {
           this.setState({ polygonPaths: [] })
           this.props.setClaimants([])

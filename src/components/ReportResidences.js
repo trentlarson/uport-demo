@@ -7,7 +7,8 @@ import styled from 'styled-components'
 import { firstAndLast3OfDid } from '../utilities/claims'
 import { uportConnect } from '../utilities/uportSetup'
 import { withRouter } from 'react-router-dom'
-import GoogleApiWrapper from './GoogleApiWrapper';
+import GoogleApiWrapper from './GoogleApiWrapper'
+import R from 'ramda'
 
 const ConnectReqID = 'ConnectRequest'
 const WelcomeWrap = styled.section``
@@ -16,6 +17,11 @@ const ConnectUport = styled.button``
 const RightSection = styled.section`
 float: right;
 `
+
+function tenureAndConfirmsDesc(tenureAndConfs) {
+  let tenure = tenureAndConfs[0].tenure // since they're all the same
+  return firstAndLast3OfDid(tenure.partyDid) + " by " + tenureAndConfs.length
+}
 
 class ReportResidences extends Component {
 
@@ -30,7 +36,7 @@ class ReportResidences extends Component {
     })
 
     this.state = {
-      claimants: []
+      claimsByClaimant: []
     }
   }
 
@@ -40,8 +46,9 @@ class ReportResidences extends Component {
     uportConnect.requestDisclosure(reqObj, ConnectReqID)
   }
 
-  setResidenceInfo(someInfo) {
-    this.setState({claimants: someInfo})
+  setResidenceInfo(tenuresAndConfirms) {
+    let byTenureId = R.groupBy((item) => ""+item.tenure.id)(tenuresAndConfirms)
+    this.setState({claimsByClaimant: byTenureId})
   }
 
   render () {
@@ -56,11 +63,11 @@ class ReportResidences extends Component {
                   <RightSection>
                   <ul>
                 {
-                  this.state.claimants.length === 0 ? "" : "Claims:"
+                  R.keys(this.state.claimsByClaimant).length === 0 ? "" : "Claims:"
                 }
                 {
-                  this.state.claimants.map((tenureAndConf)=><li key={tenureAndConf.confirmation.id}>{
-                    firstAndLast3OfDid(tenureAndConf.tenure.partyDid) + " by " + firstAndLast3OfDid(tenureAndConf.confirmation.issuer)
+                  R.keys(this.state.claimsByClaimant).map((tenureId)=><li key={tenureId}>{
+                    tenureAndConfirmsDesc(this.state.claimsByClaimant[tenureId])
                   }</li>)
                 }
                   </ul>
