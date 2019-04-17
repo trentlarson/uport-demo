@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import { GoogleApiWrapper, Map, Marker, Polygon } from 'google-maps-react'
 import R from 'ramda'
+import { firstAndLast3OfDid } from '../utilities/claims.js'
 
 const GOOGLE_MAPS_API_KEY=process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 
@@ -14,9 +15,13 @@ function polygonPathsFromString(polygonStr) {
 }
 
 export class MapContainer extends Component {
-  state = {
-    markerPosition: {},
-    polygonPaths: []
+
+  constructor (props) {
+    super(props)
+    this.state = {
+      markerPosition: {},
+      polygonPaths: []
+    }
   }
 
   mapClicked = (mapProps, map, e) => {
@@ -31,8 +36,10 @@ export class MapContainer extends Component {
       .then(data => {
         if (data.length === 0) {
           this.setState({ polygonPaths: [] })
+          this.props.setClaimants([])
         } else {
           this.setState({ polygonPaths: polygonPathsFromString(data[0].polygon) })
+          this.props.setClaimants(R.map(R.compose(firstAndLast3OfDid, R.prop('partyDid')), data))
           if (data.length > 1) {
             alert("Multiple found.  Only showing one.")
           }
