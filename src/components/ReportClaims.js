@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
-import { insertSpacesBeforeCaps } from '../utilities/claims.js'
+import { insertSpacesBeforeCaps, claimDescription } from '../utilities/claims.js'
 import { withRouter } from 'react-router-dom'
 import JSONInput from 'react-json-editor-ajrm'
 
@@ -91,9 +91,9 @@ class ReportClaims extends Component {
                    return <div key={jwt.id}>
                      <ChoiceButton onClick={() => { this.setState({claim:claim}) }}>{insertSpacesBeforeCaps(jwt.claimType)}</ChoiceButton>
                      <ul>
-                       <li>{claim.event.organizer.name}</li>
-                       <li>{claim.event.name}</li>
-                       <li>{claim.event.startTime}</li>
+                     <li>
+                       <span>{claimDescription(jwt.claimType, claim)}</span>
+                     </li>
                      </ul>
                    </div>
                  }

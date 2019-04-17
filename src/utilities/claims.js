@@ -14,3 +14,13 @@ export const firstAndLast3OfDid = (did) => {
   return firstAndLast3(did.split(":")[2].substring(2))
 }
 
+export const claimDescription = (type, claim) => {
+  if (type === "JoinAction") {
+    return claim.event.name + " at " + claim.event.startTime
+  } else if (type === "Tenure") {
+    var polygon = claim.spatialUnit.geo.polygon
+    return firstAndLast3OfDid(claim.party.did) + " holding [" + polygon.substring(0, polygon.indexOf(" ")) + "...]"
+  } else {
+    return JSON.stringify(claim)
+  }
+}
