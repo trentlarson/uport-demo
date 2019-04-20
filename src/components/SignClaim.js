@@ -238,7 +238,8 @@ class SignClaim extends Component {
           <MoreLink href="#" onClick={()=>{
             fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/?eventStartTime_lessThan=' + TODAY_START_TIME_STRING, {
               headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Some-DID": this.props.uport.did
               }})
               .then(response => response.json())
               .then(data => {
