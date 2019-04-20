@@ -48,23 +48,29 @@ class ReportList extends Component {
         {
           this.props.uport && this.props.uport.name
             ? (<div>
+
+               <Link to="/reportResidences">
+               <NextButton>Residences</NextButton>
+               </Link>
+
                <LeftSection>
-                 <Link to="/reportResidences">
-                 <NextButton>Residences</NextButton>
-                 </Link>
+               <Link to="/reportBestAttendance">
+               <NextButton>Best Attendance</NextButton>
+               </Link>
+               <br/>
+               <Link to="/reportConfirms">
+               <NextButton>Meeting Confirmations</NextButton>
+               </Link>
+               <br/>
+               <Link to="/reportClaims">
+               <NextButton>Your Previous Claims / Confirmations</NextButton>
+               </Link>
                </LeftSection>
+
                <RightSection>
-                 <Link to="/reportBestAttendance">
-                   <NextButton>Best Attendance</NextButton>
-                 </Link>
-                 <br/>
-                 <Link to="/reportConfirms">
-                   <NextButton>Meeting Confirmations</NextButton>
-                 </Link>
-                 <br/>
-                 <Link to="/reportClaims">
-                   <NextButton>Your Previous Claims / Confirmations</NextButton>
-                 </Link>
+               <Link to="/reportSearch">
+               <NextButton>Search</NextButton>
+               </Link>
                </RightSection>
                </div>
             )

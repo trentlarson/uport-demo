@@ -148,17 +148,6 @@ class SignClaim extends Component {
       }})
       .then(response => response.json())
       .then(data => this.setState({ claimsToConfirm: objectifyClaimArray(ACTION, data) }))
-      .then(nothing => {
-        fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/tenure', {
-          headers: {
-            "Content-Type": "application/json"
-          }})
-          .then(response => response.json())
-          .then(data => {
-            var newArray = R.merge(this.state.claimsToConfirm, objectifyClaimArray(TENURE, data))
-            this.setState({ claimsToConfirm: newArray })
-          })
-      })
   }
 
   handleSignedClaim(res) {

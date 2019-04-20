@@ -20,7 +20,7 @@ float: right;
 
 function tenureAndConfirmsDesc(tenureAndConfs) {
   let tenure = tenureAndConfs[0].tenure // since they're all the same
-  return firstAndLast3OfDid(tenure.partyDid) + " by " + tenureAndConfs.length
+  return firstAndLast3OfDid(tenure.partyDid) + " confirmed by " + tenureAndConfs.length
 }
 
 class ReportResidences extends Component {
@@ -29,8 +29,7 @@ class ReportResidences extends Component {
     super(props)
     this.connectUport = this.connectUport.bind(this)
     uportConnect.onResponse(ConnectReqID).then(res => {
-      console.log("res.payload")
-      console.log(res.payload)
+      console.log("res.payload",res.payload)
       this.props.actions.connectUport(uportConnect.state)
       this.props.history.push('/signclaim')
     })

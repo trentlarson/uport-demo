@@ -14,6 +14,7 @@ import ReportClaims from './components/ReportClaims'
 import ReportConfirms from './components/ReportConfirms'
 import ReportBestAttendance from './components/ReportBestAttendance'
 import ReportResidences from './components/ReportResidences'
+import ReportSearch from './components/ReportSearch'
 import SignTransaction from './components/SignTransaction'
 import CollectCredentials from './components/CollectCredentials'
 import RegisterYourApp from './components/RegisterYourApp'
@@ -56,6 +57,7 @@ class App extends Component {
           <Route path='/reportConfirms' component={ReportConfirms}/>
           <Route path='/reportBestAttendance' component={ReportBestAttendance}/>
           <Route path='/reportResidences' component={ReportResidences}/>
+          <Route path='/reportSearch' component={ReportSearch}/>
           <Route path='/transaction' component={SignTransaction}/>
           <Route path='/credentials' component={CollectCredentials}/>
           <Route path='/register' component={RegisterYourApp}/>

@@ -3,7 +3,6 @@
 import React, { Component } from 'react'
 import { GoogleApiWrapper, Map, Marker, Polygon } from 'google-maps-react'
 import R from 'ramda'
-import { firstAndLast3OfDid } from '../utilities/claims.js'
 
 const GOOGLE_MAPS_API_KEY=process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 
