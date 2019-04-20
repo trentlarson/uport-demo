@@ -311,7 +311,6 @@ class SignClaim extends Component {
           <h3>Claim Details</h3>
 
           <JSONWrapper>
-
             <JSONInput
                 id='request'
                 placeholder={ this.state.unsignedClaim }

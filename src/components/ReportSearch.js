@@ -5,12 +5,16 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
-
+import JSONInput from 'react-json-editor-ajrm'
 
 const WelcomeWrap = styled.section``
 const SubText = styled.p`
   margin: 0 auto 3em auto;
   font-size: 18px;
+`
+const ChoiceButton = styled.button``
+const JSONWrapper = styled.div`
+font-family: monospace !important
 `
 
 class ReportClaims extends Component {
@@ -18,11 +22,27 @@ class ReportClaims extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      query: ""
+      queryValue: "",
+      searchResults: ""
     }
   }
 
-  componentDidMount() {
+  updateQueryValue(evt) {
+    this.setState({
+      queryValue: evt.target.value
+    })
+  }
+
+  doSearch(text) {
+    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + `/api/claim?claimContents=${this.state.queryValue}`, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json"
+      }})
+      .then(response => response.json())
+      .then(data => {
+        this.setState({searchResults:data})
+      })
   }
 
   render () {
@@ -31,11 +51,23 @@ class ReportClaims extends Component {
       <WelcomeWrap>
         <h4>Search Your Network</h4>
         <SubText>See who in your network has a claim or can introduce you.</SubText>
-        <h3>Claim</h3>
+
         <div>
-        <input type='text' value={this.state.query}/>
-        <input type='submit' value='search'/>
+        <input type='text' onChange={this.updateQueryValue.bind(this)}/>
+        <ChoiceButton onClick={() => this.doSearch(this.state.queryValue)}>Search</ChoiceButton>
         </div>
+
+        <br/>
+        <JSONWrapper>
+        <JSONInput
+          id='result'
+          placeholder={ this.state.searchResults }
+          height='400px'
+          width='590px'
+          style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
+          locale='en'
+        />
+        </JSONWrapper>
 
       </WelcomeWrap>
     )
