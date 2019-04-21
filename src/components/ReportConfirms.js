@@ -36,7 +36,8 @@ class EventDetails extends Component {
           let url = 'http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/event/' + this.state.event.id + '/actionClaimsAndConfirmations'
           fetch(url, {
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
+              "Uport-Push-Token": this.props.uport.pushToken
             }})
             .then(response => response.json())
             .then(acacList => {
@@ -83,7 +84,8 @@ class Reports extends Component {
   componentDidMount() {
     fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/event', {
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Uport-Push-Token": this.props.uport.pushToken
       }})
       .then(response => response.json())
       .then(events => {

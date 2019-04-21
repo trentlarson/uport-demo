@@ -37,7 +37,8 @@ class ReportClaims extends Component {
     fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + `/api/claim?claimContents=${this.state.queryValue}`, {
       method: 'GET',
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Uport-Push-Token": this.props.uport.pushToken
       }})
       .then(response => response.json())
       .then(data => {

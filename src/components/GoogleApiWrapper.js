@@ -29,7 +29,8 @@ export class MapContainer extends Component {
     fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + `/api/report/tenureClaimsAndConfirmationsAtPoint?lat=${lat}&lon=${lng}`, {
       method: 'GET',
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Uport-Push-Token": this.props.pushToken
       }})
       .then(response => response.json())
       .then(data => {

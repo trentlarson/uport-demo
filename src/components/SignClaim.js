@@ -70,7 +70,6 @@ class SignClaim extends Component {
 
   constructor (props) {
     super(props)
-
     this.state = {
       responseJWT: '',
       responseJSON: null,
@@ -144,7 +143,8 @@ class SignClaim extends Component {
   componentDidMount() {
     fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/?eventStartTime_greaterThanOrEqualTo=' + TODAY_START_TIME_STRING, {
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Uport-Push-Token": this.props.uport.pushToken
       }})
       .then(response => response.json())
       .then(data => this.setState({ claimsToConfirm: objectifyClaimArray(ACTION, data) }))
@@ -168,7 +168,8 @@ class SignClaim extends Component {
       fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim', {
         method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Uport-Push-Token": this.props.uport.pushToken
         },
         body: JSON.stringify({jwtEncoded:res.payload})})
         .then(response => response.json())
@@ -239,7 +240,7 @@ class SignClaim extends Component {
             fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/?eventStartTime_lessThan=' + TODAY_START_TIME_STRING, {
               headers: {
                 "Content-Type": "application/json",
-                "Some-DID": this.props.uport.did
+                "Uport-Push-Token": this.props.uport.pushToken
               }})
               .then(response => response.json())
               .then(data => {

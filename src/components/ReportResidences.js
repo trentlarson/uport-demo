@@ -73,7 +73,7 @@ class ReportResidences extends Component {
                   </RightSection>
                 </div>
                 <div>
-                  <GoogleApiWrapper setClaimants={this.setResidenceInfo.bind(this)}/>
+                <GoogleApiWrapper setClaimants={this.setResidenceInfo.bind(this)} pushToken={this.props.uport.pushToken}/>
                 </div>
                 </div>
             )

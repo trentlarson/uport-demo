@@ -25,7 +25,8 @@ class ReportBestAttendance extends Component {
     let url = 'http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/report/actionClaimsAndConfirmationsSince?dateTime=2018-12-29T08:00:00.000-07:00'
     fetch(url, {
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Uport-Push-Token": this.props.uport.pushToken
       }})
       .then(response => response.json())
       .then(acacMap => {
