@@ -38,7 +38,10 @@ export class MapContainer extends Component {
           this.setState({ polygonPaths: [] })
           this.props.setClaimants([])
         } else {
-          this.setState({ polygonPaths: polygonPathsFromString(data[0].tenure.polygon) })
+          this.setState({ polygonPaths: polygonPathsFromString(data[0].tenures[0].tenure.polygon) })
+          if (data.length > 1) {
+            alert("Multiple found.  Only showing boundaries for one.")
+          }
           this.props.setClaimants(data)
         }
       })

@@ -19,9 +19,12 @@ const RightSection = styled.section`
 float: right;
 `
 
-function tenureAndConfirmsDesc(tenureAndConfs) {
-  let tenure = tenureAndConfs[0].tenure // since they're all the same
-  return firstAndLast3OfDid(tenure.partyDid) + " confirmed by " + tenureAndConfs.length
+function tenureAndConfirmsDesc(tenuresAndConfs) {
+  let tenureDid = tenuresAndConfs[0].did
+  let allTens = R.flatten(R.map(R.prop("tenures"), tenuresAndConfs))
+  let allConfs = R.flatten(R.map(R.prop("confirmations"), allTens))
+  let allConfCounts = R.sum(R.map(conf => conf.length, allConfs))
+  return firstAndLast3OfDid(tenureDid) + " confirmed by " + allConfCounts
 }
 
 class ReportResidences extends Component {
@@ -36,7 +39,7 @@ class ReportResidences extends Component {
     })
 
     this.state = {
-      claimsByClaimant: []
+      claimsByTenure: []
     }
   }
 
@@ -47,8 +50,8 @@ class ReportResidences extends Component {
   }
 
   setResidenceInfo(tenuresAndConfirms) {
-    let byTenureId = R.groupBy((item) => ""+item.tenure.id)(tenuresAndConfirms)
-    this.setState({claimsByClaimant: byTenureId})
+    let byTenureId = R.groupBy((item) => ""+item.tenures[0].tenure.id)(tenuresAndConfirms)
+    this.setState({claimsByTenure: byTenureId})
   }
 
   render () {
@@ -63,11 +66,11 @@ class ReportResidences extends Component {
                   <RightSection>
                   <ul>
                 {
-                  R.keys(this.state.claimsByClaimant).length === 0 ? "" : "Claims:"
+                  R.keys(this.state.claimsByTenure).length === 0 ? "" : "Claims:"
                 }
                 {
-                  R.keys(this.state.claimsByClaimant).map((tenureId)=><li key={tenureId}>{
-                    tenureAndConfirmsDesc(this.state.claimsByClaimant[tenureId])
+                  R.keys(this.state.claimsByTenure).map((tenureId)=><li key={tenureId}>{
+                    tenureAndConfirmsDesc(this.state.claimsByTenure[tenureId])
                   }</li>)
                 }
                   </ul>
