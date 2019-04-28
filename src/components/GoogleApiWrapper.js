@@ -39,9 +39,6 @@ export class MapContainer extends Component {
           this.props.setClaimants([])
         } else {
           this.setState({ polygonPaths: polygonPathsFromString(data[0].tenure.polygon) })
-          if (data.length > 1) {
-            alert("Multiple found.  Only showing one.")
-          }
           this.props.setClaimants(data)
         }
       })
