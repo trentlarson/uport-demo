@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
+import { getUserToken } from '../utilities/claims.js'
 import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 import JSONInput from 'react-json-editor-ajrm'
@@ -38,7 +39,7 @@ class ReportClaims extends Component {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",
-        "Uport-Push-Token": this.props.uport.pushToken
+        "Uport-Push-Token": getUserToken(this.propsn)
       }})
       .then(response => response.json())
       .then(data => {

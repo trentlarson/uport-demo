@@ -6,6 +6,7 @@ import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { firstAndLast3OfDid } from '../utilities/claims'
 import { uportConnect } from '../utilities/uportSetup'
+import { getUserToken } from '../utilities/claims.js'
 import { withRouter } from 'react-router-dom'
 import GoogleApiWrapper from './GoogleApiWrapper'
 import R from 'ramda'
@@ -73,7 +74,7 @@ class ReportResidences extends Component {
                   </RightSection>
                 </div>
                 <div>
-                <GoogleApiWrapper setClaimants={this.setResidenceInfo.bind(this)} pushToken={this.props.uport.pushToken}/>
+                <GoogleApiWrapper setClaimants={this.setResidenceInfo.bind(this)} pushToken={getUserToken(this.props)}/>
                 </div>
                 </div>
             )

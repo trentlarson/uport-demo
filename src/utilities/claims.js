@@ -25,3 +25,7 @@ export const claimDescription = (claim) => {
     return JSON.stringify(claim)
   }
 }
+
+export const getUserToken = (props) => {
+  return process.env.REACT_APP_PUSH_TOKEN ? process.env.REACT_APP_PUSH_TOKEN : props.uport.pushToken
+}

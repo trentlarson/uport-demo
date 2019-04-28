@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
-import { insertSpacesBeforeCaps, claimDescription } from '../utilities/claims.js'
+import { insertSpacesBeforeCaps, claimDescription, getUserToken } from '../utilities/claims.js'
 import { withRouter } from 'react-router-dom'
 import JSONInput from 'react-json-editor-ajrm'
 
@@ -42,7 +42,7 @@ class ReportClaims extends Component {
     fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim?issuer=' + this.state.subject, {
       headers: {
         "Content-Type": "application/json",
-        "Uport-Push-Token": this.props.uport.pushToken
+        "Uport-Push-Token": getUserToken(this.props)
       }})
       .then(response => response.json())
       .then(data => {
@@ -88,15 +88,21 @@ class ReportClaims extends Component {
             .claims
             .map(jwt =>
                  {
-                   let claim = JSON.parse(atob(jwt.claimEncoded))
-                   return <div key={jwt.id}>
-                     <ChoiceButton onClick={() => { this.setState({claim:claim}) }}>{insertSpacesBeforeCaps(jwt.claimType)}</ChoiceButton>
-                     <ul>
-                     <li>
-                     <span>{claimDescription(claim)}</span>
-                     </li>
-                     </ul>
-                   </div>
+                   if (jwt.claimEncoded) {
+                     let claim = JSON.parse(atob(jwt.claimEncoded))
+                     return <div key={jwt.id}>
+                       <ChoiceButton onClick={() => { this.setState({claim:claim}) }}>{insertSpacesBeforeCaps(jwt.claimType)}</ChoiceButton>
+                       <ul>
+                       <li>
+                       <span>{claimDescription(claim)}</span>
+                       </li>
+                       </ul>
+                       </div>
+                   } else {
+                     return <div key={jwt.id}>
+                       <ChoiceButton>{insertSpacesBeforeCaps(jwt.claimType) + " (no details)"}</ChoiceButton>
+                       </div>
+                   }
                  }
                 )
         }
@@ -106,24 +112,30 @@ class ReportClaims extends Component {
             .confirmations
             .map(jwt =>
                  {
-                   let claim = JSON.parse(atob(jwt.claimEncoded))
-                   let embeddedClaims = claim.originalClaims || []
-                   if (claim.originalClaim) {
-                     embeddedClaims.push(claim.originalClaim)
-                   }
-                   let result = []
-                   for (var i = 0; i < embeddedClaims.length; i++) {
-                     var embeddedClaim = embeddedClaims[i]
-                     result.push(
-                       <div key={jwt.id + "_" + i}>
-                         <ChoiceButton onClick={() => { this.setState({claim:claim}) }}>{jwt.claimType}</ChoiceButton>
-                         <ul>
-                         <li>{insertSpacesBeforeCaps(embeddedClaim['@type'])}</li>
-                         </ul>
+                   if (jwt.encoded) {
+                     let claim = JSON.parse(atob(jwt.claimEncoded))
+                     let embeddedClaims = claim.originalClaims || []
+                     if (claim.originalClaim) {
+                       embeddedClaims.push(claim.originalClaim)
+                     }
+                     let result = []
+                     for (var i = 0; i < embeddedClaims.length; i++) {
+                       var embeddedClaim = embeddedClaims[i]
+                       result.push(
+                           <div key={jwt.id + "_" + i}>
+                           <ChoiceButton onClick={() => { this.setState({claim:claim}) }}>{jwt.claimType}</ChoiceButton>
+                           <ul>
+                           <li>{insertSpacesBeforeCaps(embeddedClaim['@type'])}</li>
+                           </ul>
+                           </div>
+                       )
+                     }
+                     return result
+                   } else {
+                     return <div key={jwt.id}>
+                       <ChoiceButton>{insertSpacesBeforeCaps(jwt.claimType) + " (no details)"}</ChoiceButton>
                        </div>
-                     )
                    }
-                   return result
                  }
                 )
         }

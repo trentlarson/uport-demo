@@ -2,12 +2,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
-import { firstAndLast3OfDid } from '../utilities/claims.js'
+import * as AppActions from '../actions/AppActions'
+import { firstAndLast3OfDid, getUserToken } from '../utilities/claims.js'
 import { withRouter } from 'react-router-dom'
 import JSONInput from 'react-json-editor-ajrm'
-
 
 const WelcomeWrap = styled.section``
 const ChoiceButton = styled.button``
@@ -37,7 +36,7 @@ class EventDetails extends Component {
           fetch(url, {
             headers: {
               "Content-Type": "application/json",
-              "Uport-Push-Token": this.props.uport.pushToken
+              "Uport-Push-Token": this.props.userToken
             }})
             .then(response => response.json())
             .then(acacList => {
@@ -85,7 +84,7 @@ class Reports extends Component {
     fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/event', {
       headers: {
         "Content-Type": "application/json",
-        "Uport-Push-Token": this.props.uport.pushToken
+        "Uport-Push-Token": getUserToken(this.props)
       }})
       .then(response => response.json())
       .then(events => {
@@ -109,7 +108,7 @@ class Reports extends Component {
             .events
             .map(event =>
                  {
-                   return <EventDetails key={event.id} event={event} onChoice={this.setEventPayload} />
+                   return <EventDetails key={event.id} event={event} onChoice={this.setEventPayload} userToken={getUserToken(this.props)} />
                  }
                 )
         }

@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 
 import * as AppActions from '../actions/AppActions'
-import { firstAndLast3OfDid } from '../utilities/claims.js'
+import { firstAndLast3OfDid, getUserToken } from '../utilities/claims.js'
 
 const WelcomeWrap = styled.section``
 
@@ -17,7 +17,7 @@ class ReportBestAttendance extends Component {
     super(props)
 
     this.state = {
-      acacMap: [] // list of { "did:ethr:...":[{ "action":{"agentDid":"did:...", "event..."...}, "confirmations":{"issuer":"did:...", actionId:N} ] }
+      acacList: [] // list of { "did": "did:ethr:...", "actions": [{ "action":{"agentDid":"did:...", "event..."...}, "confirmations":{"issuer":"did:...", actionId:N} ] }
     }
   }
 
@@ -26,21 +26,21 @@ class ReportBestAttendance extends Component {
     fetch(url, {
       headers: {
         "Content-Type": "application/json",
-        "Uport-Push-Token": this.props.uport.pushToken
+        "Uport-Push-Token": getUserToken(this.props)
       }})
       .then(response => response.json())
-      .then(acacMap => {
-        this.setState({ acacMap: acacMap })
+      .then(acacList => {
+        this.setState({ acacList: acacList })
       })
   }
 
-  sortedClaims(acacMap) {
+  sortedClaims() {
     let claimListWithCounts =
-        Object.keys(acacMap)
-        .map(did => {
-          let meets = this.state.acacMap[did].length
-          let confs = R.sum(this.state.acacMap[did].map(action => action.confirmations.length))
-          return { meetingCount:meets, confirmCount:confs, did:did }
+        this.state.acacList
+        .map(didAndActions => {
+          let meets = didAndActions.actions.length
+          let confs = R.sum(didAndActions.actions.map(acac => acac.confirmations.length))
+          return { meetingCount:meets, confirmCount:confs, did:didAndActions.did }
         })
     return R.sort((a,b) => b.meetingCount - a.meetingCount, claimListWithCounts)
   }
@@ -52,10 +52,10 @@ class ReportBestAttendance extends Component {
         <h4>Best Attendance</h4>
         <h3>Recent Events</h3>
         {
-          this.sortedClaims(this.state.acacMap)
-            .map(claimWithCounts =>
+          this.sortedClaims()
+            .map((claimWithCounts, index) =>
                  {
-                   return <div key={claimWithCounts.did}>
+                   return <div key={index}>
                      <span>{firstAndLast3OfDid(claimWithCounts.did)} &nbsp;
                      - {claimWithCounts.meetingCount} meeting{claimWithCounts.meetingCount === 1 ? "" : "s"}, &nbsp;
                        {claimWithCounts.confirmCount} confirmation{claimWithCounts.confirmCount === 1 ? "" : "s"}</span>

@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
-import { claimDescription } from '../utilities/claims.js'
+import { claimDescription, getUserToken } from '../utilities/claims.js'
 import { verifyJWT } from 'did-jwt'
 import JSONInput from 'react-json-editor-ajrm'
 import { withRouter } from 'react-router-dom'
@@ -144,7 +144,7 @@ class SignClaim extends Component {
     fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/?eventStartTime_greaterThanOrEqualTo=' + TODAY_START_TIME_STRING, {
       headers: {
         "Content-Type": "application/json",
-        "Uport-Push-Token": this.props.uport.pushToken
+        "Uport-Push-Token": getUserToken(this.props)
       }})
       .then(response => response.json())
       .then(data => this.setState({ claimsToConfirm: objectifyClaimArray(ACTION, data) }))
@@ -169,7 +169,7 @@ class SignClaim extends Component {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
-          "Uport-Push-Token": this.props.uport.pushToken
+          "Uport-Push-Token": getUserToken(this.props)
         },
         body: JSON.stringify({jwtEncoded:res.payload})})
         .then(response => response.json())
@@ -240,7 +240,7 @@ class SignClaim extends Component {
             fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/?eventStartTime_lessThan=' + TODAY_START_TIME_STRING, {
               headers: {
                 "Content-Type": "application/json",
-                "Uport-Push-Token": this.props.uport.pushToken
+                "Uport-Push-Token": getUserToken(this.props)
               }})
               .then(response => response.json())
               .then(data => {
