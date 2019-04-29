@@ -23,7 +23,7 @@ function tenureAndConfirmsDesc(tenuresAndConfs) {
   let tenureDid = tenuresAndConfs[0].did
   let allTens = R.flatten(R.map(R.prop("tenures"), tenuresAndConfs))
   let allConfs = R.flatten(R.map(R.prop("confirmations"), allTens))
-  let allConfCounts = R.sum(R.map(conf => conf.length, allConfs))
+  let allConfCounts = allConfs.length
   return firstAndLast3OfDid(tenureDid) + " confirmed by " + allConfCounts
 }
 
