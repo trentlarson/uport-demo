@@ -20,11 +20,25 @@ float: right;
 `
 
 function tenureAndConfirmsDesc(tenuresAndConfs) {
+  console.log("tenuresAndConfs",tenuresAndConfs)
   let tenureDid = tenuresAndConfs[0].did
-  let allTens = R.flatten(R.map(R.prop("tenures"), tenuresAndConfs))
-  let allConfs = R.flatten(R.map(R.prop("confirmations"), allTens))
+  let allTenures = R.flatten(R.map(R.prop("tenures"), tenuresAndConfs))
+  // this is a list of tenure objects
+  let allTens = R.flatten(R.map(R.prop("tenure"), allTenures))
+  // this is a list of confirmations
+  let allConfs = R.flatten(R.map(R.prop("confirmations"), allTenures))
   let allConfCounts = allConfs.length
-  return firstAndLast3OfDid(tenureDid) + " confirmed by " + allConfCounts
+  let allVisibleTos = []
+      .concat(R.map(R.prop("didVisibileToDids"), tenuresAndConfs))
+      .concat(R.flatten(R.map(R.prop("partyDidVisibleToDids"), allTens)))
+      .concat(R.flatten(R.map(R.prop("issuerVisibleToDids"), allConfs)))
+  let allVisibleTosFiltered = R.uniq(R.flatten(R.filter(R.compose(R.not, R.isNil), allVisibleTos)))
+  var reachable = (allVisibleTosFiltered.length > 0) ? "reachable via" : ""
+  return <span>
+    {firstAndLast3OfDid(tenureDid)} confirmed by {allConfCounts}
+    <br/>
+    {reachable} <ul>{R.map(id => <li key={id}>{id}</li>)(allVisibleTosFiltered)}</ul>
+    </span>
 }
 
 class ReportResidences extends Component {
@@ -33,7 +47,6 @@ class ReportResidences extends Component {
     super(props)
     this.connectUport = this.connectUport.bind(this)
     uportConnect.onResponse(ConnectReqID).then(res => {
-      console.log("res.payload",res.payload)
       this.props.actions.connectUport(uportConnect.state)
       this.props.history.push('/signclaim')
     })
@@ -49,7 +62,7 @@ class ReportResidences extends Component {
     uportConnect.requestDisclosure(reqObj, ConnectReqID)
   }
 
-  setResidenceInfo(tenuresAndConfirms) {
+  setClaimants(tenuresAndConfirms) {
     let byTenureId = R.groupBy((item) => ""+item.tenures[0].tenure.id)(tenuresAndConfirms)
     this.setState({claimsByTenure: byTenureId})
   }
@@ -77,7 +90,7 @@ class ReportResidences extends Component {
                   </RightSection>
                 </div>
                 <div>
-                <GoogleApiWrapper setClaimants={this.setResidenceInfo.bind(this)} pushToken={getUserToken(this.props)}/>
+                <GoogleApiWrapper setClaimants={this.setClaimants.bind(this)} pushToken={getUserToken(this.props)}/>
                 </div>
                 </div>
             )
