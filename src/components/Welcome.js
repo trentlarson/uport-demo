@@ -47,7 +47,6 @@ class Welcome extends Component {
         {
           this.props.uport && this.props.uport.name
             ? (<div>
-                <p>Welcome back {this.props.uport.name}</p>
                 <Link to="/signclaim">
                   <NextButton>Claim / Confirm</NextButton>
                 </Link>

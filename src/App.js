@@ -48,10 +48,10 @@ class App extends Component {
   render () {
     return (
       <AppWrap>
-        <AppNavbar />
+        <AppNavbar testUserName={this.props.testUserName}/>
         <AppBody>
           <Route exact path='/' component={Welcome}/>
-          <Route path='/signclaim' component={SignClaim}/>
+          <Route path='/signclaim' render={(props) => <SignClaim {...props} testUserDid={this.props.testUserDid}/>} />
           <Route path='/reportList' component={ReportList}/>
           <Route path='/reportClaims' component={ReportClaims}/>
           <Route path='/reportConfirms' component={ReportConfirms}/>
@@ -75,7 +75,9 @@ const mapStateToProps = (state, props) => {
     collectCredentialsPage: state.App.collectCredentialsPage,
     registerYourAppPage: state.App.registerYourAppPage,
     logOutPage: state.App.logOutPage,
-    signClaimPage: state.App.signClaimPage
+    signClaimPage: state.App.signClaimPage,
+    //testUserDid: "did:ethr:0x22c51a43844e44b59c112cf74f3f5797a057837a", testUserName: "Duane",
+    //testUserDid: "did:ethr:0x332661e9e6af65eea6df253296a26257ff304647", testUserName: "Duane's Friend",
   }
 }
 const mapDispatchToProps = (dispatch) => {

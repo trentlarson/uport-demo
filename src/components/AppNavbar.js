@@ -84,7 +84,7 @@ class AppNavbar extends Component {
             this.props.uport && this.props.uport.name
               ? (<div>
                 <UportAvatarWrap>
-                  <UserName>{this.props.uport.name}</UserName>
+                  <UserName>{this.props.testUserName || this.props.uport.name}</UserName>
                 </UportAvatarWrap>
                 <LogoLink onClick={this.logout}>
                   Logout
