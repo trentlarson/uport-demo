@@ -20,6 +20,7 @@ import CollectCredentials from './components/CollectCredentials'
 import RegisterYourApp from './components/RegisterYourApp'
 import LogOut from './components/LogOut'
 import SignClaim from './components/SignClaim'
+import Test from './components/Test'
 import { uportConnect } from './utilities/uportSetup'
 
 const AppWrap = styled.div`
@@ -58,6 +59,7 @@ class App extends Component {
           <Route path='/reportBestAttendance' component={ReportBestAttendance}/>
           <Route path='/reportResidences' component={ReportResidences}/>
           <Route path='/reportSearch' component={ReportSearch}/>
+          <Route path='/test' component={Test}/>
           <Route path='/transaction' component={SignTransaction}/>
           <Route path='/credentials' component={CollectCredentials}/>
           <Route path='/register' component={RegisterYourApp}/>
