@@ -98,16 +98,22 @@ class SignClaim extends Component {
     await setup()
     console.log("claims[0]",claims[0])
 
-    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-        "Uport-Push-Token": pushTokens[2]
-      },
-      body: JSON.stringify({jwtEncoded:claims[0]})
-    })
-      .then(response => response.json())
-      .then(data => console.log("got post data", data))
+    /**
+    if (process.env.REACT_APP_ENDORSER_CH_HOST_PORT.startsWith("localhost")) {
+      fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+          "Uport-Push-Token": pushTokens[2]
+        },
+        body: JSON.stringify({jwtEncoded:claims[0]})
+      })
+        .then(response => response.json())
+        .then(data => console.log("got post data", data))
+    } else {
+      alert("Sorry, not automatically submitting tests when not on localhost")
+    }
+    **/
 
   }
 

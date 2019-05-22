@@ -366,7 +366,7 @@ class SignClaim extends Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    uport: state.App.uport
+    uport: state.App.uport,
   }
 }
 const mapDispatchToProps = (dispatch) => {

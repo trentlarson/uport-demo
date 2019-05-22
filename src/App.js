@@ -41,6 +41,7 @@ const AppBody = styled.div`
 `
 
 class App extends Component {
+
   constructor (props) {
     super(props)
     this.props.actions.connectUport(uportConnect.state)
@@ -57,7 +58,7 @@ class App extends Component {
           <Route path='/reportClaims' component={ReportClaims}/>
           <Route path='/reportConfirms' component={ReportConfirms}/>
           <Route path='/reportBestAttendance' component={ReportBestAttendance}/>
-          <Route path='/reportResidences' component={ReportResidences}/>
+          <Route path='/reportResidences' render={(props) => <ReportResidences {...props} testUserDid={this.props.testUserDid}/>} />
           <Route path='/reportSearch' component={ReportSearch}/>
           <Route path='/test' component={Test}/>
           <Route path='/transaction' component={SignTransaction}/>
@@ -78,6 +79,7 @@ const mapStateToProps = (state, props) => {
     registerYourAppPage: state.App.registerYourAppPage,
     logOutPage: state.App.logOutPage,
     signClaimPage: state.App.signClaimPage,
+    //testUserDid: "did:ethr:0x00c9c2326c73f73380e8402b01de9defcff2b064", testUserName: "Duane's Friend Too",
     //testUserDid: "did:ethr:0x22c51a43844e44b59c112cf74f3f5797a057837a", testUserName: "Duane",
     //testUserDid: "did:ethr:0x332661e9e6af65eea6df253296a26257ff304647", testUserName: "Duane's Friend",
   }

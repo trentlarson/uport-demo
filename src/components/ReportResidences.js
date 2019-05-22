@@ -6,7 +6,6 @@ import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { firstAndLast3OfDid } from '../utilities/claims'
 import { uportConnect } from '../utilities/uportSetup'
-import { getUserToken } from '../utilities/claims.js'
 import { withRouter } from 'react-router-dom'
 import GoogleApiWrapper from './GoogleApiWrapper'
 import R from 'ramda'
@@ -90,7 +89,7 @@ class ReportResidences extends Component {
                   </RightSection>
                 </div>
                 <div>
-                <GoogleApiWrapper setClaimants={this.setClaimants.bind(this)} pushToken={getUserToken(this.props)}/>
+                <GoogleApiWrapper setClaimants={this.setClaimants.bind(this)} uport={this.props.uport} testUserDid={this.props.testUserDid}/>
                 </div>
                 </div>
             )
@@ -107,7 +106,7 @@ class ReportResidences extends Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    uport: state.App.uport
+    uport: state.App.uport,
   }
 }
 const mapDispatchToProps = (dispatch) => {
