@@ -35,7 +35,7 @@ function tenureAndConfirmsDesc(tenuresAndConfs) {
   return <span>
     {firstAndLast3OfDid(tenureDid)} confirmed by {allConfCounts}
     <br/>
-    {reachable} <ul>{R.map(id => <li key={id}>{id}</li>)(allVisibleTosFiltered)}</ul>
+    {reachable} <ul>{R.join(',',allVisibleTosFiltered)}</ul>
     </span>
 }
 
