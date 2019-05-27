@@ -5,7 +5,8 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
-import { claimDescription, getUserToken } from '../utilities/claims.js'
+import { claimDescription } from '../utilities/claims'
+import { getUserDid, getUserToken } from '../utilities/claimsTest'
 import { verifyJWT } from 'did-jwt'
 import JSONInput from 'react-json-editor-ajrm'
 import { withRouter } from 'react-router-dom'
@@ -39,10 +40,6 @@ const DEFAULT_GEO_SHAPE = "40.883944,-111.884787 40.884088,-111.884787 40.884088
 
 const DEFAULT_ORG_NAME = "Bountiful Voluntaryist Community"
 const DEFAULT_EVENT_NAME = "Saturday Morning Meeting"
-/**
-const DEFAULT_ORG_NAME = "Internet Identity Workshop"
-const DEFAULT_EVENT_NAME = "The Internet Identity Workshop XXVIII"
-**/
 
 const TODAY_START_TIME_STRING = DateTime.local().set({hour:0}).startOf("day").toISO()
 
@@ -106,7 +103,7 @@ class SignClaim extends Component {
     if (!eventStartDate) {
       eventStartDate = DateTime.local().set({hour:8}).startOf("hour").toISO()
     }
-    agentDid = this.props.testUserDid || agentDid
+    agentDid = getUserDid() || agentDid
     if (!agentDid) {
       agentDid = uportConnect.did
     }
@@ -137,8 +134,8 @@ class SignClaim extends Component {
         }
       }
     }
-    if (this.props.testUserDid) {
-      result.party = { "did": this.props.testUserDid }
+    if (getUserDid()) {
+      result.party = { "did": getUserDid() }
     } else if (agentDid) {
       result.party = { "did": agentDid }
     } else if (uportConnect.did) {

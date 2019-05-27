@@ -7,7 +7,8 @@ import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 
 import * as AppActions from '../actions/AppActions'
-import { firstAndLast3OfDid, getUserToken } from '../utilities/claims.js'
+import { firstAndLast3OfDid } from '../utilities/claims'
+import { getUserToken } from '../utilities/claimsTest'
 
 const WelcomeWrap = styled.section``
 

@@ -20,7 +20,16 @@ npm run start
 ```
 
 
+To run as a particular test user, edit src/utilities/claimsTest.js and set TEST_USER_NUM to a valid number from the test data.
+
+
 Cloned from [uPort Demo](https://github.com/uport-project/demo)
+
+
+
+
+
+
 
 # uPort Demo
 

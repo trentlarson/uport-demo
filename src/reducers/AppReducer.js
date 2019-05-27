@@ -5,12 +5,11 @@ let initialState = {
 export default(state = initialState, payload) => {
   switch (payload.type) {
     case 'CONNECT_UPORT':
-      console.log({
+      console.log("uPort is connected", {
         ...state,
         uport: payload.data,
         signClaimPage: true
-      }
-)
+      })
       return {
         ...state,
         uport: payload.data,

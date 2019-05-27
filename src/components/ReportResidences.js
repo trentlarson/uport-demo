@@ -19,7 +19,6 @@ float: right;
 `
 
 function tenureAndConfirmsDesc(tenuresAndConfs) {
-  console.log("tenuresAndConfs",tenuresAndConfs)
   let tenureDid = tenuresAndConfs[0].did
   let allTenures = R.flatten(R.map(R.prop("tenures"), tenuresAndConfs))
   // this is a list of tenure objects
@@ -89,7 +88,7 @@ class ReportResidences extends Component {
                   </RightSection>
                 </div>
                 <div>
-                <GoogleApiWrapper setClaimants={this.setClaimants.bind(this)} uport={this.props.uport} testUserDid={this.props.testUserDid}/>
+                <GoogleApiWrapper setClaimants={this.setClaimants.bind(this)} uport={this.props.uport} />
                 </div>
                 </div>
             )

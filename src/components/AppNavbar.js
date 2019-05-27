@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter, Link } from 'react-router-dom'
 import { uportConnect } from '../utilities/uportSetup'
+import { getUserDid, getUserName } from '../utilities/claimsTest'
 
 // Actions
 import * as AppActions from '../actions/AppActions'
@@ -81,10 +82,10 @@ class AppNavbar extends Component {
 
         <RightArea>
           {
-            this.props.uport && this.props.uport.name
+            getUserDid() || this.props.uport
               ? (<div>
                 <UportAvatarWrap>
-                  <UserName>{this.props.testUserName || this.props.uport.name}</UserName>
+                  <UserName>{getUserName(this.props)}</UserName>
                 </UportAvatarWrap>
                 <LogoLink onClick={this.logout}>
                   Logout

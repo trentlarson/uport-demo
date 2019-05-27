@@ -3,17 +3,9 @@
 import React, { Component } from 'react'
 import { GoogleApiWrapper, Map, Marker, Polygon } from 'google-maps-react'
 import R from 'ramda'
-
-const { Credentials } = require('uport-credentials')
+import { getUserToken } from '../utilities/claimsTest'
 
 const GOOGLE_MAPS_API_KEY=process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-
-let creds = [
-  { did: 'did:ethr:0x00c9c2326c73f73380e8402b01de9defcff2b064', privateKey: '8de6e2bd938a29a8348316cbae3811475f22f2ae87a42ad0ece727ff25c613b5' },
-  { did: 'did:ethr:0x11bb3621f8ea471a750870ae8dd5f4b8203e9557', privateKey: 'e4a3d47ed1058e5c07ed825b5cf0516aab757b1d141a4dc24392271537e10aa0' },
-  { did: 'did:ethr:0x22c51a43844e44b59c112cf74f3f5797a057837a', privateKey: '590e1a75d89e453d9b33f982badc4fdcd67046c8dbf4323f367b847776126d1b' },
-  { did: 'did:ethr:0x332661e9e6af65eea6df253296a26257ff304647', privateKey: 'ae945c106dc5538b5dc6acffef7901ef5e30b22c80d7af0a5d466432a49eeb9c' },
-]
 
 function polygonPathsFromString(polygonStr) {
   let points = R.split(" ", polygonStr)
@@ -29,23 +21,6 @@ export class MapContainer extends Component {
     this.state = {
       markerPosition: {},
       polygonPaths: [],
-      pushToken: this.props.uport.pushToken,
-    }
-    if (this.props.testUserDid) {
-      let fakePushToken = {
-        "iat": 1558468854,
-        "exp": 1590004854,
-        "aud": "did:ethr:0x62e2a07c9ee3925766553dc8b7081061ea46919f",
-        "type": "notifications",
-        "value": "arn:aws:sns:us-west-2:113196216558:endpoint/GCM/uPort/b782d4a3-f0c3-3b59-a297-68e9fbebad29",
-        "iss": this.props.testUserDid
-      }
-      let cred = R.find(R.propEq("did", this.props.testUserDid))(creds)
-      let Cred = new Credentials(cred)
-      Cred.createVerification(fakePushToken).then((token) => {
-            this.setState({ pushToken: token })
-            console.log("set state pushToken to fake", this.state.pushToken)
-          })
     }
   }
 
@@ -56,7 +31,7 @@ export class MapContainer extends Component {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",
-        "Uport-Push-Token": this.state.pushToken
+        "Uport-Push-Token": getUserToken(this.props)
       }})
       .then(response => {
         if (response.status === 200) {

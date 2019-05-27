@@ -50,15 +50,15 @@ class App extends Component {
   render () {
     return (
       <AppWrap>
-        <AppNavbar testUserName={this.props.testUserName}/>
+        <AppNavbar/>
         <AppBody>
           <Route exact path='/' component={Welcome}/>
-          <Route path='/signclaim' render={(props) => <SignClaim {...props} testUserDid={this.props.testUserDid}/>} />
+          <Route path='/signclaim' component={SignClaim} />
           <Route path='/reportList' component={ReportList}/>
           <Route path='/reportClaims' component={ReportClaims}/>
           <Route path='/reportConfirms' component={ReportConfirms}/>
           <Route path='/reportBestAttendance' component={ReportBestAttendance}/>
-          <Route path='/reportResidences' render={(props) => <ReportResidences {...props} testUserDid={this.props.testUserDid}/>} />
+          <Route path='/reportResidences' component={ReportResidences}/>
           <Route path='/reportSearch' component={ReportSearch}/>
           <Route path='/test' component={Test}/>
           <Route path='/transaction' component={SignTransaction}/>
@@ -79,10 +79,6 @@ const mapStateToProps = (state, props) => {
     registerYourAppPage: state.App.registerYourAppPage,
     logOutPage: state.App.logOutPage,
     signClaimPage: state.App.signClaimPage,
-    //testUserDid: "did:ethr:0x00c9c2326c73f73380e8402b01de9defcff2b064", testUserName: "Duane's Friend",
-    //testUserDid: "did:ethr:0x11bb3621f8ea471a750870ae8dd5f4b8203e9557", testUserName: "Duane",
-    //testUserDid: "did:ethr:0x22c51a43844e44b59c112cf74f3f5797a057837a", testUserName: "Duane's Friend Too",
-    //testUserDid: "did:ethr:0x332661e9e6af65eea6df253296a26257ff304647", testUserName: "Duane's Friend Tree",
   }
 }
 const mapDispatchToProps = (dispatch) => {
