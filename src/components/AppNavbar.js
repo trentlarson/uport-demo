@@ -82,7 +82,7 @@ class AppNavbar extends Component {
 
         <RightArea>
           {
-            getUserDid() || this.props.uport
+            getUserDid() || (this.props.uport && this.props.uport.name)
               ? (<div>
                 <UportAvatarWrap>
                   <UserName>{getUserName(this.props)}</UserName>
