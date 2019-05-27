@@ -58,7 +58,13 @@ export class MapContainer extends Component {
         "Content-Type": "application/json",
         "Uport-Push-Token": this.state.pushToken
       }})
-      .then(response => response.json())
+      .then(response => {
+        if (response.status === 200) {
+          return response.json()
+        } else {
+          throw new Error(response.statusText)
+        }
+      })
       .then(data => {
         if (data.length === 0) {
           this.setState({ polygonPaths: [] })
@@ -70,6 +76,9 @@ export class MapContainer extends Component {
           }
           this.props.setClaimants(data)
         }
+      })
+      .catch(err => {
+        alert("Error retrieving tenures: " + err.message)
       })
   }
 
