@@ -24,14 +24,18 @@ class ReportClaims extends Component {
     super(props)
     this.state = {
       queryValue: "",
-      searchResults: ""
+      searchResults: "",
+      processCode: `this.state.searchResults.map((obj) => obj.id)`,
+      processed: ""
     }
   }
 
   updateQueryValue(evt) {
-    this.setState({
-      queryValue: evt.target.value
-    })
+    this.setState({queryValue: evt.target.value})
+  }
+
+  updateProcessCode(evt) {
+    this.setState({processCode: evt.target.value})
   }
 
   doSearch(text) {
@@ -47,8 +51,14 @@ class ReportClaims extends Component {
       })
   }
 
+  processResults() {
+    console.log("processing")
+    return eval(this.state.processCode)
+  }
+
   render () {
 
+    console.log("this.state.processed",this.state.processed)
     return (
       <WelcomeWrap>
         <h4>Search Your Network</h4>
@@ -70,6 +80,34 @@ class ReportClaims extends Component {
           locale='en'
         />
         </JSONWrapper>
+
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <ChoiceButton onClick={() => this.setState({processed:this.processResults()})}>Process</ChoiceButton>
+
+        <div>
+        <textarea defaultValue={ this.state.processCode } onChange={this.updateProcessCode.bind(this)}></textarea>
+        </div>
+
+        <div>
+        <JSONWrapper>
+        <JSONInput
+          id='processed'
+          placeholder={ this.state.processed }
+          height='400px'
+          width='590px'
+          style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
+          locale='en'
+        />
+        </JSONWrapper>
+        </div>
 
       </WelcomeWrap>
     )
