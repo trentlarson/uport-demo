@@ -15,7 +15,8 @@ const SubText = styled.p`
 `
 const ChoiceButton = styled.button``
 const JSONWrapper = styled.div`
-font-family: monospace !important
+font-family: monospace !important;
+display: inline-block;
 `
 
 class ReportClaims extends Component {
@@ -52,13 +53,11 @@ class ReportClaims extends Component {
   }
 
   processResults() {
-    console.log("processing")
     return eval(this.state.processCode)
   }
 
   render () {
 
-    console.log("this.state.processed",this.state.processed)
     return (
       <WelcomeWrap>
         <h4>Search Your Network</h4>
@@ -93,7 +92,7 @@ class ReportClaims extends Component {
         <ChoiceButton onClick={() => this.setState({processed:this.processResults()})}>Process</ChoiceButton>
 
         <div>
-        <textarea defaultValue={ this.state.processCode } onChange={this.updateProcessCode.bind(this)}></textarea>
+        <textarea cols='80' rows='5' defaultValue={ this.state.processCode } onChange={this.updateProcessCode.bind(this)}></textarea>
         </div>
 
         <div>
