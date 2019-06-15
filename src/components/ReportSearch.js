@@ -8,6 +8,9 @@ import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 import JSONInput from 'react-json-editor-ajrm'
 
+// currently just for the dynamic code for processing results
+import R from 'ramda'
+
 const WelcomeWrap = styled.section``
 const SubText = styled.p`
   margin: 0 auto 3em auto;
@@ -26,7 +29,7 @@ class ReportClaims extends Component {
     this.state = {
       queryValue: "",
       searchResults: "",
-      processCode: `this.state.searchResults.map((obj) => obj.id)`,
+      processCode: `searchResults.map((obj) => obj.id)`,
       processed: ""
     }
   }
@@ -49,6 +52,8 @@ class ReportClaims extends Component {
       .then(response => response.json())
       .then(data => {
         this.setState({searchResults:data})
+        window.searchResults = data
+        window.R = R
       })
   }
 
