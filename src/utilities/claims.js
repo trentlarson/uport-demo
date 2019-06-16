@@ -1,7 +1,7 @@
 
 // This is used to check for hidden info.
 // See https://github.com/trentlarson/endorser-ch/blob/0cb626f803028e7d9c67f095858a9fc8542e3dbd/server/api/services/util.js#L6
-const HIDDEN_DID = 'did:none:U_CANNOT_C'
+const HIDDEN_DID = 'did:none:HIDDEN'
 
 // insert a space in front of any capital letters
 export const insertSpacesBeforeCaps = (text) =>{
