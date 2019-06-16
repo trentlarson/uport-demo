@@ -272,7 +272,9 @@ class SignClaim extends Component {
         <input type="radio" name="claimType" onClick={()=>{
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: this.joinActionClaim()})
-        }}/> Set to Join Action
+        }}
+        checked={this.state.unsignedClaim && this.state.unsignedClaim['@type'] && this.state.unsignedClaim['@type'] === 'JoinAction'}
+        /> Set to Join Action
 
         <span>{ this.state.unsignedClaim['@type'] === 'JoinAction' ? <img src='/green-check.png' alt="selected"/> : "" }</span>
         <br/>
