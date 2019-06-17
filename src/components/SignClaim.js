@@ -40,8 +40,11 @@ const DEFAULT_GEO_SHAPE = "40.883944,-111.884787 40.884088,-111.884787 40.884088
 
 const DEFAULT_ORG_NAME = "Bountiful Voluntaryist Community"
 const DEFAULT_EVENT_NAME = "Saturday Morning Meeting"
+const DEFAULT_ROLE_NAME = "Secretary"
 
 const TODAY_START_TIME_STRING = DateTime.local().set({hour:0}).startOf("day").toISO()
+const THIS_YEAR_START_DATE_STRING = DateTime.local().startOf('year').toISODate()
+const THIS_YEAR_END_DATE_STRING = DateTime.local().endOf('year').toISODate()
 
 function confirmClaim(claims) {
   return {
@@ -120,6 +123,41 @@ class SignClaim extends Component {
     }
   }
 
+  orgRoleClaim(agentDid, orgName, roleName, startDate, endDate) {
+    if (!orgName) {
+      orgName = DEFAULT_ORG_NAME
+    }
+    if (!roleName) {
+      roleName = DEFAULT_ROLE_NAME
+    }
+    if (!startDate) {
+      startDate = THIS_YEAR_START_DATE_STRING
+    }
+    if (!endDate) {
+      endDate = THIS_YEAR_END_DATE_STRING
+    }
+    agentDid = getUserDid() || agentDid
+    if (!agentDid) {
+      agentDid = uportConnect.did
+    }
+    let result = {
+      "@context": "http://schema.org",
+      "@type": "Organization",
+      name: orgName,
+      member: {
+        "@type": "OrganizationRole",
+        member: {
+          "@type": "Person",
+          identifier: agentDid,
+        },
+        roleName: roleName,
+        startDate: startDate,
+        endDate: endDate,
+      }
+    }
+    return result
+  }
+
   ownershipClaim(agentDid, polygon) {
     if (!polygon) {
       polygon = DEFAULT_GEO_SHAPE
@@ -134,6 +172,7 @@ class SignClaim extends Component {
         }
       }
     }
+    // These settings are a bit different because it's possible that they give no owner ID.
     if (getUserDid()) {
       result.party = { "did": getUserDid() }
     } else if (agentDid) {
@@ -277,6 +316,16 @@ class SignClaim extends Component {
         /> Set to Join Action
 
         <span>{ this.state.unsignedClaim['@type'] === 'JoinAction' ? <img src='/green-check.png' alt="selected"/> : "" }</span>
+        <br/>
+
+
+        {/* Org Role */}
+        <input type="radio" name="claimType" onClick={()=>{
+          this.setState({unsignedClaim: null})
+          this.setState({unsignedClaim: this.orgRoleClaim()})
+        }}/> Set to Organization Role
+
+        <span>{ this.state.unsignedClaim['@type'] === 'Organization' && this.state.unsignedClaim.member['@type'] === 'OrganizationRole' ? <img src='/green-check.png' alt="selected"/> : "" }</span>
         <br/>
 
 
