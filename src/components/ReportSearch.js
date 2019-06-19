@@ -22,12 +22,16 @@ font-family: monospace !important;
 display: inline-block;
 `
 
+// This is for convenience in the processCode actions.
+window.R = R
+
 class ReportClaims extends Component {
 
   constructor (props) {
     super(props)
     this.state = {
       queryValue: "",
+      endpointValue: "",
       searchResults: "",
       processCode: `searchResults.map((obj) => obj.id)`,
       processed: ""
@@ -36,6 +40,10 @@ class ReportClaims extends Component {
 
   updateQueryValue(evt) {
     this.setState({queryValue: evt.target.value})
+  }
+
+  updateEndpointValue(evt) {
+    this.setState({endpointValue: evt.target.value})
   }
 
   updateProcessCode(evt) {
@@ -47,13 +55,26 @@ class ReportClaims extends Component {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",
-        "Uport-Push-Token": getUserToken(this.propsn)
+        "Uport-Push-Token": getUserToken(this.props)
       }})
       .then(response => response.json())
       .then(data => {
         this.setState({searchResults:data})
         window.searchResults = data
-        window.R = R
+      })
+  }
+
+  doEndpointCall(endpoint) {
+    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + endpoint, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Uport-Push-Token": getUserToken(this.props)
+      }})
+      .then(response => response.json())
+      .then(data => {
+        this.setState({searchResults:data})
+        window.searchResults = data
       })
   }
 
@@ -70,7 +91,12 @@ class ReportClaims extends Component {
 
         <div>
         <input type='text' onChange={this.updateQueryValue.bind(this)}/>
-        <ChoiceButton onClick={() => this.doSearch(this.state.queryValue)}>Search</ChoiceButton>
+        <ChoiceButton onClick={() => this.doSearch(this.state.queryValue)}>Text Search</ChoiceButton>
+        </div>
+
+        <div>
+        <input type='text' defaultValue='/api/report/orgRoleClaimsAndConfirmationsOnDate?orgName=&roleName=&onDate='onChange={this.updateEndpointValue.bind(this)}/>
+        <ChoiceButton onClick={() => this.doEndpointCall(this.state.endpointValue)}>Call Endpoint</ChoiceButton>
         </div>
 
         <br/>
