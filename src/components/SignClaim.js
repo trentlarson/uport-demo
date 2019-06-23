@@ -1,17 +1,19 @@
 // Frameworks
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import * as AppActions from '../actions/AppActions'
-import styled from 'styled-components'
-import { uportConnect } from '../utilities/uportSetup'
-import { claimDescription } from '../utilities/claims'
-import { getUserDid, getUserToken } from '../utilities/claimsTest'
 import { verifyJWT } from 'did-jwt'
-import JSONInput from 'react-json-editor-ajrm'
-import { withRouter } from 'react-router-dom'
 import { DateTime } from 'luxon'
 import R from 'ramda'
+import React, { Component } from 'react'
+import JSONInput from 'react-json-editor-ajrm'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import { bindActionCreators } from 'redux'
+import styled from 'styled-components'
+
+import * as AppActions from '../actions/AppActions'
+import { claimDescription } from '../utilities/claims'
+import { getUserDid, getUserToken } from '../utilities/claimsTest'
+import { uportConnect } from '../utilities/uportSetup'
+
 
 
 const ACTION = "Action"
@@ -75,9 +77,10 @@ class SignClaim extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      claimStoredResponse: '',
+      loading: true,
       responseJWT: '',
       responseJSON: null,
-      claimStoredResponse: '',
       unsignedClaim: this.joinActionClaim(),
       // For the type of claimsToConfirm, see no-parameter result from: http://localhost:3000/api/action/
       // ... with API doc: http://localhost:3000/api-docs#/action/get_api_action_
@@ -223,7 +226,7 @@ class SignClaim extends Component {
   }
 
   signClaim () {
-    this.setState({responseJWT: ''})
+    this.setState({responseJWT: '', loading:false})
     const claimToSign = this.state.unsignedClaim
     uportConnect.requestVerificationSignature(claimToSign, uportConnect.did, SignReqID)
   }
@@ -304,7 +307,9 @@ class SignClaim extends Component {
 
         <h3>Sample Claims</h3>
 
-        <div style={{'textAlign':'right'}}><span>{this.state.claimStoredResponse}</span></div>
+        <div style={{'textAlign':'right'}}>
+          <span>{this.state.claimStoredResponse}</span>
+        </div>
 
 
         {/* Attendance */}
