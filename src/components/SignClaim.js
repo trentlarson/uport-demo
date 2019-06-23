@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import JSONInput from 'react-json-editor-ajrm'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import { HashLoader } from 'react-spinners';
 import { bindActionCreators } from 'redux'
 import styled from 'styled-components'
 
@@ -37,6 +38,9 @@ const ClaimButton = styled.button`
   font-size: 12pt;
   padding: 10px;
 `
+
+
+
 
 const DEFAULT_GEO_SHAPE = "40.883944,-111.884787 40.884088,-111.884787 40.884088,-111.884515 40.883944,-111.884515 40.883944,-111.884787"
 
@@ -78,7 +82,7 @@ class SignClaim extends Component {
     super(props)
     this.state = {
       claimStoredResponse: '',
-      loading: true,
+      loading: false,
       responseJWT: '',
       responseJSON: null,
       unsignedClaim: this.joinActionClaim(),
@@ -198,6 +202,8 @@ class SignClaim extends Component {
 
   handleSignedClaim(res) {
     //console.log(res) // format: { id: "SignRequest", payload: "...", data: undefined }
+    this.setState({loading: true})
+
     verifyJWT(res.payload).then(json => {
 
       // json format: https://github.com/uport-project/did-jwt/blob/288b8a57b44706036ad440c1e0ea7dde06365810/src/JWT.js#L103
@@ -209,7 +215,8 @@ class SignClaim extends Component {
 
       this.setState({
         responseJWT: res.payload,
-        responseJSON: json.payload
+        responseJSON: json.payload,
+        loading: false
       })
       fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim', {
         method: 'POST',
@@ -226,7 +233,7 @@ class SignClaim extends Component {
   }
 
   signClaim () {
-    this.setState({responseJWT: '', loading:false})
+    this.setState({responseJWT: ''})
     const claimToSign = this.state.unsignedClaim
     uportConnect.requestVerificationSignature(claimToSign, uportConnect.did, SignReqID)
   }
@@ -307,8 +314,15 @@ class SignClaim extends Component {
 
         <h3>Sample Claims</h3>
 
-        <div style={{'textAlign':'right'}}>
-          <span>{this.state.claimStoredResponse}</span>
+        <div>
+          {/** The ClipLoader shows on the right without any CSS setting but the HashLoader doesn't. Weird. **/}
+          <HashLoader
+            color={'#FF0000'}
+            loading={this.state.loading}
+            size={30}
+            sizeUnit={"px"}
+          />
+          <span style={{'color':'#66FF00'}}>{this.state.claimStoredResponse}</span>
         </div>
 
 

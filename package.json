@@ -61,6 +61,7 @@
     "react-json-editor-ajrm": "^2.5.9",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
+    "react-spinners": "^0.5.4",
     "redux": "^4.0.1",
     "styled-components": "^1.4.5",
     "uport-connect": "^1.0.1",
