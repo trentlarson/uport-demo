@@ -333,8 +333,6 @@ class SignClaim extends Component {
         }}
         defaultChecked={this.state.unsignedClaim && this.state.unsignedClaim['@type'] && this.state.unsignedClaim['@type'] === 'JoinAction'}
         /> Set to Join Action
-
-        <span>{ this.state.unsignedClaim['@type'] === 'JoinAction' ? <img src='/green-check.png' alt="selected"/> : "" }</span>
         <br/>
 
 
@@ -343,8 +341,6 @@ class SignClaim extends Component {
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: this.orgRoleClaim()})
         }}/> Set to Organization Role
-
-        <span>{ this.state.unsignedClaim['@type'] === 'Organization' && this.state.unsignedClaim.member['@type'] === 'OrganizationRole' ? <img src='/green-check.png' alt="selected"/> : "" }</span>
         <br/>
 
 
@@ -353,8 +349,6 @@ class SignClaim extends Component {
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: this.ownershipClaim()})
         }}/> Set to Plot Ownership
-
-        <span>{ this.state.unsignedClaim['@type'] === 'Tenure' ? <img src='/green-check.png' alt="selected"/> : "" }</span>
         <br/>
 
 
