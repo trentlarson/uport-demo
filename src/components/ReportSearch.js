@@ -32,9 +32,9 @@ class ReportClaims extends Component {
     this.state = {
       queryValue: "",
       endpointValue: "",
-      searchResults: "",
+      searchResults: {},
       processCode: `searchResults.map((obj) => obj.id)`,
-      processed: ""
+      processed: {}
     }
   }
 

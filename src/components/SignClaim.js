@@ -317,7 +317,7 @@ class SignClaim extends Component {
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: this.joinActionClaim()})
         }}
-        checked={this.state.unsignedClaim && this.state.unsignedClaim['@type'] && this.state.unsignedClaim['@type'] === 'JoinAction'}
+        defaultChecked={this.state.unsignedClaim && this.state.unsignedClaim['@type'] && this.state.unsignedClaim['@type'] === 'JoinAction'}
         /> Set to Join Action
 
         <span>{ this.state.unsignedClaim['@type'] === 'JoinAction' ? <img src='/green-check.png' alt="selected"/> : "" }</span>
@@ -397,7 +397,7 @@ class SignClaim extends Component {
 
         <div>
            <h3>Response (JWT)</h3>
-           <input type='text' style={{width: '590px'}} value={this.state.responseJWT}/>
+           <input type='text' style={{width: '590px'}} defaultValue={this.state.responseJWT}/>
            <h3>Signed Claim Response (Parsed JWT)</h3>
            <JSONWrapper>
            <JSONInput
