@@ -29,9 +29,22 @@ class ReportBestAttendance extends Component {
         "Content-Type": "application/json",
         "Uport-Push-Token": getUserToken(this.props)
       }})
-      .then(response => response.json())
+      .then(response => {
+        if (response.status === 200) {
+          return response.json()
+        } else {
+          console.log("Got ACAC response status", response.status, "and content", response)
+          response.json()
+            .then(result => console.log("... and that ACAC response parses as:", result)) // helpful on that DID method error
+            .catch(err => console.log("... and that ACAC response fails to parse as json because:", err))
+          throw Error("There's a bad status, so watch for the result of parsing the ACAC.")
+        }
+      })
       .then(acacList => {
         this.setState({ acacList: acacList })
+      })
+      .catch(err => {
+        console.log("Error retrieving action claims & confirmations list:", err)
       })
   }
 
