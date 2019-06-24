@@ -42,6 +42,7 @@ const ClaimButton = styled.button`
 
 
 
+// 40.883944,-111.884787 is southwest corner of Corner Bakery
 const DEFAULT_GEO_SHAPE = "40.883944,-111.884787 40.884088,-111.884787 40.884088,-111.884515 40.883944,-111.884515 40.883944,-111.884787"
 
 const DEFAULT_ORG_NAME = "Bountiful Voluntaryist Community"
@@ -215,8 +216,7 @@ class SignClaim extends Component {
 
       this.setState({
         responseJWT: res.payload,
-        responseJSON: json.payload,
-        loading: false
+        responseJSON: json.payload
       })
       fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim', {
         method: 'POST',
@@ -226,7 +226,7 @@ class SignClaim extends Component {
         },
         body: JSON.stringify({jwtEncoded:res.payload})})
         .then(response => response.json())
-        .then(data => this.setState({ claimStoredResponse: "Saved with ID " + data }))
+        .then(data => this.setState({ loading: false, claimStoredResponse: "Saved with ID " + data }))
     })
     .catch(window.alert)
 

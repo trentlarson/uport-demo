@@ -1,6 +1,6 @@
 
 // To emulate a test user, set to a numeric offset into the TEST_CREDS array.
-// undefined or -1 will result in the logged-in user setting.
+// Values of -1 or undefined will result in the logged-in user setting.
 const TEST_USER_NUM = -1
 
 const { Credentials } = require('uport-credentials')
