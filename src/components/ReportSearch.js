@@ -79,6 +79,8 @@ class ReportClaims extends Component {
   }
 
   processResults() {
+    // Because we don't need to see warnings about eval:
+    // eslint-disable-next-line
     return eval(this.state.processCode)
   }
 

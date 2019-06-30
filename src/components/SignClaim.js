@@ -2,7 +2,7 @@
 import { verifyJWT } from 'did-jwt'
 import { DateTime } from 'luxon'
 import R from 'ramda'
-import React, { Component } from 'react'
+import React from 'react'
 import JSONInput from 'react-json-editor-ajrm'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
@@ -10,6 +10,7 @@ import { HashLoader } from 'react-spinners';
 import { bindActionCreators } from 'redux'
 import styled from 'styled-components'
 
+import ErrorHandlingComponent from './ErrorHandlingComponent'
 import * as AppActions from '../actions/AppActions'
 import { claimDescription } from '../utilities/claims'
 import { getUserDid, getUserToken } from '../utilities/claimsTest'
@@ -77,7 +78,7 @@ function imgPerConfirm(num) {
   return result
 }
 
-class SignClaim extends Component {
+class SignClaim extends ErrorHandlingComponent {
 
   constructor (props) {
     super(props)
@@ -225,8 +226,9 @@ class SignClaim extends Component {
           "Uport-Push-Token": getUserToken(this.props)
         },
         body: JSON.stringify({jwtEncoded:res.payload})})
-        .then(response => response.json())
+        .then(this.alertOrReturnJson("saving signed claim"))
         .then(data => this.setState({ loading: false, claimStoredResponse: "Saved with ID " + data }))
+        .catch(err => this.setState({ loading: false }))
     })
     .catch(window.alert)
 

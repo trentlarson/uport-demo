@@ -1,18 +1,19 @@
 // Frameworks
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import R from 'ramda'
 import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 
+import ErrorHandlingComponent from './ErrorHandlingComponent'
 import * as AppActions from '../actions/AppActions'
 import { firstAndLast3OfDid } from '../utilities/claims'
 import { getUserToken } from '../utilities/claimsTest'
 
 const WelcomeWrap = styled.section``
 
-class ReportBestAttendance extends Component {
+class ReportBestAttendance extends ErrorHandlingComponent {
 
   constructor (props) {
     super(props)
@@ -29,22 +30,9 @@ class ReportBestAttendance extends Component {
         "Content-Type": "application/json",
         "Uport-Push-Token": getUserToken(this.props)
       }})
-      .then(response => {
-        if (response.status === 200) {
-          return response.json()
-        } else {
-          console.log("Got ACAC response status", response.status, "and content", response)
-          response.json()
-            .then(result => console.log("... and that ACAC response parses as:", result)) // helpful on that DID method error
-            .catch(err => console.log("... and that ACAC response fails to parse as json because:", err))
-          throw Error("There's a bad status, so watch for the result of parsing the ACAC.")
-        }
-      })
+      .then(this.alertOrReturnJson("action ACAC"))
       .then(acacList => {
         this.setState({ acacList: acacList })
-      })
-      .catch(err => {
-        console.log("Error retrieving action claims & confirmations list:", err)
       })
   }
 
