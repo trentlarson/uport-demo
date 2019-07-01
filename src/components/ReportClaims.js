@@ -89,8 +89,11 @@ class ReportClaims extends Component {
             .claims
             .map(jwt =>
                  {
-                   if (jwt.claimEncoded) {
-                     let claim = JSON.parse(atob(jwt.claimEncoded))
+                   var claim = jwt.claim
+                   if (!claim && jwt.claimEncoded) {
+                     claim = JSON.parse(atob(jwt.claimEncoded))
+                   }
+                   if (claim) {
                      return <div key={jwt.id}>
                        <ChoiceButton onClick={() => { this.setState({claim:claim}) }}>{insertSpacesBeforeCaps(jwt.claimType)}</ChoiceButton>
                        <ul>
