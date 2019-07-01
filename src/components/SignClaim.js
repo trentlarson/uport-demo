@@ -167,6 +167,23 @@ class SignClaim extends ErrorHandlingComponent {
     return result
   }
 
+  getSubject(claim) {
+    var subject
+    switch (claim['@type']) {
+      case 'JoinAction': subject = claim.agent && claim.agent.did; break;
+      case 'Organization': subject = claim.member && claim.member.member && claim.member.member.identifier; break;
+      case 'Tenure': subject = claim.party && claim.party.did; break;
+      case 'Confirmation':
+        var subjects = R.uniq(R.map(this.getSubject)(claim.originalClaims))
+        if (subjects.length === 1) {
+          subject = subjects[0]
+        }
+        break;
+      default:
+    }
+    return subject
+  }
+
   ownershipClaim(agentDid, polygon) {
     if (!polygon) {
       polygon = DEFAULT_GEO_SHAPE
@@ -236,8 +253,9 @@ class SignClaim extends ErrorHandlingComponent {
 
   signClaim () {
     this.setState({responseJWT: ''})
-    const claimToSign = this.state.unsignedClaim
-    uportConnect.requestVerificationSignature(claimToSign, uportConnect.did, SignReqID)
+    let claimToSign = this.state.unsignedClaim
+    var subject = this.getSubject(claimToSign) || ''
+    uportConnect.requestVerificationSignature(claimToSign, subject, SignReqID)
   }
 
   render () {
