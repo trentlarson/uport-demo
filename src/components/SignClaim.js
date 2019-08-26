@@ -260,7 +260,7 @@ class SignClaim extends ErrorHandlingComponent {
 
   render () {
 
-    const claimButtons = <div>
+    const confirmClaimButtons = <div>
       {
         Object.keys(this.state.claimsToConfirm)
           .map(claimId => {
@@ -304,7 +304,6 @@ class SignClaim extends ErrorHandlingComponent {
               }
             }
           })
-          .reverse()
       }
       {
         (this.state.unsignedClaim.originalClaims && !this.state.loadedMore)
@@ -386,7 +385,7 @@ class SignClaim extends ErrorHandlingComponent {
         <br/>
         <br/>
 
-        <span>{claimButtons}</span>
+        <span>{confirmClaimButtons}</span>
 
           <div style={{textAlign: 'center'}}>
             <ConnectUport onClick={this.signClaim}>
