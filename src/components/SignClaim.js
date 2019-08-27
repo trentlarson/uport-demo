@@ -113,7 +113,12 @@ class SignClaim extends ErrorHandlingComponent {
       eventName = DEFAULT_EVENT_NAME
     }
     if (!eventStartDate) {
-      eventStartDate = DateTime.local().set({hour:8}).startOf("hour").toISO()
+      var bvolTime = DateTime.local()
+      if (bvolTime.weekday < 6) {
+        // it's not Saturday, so let's default to last Saturday
+        bvolTime = bvolTime.minus({week:1})
+      }
+      eventStartDate = bvolTime.set({weekday:6}).set({hour:8}).startOf("hour").toISO()
     }
     agentDid = getUserDid() || agentDid
     if (!agentDid) {
