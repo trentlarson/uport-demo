@@ -26,6 +26,8 @@ rsync -azvu --exclude .git --exclude-from .gitignore -e "ssh -i $2" . ubuntu@end
 
 ssh -i $2 ubuntu@endorser.ch << EOF
   cd $DEPLOY_DIR
+  # since we're still running this as root (which is bad)
+  sudo chown -R ubuntu.ubuntu node_modules/.cache
   # need to add --production on the end of "npm ci"
   npm ci
   # need to add this
