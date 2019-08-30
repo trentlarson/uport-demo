@@ -13,7 +13,8 @@ class ErrorHandlingComponent extends Component {
 
   alertOrReturnJson(location) {
     return response => {
-      if (response.status === 200) {
+      if (response.status >= 200
+          && response.status < 300) {
         return response.json()
       } else {
         location = location || ("unknown with stack " + new Error().stack)

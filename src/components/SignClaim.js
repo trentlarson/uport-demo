@@ -249,7 +249,7 @@ class SignClaim extends ErrorHandlingComponent {
         },
         body: JSON.stringify({jwtEncoded:res.payload})})
         .then(this.alertOrReturnJson("saving signed claim"))
-        .then(data => this.setState({ loading: false, claimStoredResponse: "Saved with ID " + data }))
+        .then(data => this.setState({ loading: false, claimStoredResponse: "Success!  Your claim is saved with ID " + data }))
         .catch(err => this.setState({ loading: false }))
     })
     .catch(window.alert)
