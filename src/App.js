@@ -15,12 +15,16 @@ import ReportConfirms from './components/ReportConfirms'
 import ReportBestAttendance from './components/ReportBestAttendance'
 import ReportResidences from './components/ReportResidences'
 import ReportSearch from './components/ReportSearch'
-import SignTransaction from './components/SignTransaction'
-import CollectCredentials from './components/CollectCredentials'
-import RegisterYourApp from './components/RegisterYourApp'
 import LogOut from './components/LogOut'
 import SignClaim from './components/SignClaim'
 import Test from './components/Test'
+
+import BvcVoteIgniteSpeakers from './components/bvc/VoteIgniteSpeakers'
+
+import SignTransaction from './components/SignTransaction'
+import CollectCredentials from './components/CollectCredentials'
+import RegisterYourApp from './components/RegisterYourApp'
+
 import { uportConnect } from './utilities/uportSetup'
 
 const AppWrap = styled.div`
@@ -88,10 +92,13 @@ class App extends ErrorBoundary {
           <Route path='/reportResidences' component={ReportResidences}/>
           <Route path='/reportSearch' component={ReportSearch}/>
           <Route path='/test' component={Test}/>
+          <Route path='/logout' component={LogOut}/>
+
+          <Route path='/bvc' component={BvcVoteIgniteSpeakers}/>
+
           <Route path='/transaction' component={SignTransaction}/>
           <Route path='/credentials' component={CollectCredentials}/>
           <Route path='/register' component={RegisterYourApp}/>
-          <Route path='/logout' component={LogOut}/>
         </AppBody>
       </AppWrap>
     )
