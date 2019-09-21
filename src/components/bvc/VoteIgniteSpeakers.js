@@ -31,7 +31,7 @@ const CANDIDATES = [
     "object": {
       "event": {
         "name": "Ignite Bountiful Night",
-        "startDate": "2019-10-09T19:00:00.000-06:00"
+        "startDate": "2019-11-13T19:00:00.000-06:00"
       }
     }
   },
@@ -43,7 +43,7 @@ const CANDIDATES = [
     "object": {
       "event": {
         "name": "Ignite Bountiful Night",
-        "startDate": "2019-10-09T19:00:00.000-06:00"
+        "startDate": "2019-11-13T19:00:00.000-06:00"
       }
     }
   },
@@ -55,7 +55,7 @@ const CANDIDATES = [
     "object": {
       "event": {
         "name": "Ignite Bountiful Night",
-        "startDate": "2019-10-09T19:00:00.000-06:00"
+        "startDate": "2019-11-13T19:00:00.000-06:00"
       }
     }
   },
@@ -67,7 +67,7 @@ const CANDIDATES = [
     "object": {
       "event": {
         "name": "Ignite Bountiful Night",
-        "startDate": "2019-10-09T19:00:00.000-06:00"
+        "startDate": "2019-11-13T19:00:00.000-06:00"
       }
     }
   },
@@ -79,7 +79,7 @@ const CANDIDATES = [
     "object": {
       "event": {
         "name": "Ignite Bountiful Night",
-        "startDate": "2019-10-09T19:00:00.000-06:00"
+        "startDate": "2019-11-13T19:00:00.000-06:00"
       }
     }
   },
@@ -91,7 +91,7 @@ const CANDIDATES = [
     "object": {
       "event": {
         "name": "Ignite Bountiful Night",
-        "startDate": "2019-10-09T19:00:00.000-06:00"
+        "startDate": "2019-11-13T19:00:00.000-06:00"
       }
     }
   },
@@ -103,7 +103,7 @@ const CANDIDATES = [
     "object": {
       "event": {
         "name": "Ignite Bountiful Night",
-        "startDate": "2019-10-09T19:00:00.000-06:00"
+        "startDate": "2019-11-13T19:00:00.000-06:00"
       }
     }
   },
@@ -115,7 +115,7 @@ const CANDIDATES = [
     "object": {
       "event": {
         "name": "Ignite Bountiful Night",
-        "startDate": "2019-10-09T19:00:00.000-06:00"
+        "startDate": "2019-11-13T19:00:00.000-06:00"
       }
     }
   }
