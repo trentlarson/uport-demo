@@ -128,6 +128,7 @@ class VoteIgniteSpeakers extends ErrorHandlingComponent {
     this.state = {
       claimStoredResponse: '',
       loading: false,
+      voteCounts: [],
       votes: [],
     }
     this.addRemoveVote = this.addRemoveVote.bind(this)
@@ -139,6 +140,16 @@ class VoteIgniteSpeakers extends ErrorHandlingComponent {
       .catch(error => {
         this.setState({responseJWT: error})
       })
+  }
+
+  componentDidMount() {
+    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/report/voteCounts', {
+      headers: {
+        "Content-Type": "application/json",
+        "Uport-Push-Token": getUserToken(this.props)
+      }})
+      .then(response => response.json())
+      .then(data => this.setState({ voteCounts: data }))
   }
 
   addRemoveVote (item) {
@@ -216,6 +227,25 @@ class VoteIgniteSpeakers extends ErrorHandlingComponent {
         <SignButton onClick={this.signClaim}>
           Sign Vote
         </SignButton>
+        </div>
+
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+        <div>
+        <ul>Results</ul>
+        <table>
+        {
+          R.map(item =>
+                <tr key={item.title + ' by "' + item.speaker + '" for ' + item.count}>
+                <td>"{item.title}"</td><td>by {item.speaker}</td><td>{item.count}</td>
+                </tr>
+               )(this.state.voteCounts)
+        }
+        </table>
         </div>
 
         <br/>
