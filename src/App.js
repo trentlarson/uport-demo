@@ -9,6 +9,7 @@ import styled from 'styled-components'
 // Components
 import AppNavbar from './components/AppNavbar'
 import Welcome from './components/Welcome'
+import PublicReportList from './components/PublicReportList'
 import ReportList from './components/ReportList'
 import ReportClaims from './components/ReportClaims'
 import ReportConfirms from './components/ReportConfirms'
@@ -86,6 +87,7 @@ class App extends ErrorBoundary {
           <Route exact path='/' component={Welcome}/>
           <Route path='/signclaim' component={SignClaim} />
           <Route path='/reportList' component={ReportList}/>
+          <Route path='/publicReportList' component={PublicReportList}/>
           <Route path='/reportClaims' component={ReportClaims}/>
           <Route path='/reportConfirms' component={ReportConfirms}/>
           <Route path='/reportBestAttendance' component={ReportBestAttendance}/>

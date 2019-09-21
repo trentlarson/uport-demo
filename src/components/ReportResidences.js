@@ -5,14 +5,11 @@ import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { firstAndLast3OfDid } from '../utilities/claims'
-import { uportConnect } from '../utilities/uportSetup'
 import { withRouter } from 'react-router-dom'
 import GoogleApiWrapper from './GoogleApiWrapper'
 import R from 'ramda'
 
-const ConnectReqID = 'ConnectRequest'
 const WelcomeWrap = styled.section``
-const ConnectUport = styled.button``
 
 const RightSection = styled.section`
 float: right;
@@ -43,21 +40,9 @@ class ReportResidences extends Component {
 
   constructor (props) {
     super(props)
-    this.connectUport = this.connectUport.bind(this)
-    uportConnect.onResponse(ConnectReqID).then(res => {
-      this.props.actions.connectUport(uportConnect.state)
-      this.props.history.push('/signclaim')
-    })
-
     this.state = {
       claimsByTenure: []
     }
-  }
-
-  connectUport () {
-    const reqObj = { requested: ['name', 'phone', 'country'],
-                     notifications: true }
-    uportConnect.requestDisclosure(reqObj, ConnectReqID)
   }
 
   setClaimants(tenuresAndConfirms) {
@@ -70,8 +55,6 @@ class ReportResidences extends Component {
       <WelcomeWrap>
         <h4>Report Residences</h4>
         {
-          this.props.uport && this.props.uport.name
-            ? (
                 <div style={{ height: '100%', width: '100%' }}>
                 <div>
                   <RightSection>
@@ -91,12 +74,6 @@ class ReportResidences extends Component {
                 <GoogleApiWrapper setClaimants={this.setClaimants.bind(this)} uport={this.props.uport} />
                 </div>
                 </div>
-            )
-            : (
-              <ConnectUport onClick={this.connectUport}>
-                Connect with uPort
-              </ConnectUport>
-            )
         }
       </WelcomeWrap>
     )

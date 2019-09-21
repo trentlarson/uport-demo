@@ -49,10 +49,6 @@ class ReportList extends Component {
           this.props.uport && this.props.uport.name
             ? (<div>
 
-               <Link to="/reportResidences">
-               <NextButton>Residences</NextButton>
-               </Link>
-
                <LeftSection>
                <Link to="/reportBestAttendance">
                <NextButton>Best Attendance</NextButton>
@@ -66,6 +62,10 @@ class ReportList extends Component {
                <NextButton>Your Previous Claims / Confirmations</NextButton>
                </Link>
                </LeftSection>
+
+               <Link to="/reportResidences">
+               <NextButton>Residences</NextButton>
+               </Link>
 
                <RightSection>
                <Link to="/reportSearch">

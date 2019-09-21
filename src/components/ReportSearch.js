@@ -1,5 +1,5 @@
 // Frameworks
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
@@ -10,6 +10,8 @@ import JSONInput from 'react-json-editor-ajrm'
 
 // currently just for the dynamic code for processing results
 import R from 'ramda'
+
+import ErrorHandlingComponent from './ErrorHandlingComponent'
 
 const WelcomeWrap = styled.section``
 const SubText = styled.p`
@@ -25,7 +27,7 @@ display: inline-block;
 // This is for convenience in the processCode actions.
 window.R = R
 
-class ReportClaims extends Component {
+class ReportClaims extends ErrorHandlingComponent {
 
   constructor (props) {
     super(props)
@@ -57,7 +59,7 @@ class ReportClaims extends Component {
         "Content-Type": "application/json",
         "Uport-Push-Token": getUserToken(this.props)
       }})
-      .then(response => response.json())
+      .then(this.alertOrReturnJson("claim search"))
       .then(data => {
         this.setState({searchResults:data})
         window.searchResults = data
@@ -71,7 +73,7 @@ class ReportClaims extends Component {
         "Content-Type": "application/json",
         "Uport-Push-Token": getUserToken(this.props)
       }})
-      .then(response => response.json())
+      .then(this.alertOrReturnJson("endpoint call to " + endpoint))
       .then(data => {
         this.setState({searchResults:data})
         window.searchResults = data
@@ -96,11 +98,6 @@ class ReportClaims extends Component {
         <ChoiceButton onClick={() => this.doSearch(this.state.queryValue)}>Text Search</ChoiceButton>
         </div>
 
-        <div>
-        <input type='text' defaultValue='/api/report/orgRoleClaimsAndConfirmationsOnDate?orgName=&roleName=&onDate='onChange={this.updateEndpointValue.bind(this)}/>
-        <ChoiceButton onClick={() => this.doEndpointCall(this.state.endpointValue)}>Call Endpoint</ChoiceButton>
-        </div>
-
         <br/>
         <JSONWrapper>
         <JSONInput
@@ -115,14 +112,19 @@ class ReportClaims extends Component {
 
         <br/>
         <br/>
+
+        <div>
+        <input type='text' defaultValue='/api/report/orgRoleClaimsAndConfirmationsOnDate?orgName=&roleName=&onDate='onChange={this.updateEndpointValue.bind(this)}/>
+        <ChoiceButton onClick={() => this.doEndpointCall(this.state.endpointValue)}>Call Endpoint</ChoiceButton>
+        </div>
+
         <br/>
         <br/>
         <br/>
         <br/>
         <br/>
         <br/>
-        <br/>
-        <ChoiceButton onClick={() => this.setState({processed:this.processResults()})}>Process</ChoiceButton>
+        <ChoiceButton onClick={() => this.setState({processed:this.processResults()})}>Manipulate</ChoiceButton>
 
         <div>
         <textarea cols='80' rows='5' defaultValue={ this.state.processCode } onChange={this.updateProcessCode.bind(this)}></textarea>
