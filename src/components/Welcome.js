@@ -51,6 +51,10 @@ class Welcome extends Component {
                   <NextButton>Claim / Confirm</NextButton>
                 </Link>
                 <br/>
+                <Link to="/bvc">
+                  <NextButton>Ignite Bountiful Vote</NextButton>
+                </Link>
+                <br/>
                 <Link to="/reportList">
                   <NextButton>Reports</NextButton>
                 </Link>
