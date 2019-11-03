@@ -1,5 +1,5 @@
 {
-  "name": "Endorser Search",
+  "name": "demo",
   "version": "1.5.0-endorser.ch.1",
   "private": true,
   "devDependencies": {
@@ -55,7 +55,7 @@
     "luxon": "^1.10.0",
     "mnid": "^0.1.1",
     "qrious": "^2.2.0",
-    "qs": "^6.9.0",
+    "qs": "^6.7.0",
     "ramda": "^0.26.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
