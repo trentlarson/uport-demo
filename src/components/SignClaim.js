@@ -6,8 +6,9 @@ import React from 'react'
 import JSONInput from 'react-json-editor-ajrm'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { HashLoader } from 'react-spinners';
+import { HashLoader } from 'react-spinners'
 import { bindActionCreators } from 'redux'
+import qs from 'qs'
 import styled from 'styled-components'
 
 import ErrorHandlingComponent from './ErrorHandlingComponent'
@@ -30,7 +31,12 @@ const ConnectUport = styled.button`
   background-color: #4C8F50;
 `
 const MoreLink = styled.a`
-  text-color: #FFFFFF;
+  color: #AAAAFF;
+  text-decoration: underline;
+`
+const SignLink = styled.a`
+  color: #AAAAFF;
+  text-decoration: underline;
 `
 const ClaimButton = styled.button`
   margin-right: 20px;
@@ -87,7 +93,7 @@ class SignClaim extends ErrorHandlingComponent {
       loading: false,
       responseJWT: '',
       responseJSON: null,
-      unsignedClaim: this.joinActionClaim(),
+      unsignedClaim: this.defaultClaim(props),
       // For the type of claimsToConfirm, see no-parameter result from: http://localhost:3000/api/action/
       // ... with API doc: http://localhost:3000/api-docs#/action/get_api_action_
       // but where the array is turned into an object with keys of the "type:id" of each claim type & ID.
@@ -103,6 +109,21 @@ class SignClaim extends ErrorHandlingComponent {
         this.setState({responseJWT: error})
       })
 
+  }
+
+  defaultClaim(props) {
+    var claim = null
+    if (props.location.search) {
+      var params = qs.parse(props.location.search, {ignoreQueryPrefix:true})
+      if (params && params.claim) {
+        try {
+          claim = JSON.parse(params.claim)
+        } catch (e) {
+          throw new Error("Couldn't parse the 'claim' parameter as JSON. " + e)
+        }
+      }
+    }
+    return claim || this.joinActionClaim()
   }
 
   joinActionClaim(eventOrgName, eventName, eventStartDate, agentDid) {
@@ -419,6 +440,10 @@ class SignClaim extends ErrorHandlingComponent {
              locale='en'
             />
           </JSONWrapper>
+
+          <SignLink href={"/signClaim?claim=" + encodeURIComponent(JSON.stringify(this.state.unsignedClaim))}>
+          Here is a link to this claim, useful for sharing.
+          </SignLink>
 
           </div>
         <br/>
