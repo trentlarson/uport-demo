@@ -90,7 +90,10 @@ class SignClaim extends ErrorHandlingComponent {
     super(props)
     this.state = {
       claimStoredResponse: '',
-      loading: false,
+      loadingClaimStoreResponse: false,
+      loadingConfirmations: false,
+      loadingMoreConfirmations: false,
+      loadedMore: false,
       responseJWT: '',
       responseJSON: null,
       unsignedClaim: this.defaultClaim(props),
@@ -98,7 +101,6 @@ class SignClaim extends ErrorHandlingComponent {
       // ... with API doc: http://localhost:3000/api-docs#/action/get_api_action_
       // but where the array is turned into an object with keys of the "type:id" of each claim type & ID.
       claimsToConfirm: {},
-      loadedMore: false
     }
     this.signClaim = this.signClaim.bind(this)
     this.handleSignedClaim = this.handleSignedClaim.bind(this)
@@ -235,19 +237,23 @@ class SignClaim extends ErrorHandlingComponent {
     return result
   }
 
-  componentDidMount() {
+  loadTodayActions() {
+    this.setState({loadingConfirmations: true, loadedMore: false})
     fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/?eventStartTime_greaterThanOrEqualTo=' + TODAY_START_TIME_STRING, {
       headers: {
         "Content-Type": "application/json",
         "Uport-Push-Token": getUserToken(this.props)
       }})
       .then(response => response.json())
-      .then(data => this.setState({ claimsToConfirm: objectifyClaimArray(ACTION, data) }))
+      .then(data => this.setState({ claimsToConfirm: objectifyClaimArray(ACTION, data), loadingConfirmations: false }))
+  }
+
+  componentDidMount() {
   }
 
   handleSignedClaim(res) {
     //console.log(res) // format: { id: "SignRequest", payload: "...", data: undefined }
-    this.setState({loading: true})
+    this.setState({loadingClaimStoreResponse: true})
 
     verifyJWT(res.payload).then(json => {
 
@@ -270,8 +276,8 @@ class SignClaim extends ErrorHandlingComponent {
         },
         body: JSON.stringify({jwtEncoded:res.payload})})
         .then(this.alertOrReturnJson("saving signed claim"))
-        .then(data => this.setState({ loading: false, claimStoredResponse: "Success!  Your claim is saved with ID " + data }))
-        .catch(err => this.setState({ loading: false }))
+        .then(data => this.setState({ loadingClaimStoreResponse: false, claimStoredResponse: "Success!  Your claim is saved with ID " + data }))
+        .catch(err => this.setState({ loadingClaimStoreResponse: false }))
     })
     .catch(window.alert)
 
@@ -332,9 +338,18 @@ class SignClaim extends ErrorHandlingComponent {
           })
       }
       {
+        <HashLoader
+          color={'#FF0000'}
+          loading={this.state.loadingConfirmations}
+          size={30}
+          sizeUnit={"px"}
+        />
+      }
+      {
         (this.state.unsignedClaim.originalClaims && !this.state.loadedMore)
           ?
           <MoreLink href="#" onClick={()=>{
+            this.setState({loadingMoreConfirmations: true})
             fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/?eventStartTime_lessThan=' + TODAY_START_TIME_STRING, {
               headers: {
                 "Content-Type": "application/json",
@@ -343,11 +358,19 @@ class SignClaim extends ErrorHandlingComponent {
               .then(response => response.json())
               .then(data => {
                 let newClaims = R.merge(this.state.claimsToConfirm, objectifyClaimArray(ACTION, data))
-                this.setState({ claimsToConfirm: newClaims, loadedMore: true })
+                this.setState({ claimsToConfirm: newClaims, loadedMore: true, loadingMoreConfirmations: false })
               })
           }}>Load More</MoreLink>
           :
           <span/>
+      }
+      {
+        <HashLoader
+          color={'#FF0000'}
+          loading={this.state.loadingMoreConfirmations}
+          size={30}
+          sizeUnit={"px"}
+        />
       }
     </div>
 
@@ -361,7 +384,7 @@ class SignClaim extends ErrorHandlingComponent {
           {/** The ClipLoader shows on the right without any CSS setting but the HashLoader doesn't. Weird. **/}
           <HashLoader
             color={'#FF0000'}
-            loading={this.state.loading}
+            loading={this.state.loadingClaimStoreResponse}
             size={30}
             sizeUnit={"px"}
           />
@@ -406,6 +429,7 @@ class SignClaim extends ErrorHandlingComponent {
         <input type="radio" name="claimType" onClick={()=>{
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: confirmClaim([])})
+          this.loadTodayActions()
         }}/> Set to Confirmation...
 
         <span>{
