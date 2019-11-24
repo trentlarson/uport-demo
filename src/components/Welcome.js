@@ -78,7 +78,7 @@ class Welcome extends Component {
               <br/>
               <br/>
               <Link to="/publicReportList">
-              <NextButton>Reports</NextButton>
+              <NextButton>Public Reports</NextButton>
               </Link>
 
               </div>

@@ -5,7 +5,7 @@ import R from 'ramda'
 import React from 'react'
 import JSONInput from 'react-json-editor-ajrm'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { HashLoader } from 'react-spinners'
 import { bindActionCreators } from 'redux'
 import qs from 'qs'
@@ -357,8 +357,6 @@ class SignClaim extends ErrorHandlingComponent {
         <div style={{display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', textAlign: 'left', marginBottom: '20px'}}>
         <div style={{marginRight: '20px'}}>
 
-        <h3>Sample Claims</h3>
-
         <div>
           {/** The ClipLoader shows on the right without any CSS setting but the HashLoader doesn't. Weird. **/}
           <HashLoader
@@ -370,6 +368,14 @@ class SignClaim extends ErrorHandlingComponent {
           <span style={{'color':'#66FF00'}}>{this.state.claimStoredResponse}</span>
         </div>
 
+      {
+        this.props.uport && this.props.uport.name
+          ?
+
+        (<div>
+
+        <h3>Sample Claims</h3>
+
 
         {/* Attendance */}
         <input type="radio" name="claimType" onClick={()=>{
@@ -379,7 +385,6 @@ class SignClaim extends ErrorHandlingComponent {
         defaultChecked={this.state.unsignedClaim && this.state.unsignedClaim['@type'] && this.state.unsignedClaim['@type'] === 'JoinAction'}
         /> Set to Join Action
         <br/>
-
 
         {/* Org Role */}
         <input type="radio" name="claimType" onClick={()=>{
@@ -445,12 +450,53 @@ class SignClaim extends ErrorHandlingComponent {
           Here is a link to this claim, useful for sharing.
           </SignLink>
 
+
+
+         </div>
+        )
+
+        :
+          <div>
+          <Link to="/">Click here to sign in first.</Link>
           </div>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
+      }
+
+        </div>
+
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
 
         <div>
            <h3>Response (JWT)</h3>
