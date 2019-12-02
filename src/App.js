@@ -11,6 +11,7 @@ import AppNavbar from './components/AppNavbar'
 import Welcome from './components/Welcome'
 import PublicReportList from './components/PublicReportList'
 import ReportList from './components/ReportList'
+import ReportClaim from './components/ReportClaim'
 import ReportClaims from './components/ReportClaims'
 import ReportConfirms from './components/ReportConfirms'
 import ReportBestAttendance from './components/ReportBestAttendance'
@@ -88,6 +89,7 @@ class App extends ErrorBoundary {
           <Route path='/signclaim' component={SignClaim} />
           <Route path='/reportList' component={ReportList}/>
           <Route path='/publicReportList' component={PublicReportList}/>
+          <Route path='/reportClaim' component={ReportClaim}/>
           <Route path='/reportClaims' component={ReportClaims}/>
           <Route path='/reportConfirms' component={ReportConfirms}/>
           <Route path='/reportBestAttendance' component={ReportBestAttendance}/>

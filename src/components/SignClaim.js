@@ -116,6 +116,7 @@ class SignClaim extends ErrorHandlingComponent {
   defaultClaim(props) {
     var claim = null
     if (props.location.search) {
+      // these are the request query parameters
       var params = qs.parse(props.location.search, {ignoreQueryPrefix:true})
       if (params && params.claim) {
         try {
