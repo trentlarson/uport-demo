@@ -13,9 +13,13 @@ const firstAndLast3 = (text) => {
   return text.slice(0,3) + "..." + text.slice(-3)
 }
 
+export const isHiddenDid = (did) => {
+  return did === HIDDEN_DID
+}
+
 // take DID and extract address and return first and last 3 chars
 export const firstAndLast3OfDid = (did) => {
-  if (did === HIDDEN_DID) {
+  if (isHiddenDid(did)) {
     return "(HIDDEN)"
   } else {
     return firstAndLast3(did.split(":")[2].substring(2))

@@ -2,10 +2,12 @@
 import qs from 'qs'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { HashLoader } from 'react-spinners'
 import { bindActionCreators } from 'redux'
 
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
+import { isHiddenDid } from '../utilities/claims'
 import { getUserToken } from '../utilities/claimsTest'
 import { withRouter } from 'react-router-dom'
 import JSONInput from 'react-json-editor-ajrm'
@@ -37,31 +39,52 @@ class ReportClaim extends Component {
     this.state = {
       claimId: claimId,
       claimObj: null,
-      confirmIssuers: []
+      confirmIssuers: [],
+      errorMessage: "",
+      loadingConfirmations: false
     }
   }
 
   retrieveForClaim() {
     if (this.state.claimId) {
-      fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim/' + this.state.claimId, {
-        headers: {
-          "Content-Type": "application/json",
-          "Uport-Push-Token": getUserToken(this.props)
-        }})
-        .then(response => {console.log("===== response", response); return response.json()})
+      this.setState({claimObj: null, confirmIssuers: [], errorMessage: "", loadingConfirmations: true }, () =>
+        fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim/' + this.state.claimId, {
+          headers: {
+            "Content-Type": "application/json",
+            "Uport-Push-Token": getUserToken(this.props)
+          }})
+        .then(response => {
+          if (response.ok) {
+            return response.json()
+          } else {
+            console.log("Error on /api/claim/" + this.state.claimId + " with response" , response)
+            throw Error("Unable to access that claim.")
+          }
+        })
         .then(data => {
-          console.log("--------- setting claimObj to", data)
           this.setState({ claimObj: data })
         })
-      fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/report/issuersWhoClaimedOrConfirmed?claimId=' + this.state.claimId, {
-        headers: {
-          "Content-Type": "application/json",
-          "Uport-Push-Token": getUserToken(this.props)
-        }})
-        .then(response => response.json())
-        .then(data => {
-          this.setState({ confirmIssuers: data })
+        .then(() => {
+          fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/report/issuersWhoClaimedOrConfirmed?claimId=' + this.state.claimId, {
+            headers: {
+              "Content-Type": "application/json",
+              "Uport-Push-Token": getUserToken(this.props)
+            }})
+            .then(response => {
+              if (response.ok) {
+                return response.json()
+              } else {
+                console.log("Error on /api/report/issuersWhoClaimedOrConfirmed?claimId=" + this.state.claimId + " with response" , response)
+                throw Error("Unable to access confirmations for that claim.")
+              }
+            })
+            .then(data => {
+              this.setState({ confirmIssuers: data, loadingConfirmations: false })
+            })
+            .catch(error => this.setState({errorMessage: error.message, loadingConfirmations: false}))
         })
+        .catch(error => this.setState({errorMessage: error.message, loadingConfirmations: false}))
+      )
     } else {
       this.setState({claimObj:{}})
     }
@@ -79,7 +102,29 @@ class ReportClaim extends Component {
         <SubText>Explore the content of a claim or confirmation</SubText>
 
       Claim ID &nbsp;
-        <input type='text' style={{width: '400px'}} defaultValue={this.state.claimId} onChange={(value) => { this.setState({claimId:value}); this.retrieveForClaim(); }}/>
+        <input type='text' style={{width: '400px'}} defaultValue={this.state.claimId} onChange={(evt) => { this.setState({claimId:evt.target.value}, () => this.retrieveForClaim()) }}/>
+
+        <br/>
+        <br/>
+        <div style={{'color':'#FF0000'}}>{ this.state.errorMessage }</div>
+
+        <h5>Confirmers</h5>
+
+        <div style={{'marginLeft':'auto','marginRight':'auto','width':'2em'}}>
+        <HashLoader
+          color={'#FF0000'}
+          loading={this.state.loadingConfirmations}
+          size={30}
+          sizeUnit={"px"}
+        />
+        </div>
+        <ul>
+        {
+          this.state
+            .confirmIssuers
+            .map(issuer => <li key={issuer}>{issuer}{isHiddenDid(issuer) ? "*" : ""}</li>)
+        }
+        </ul>
 
         <h5>Claim Details</h5>
 
@@ -93,16 +138,6 @@ class ReportClaim extends Component {
           locale='en'
         />
         </JSONWrapper>
-
-        <h5>Confirmers</h5>
-
-        <ul>
-        {
-          this.state
-            .confirmIssuers
-            .map(issuer => <li key={issuer}>{issuer}</li>)
-        }
-        </ul>
 
       </WelcomeWrap>
     )
