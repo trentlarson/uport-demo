@@ -40,7 +40,7 @@ class ReportClaim extends Component {
       claimId: claimId,
       claimObj: null,
       confirmIssuers: [],
-      confirmPublicUrls: {},
+      confirmPublicUrls: undefined, // may be an object with DID keys and URL values
       errorMessage: "",
       loadingConfirmations: false,
     }
@@ -125,7 +125,7 @@ class ReportClaim extends Component {
             .confirmIssuers
             .map(issuer =>
                  <li key={issuer}>{issuer}{isHiddenDid(issuer) ? "*" : ""}
-                 {this.state.confirmPublicUrls[issuer]
+                 {this.state.confirmPublicUrls && this.state.confirmPublicUrls[issuer]
                   ? <a href={this.state.confirmPublicUrls[issuer]}>&nbsp;- Public</a>
                   : ""
                  }
