@@ -40,8 +40,9 @@ class ReportClaim extends Component {
       claimId: claimId,
       claimObj: null,
       confirmIssuers: [],
+      confirmPublicUrls: {},
       errorMessage: "",
-      loadingConfirmations: false
+      loadingConfirmations: false,
     }
   }
 
@@ -79,7 +80,7 @@ class ReportClaim extends Component {
               }
             })
             .then(data => {
-              this.setState({ confirmIssuers: data, loadingConfirmations: false })
+              this.setState({ confirmIssuers: data.result, confirmPublicUrls: data.publicUrls, loadingConfirmations: false })
             })
             .catch(error => this.setState({errorMessage: error.message, loadingConfirmations: false}))
         })
@@ -122,7 +123,13 @@ class ReportClaim extends Component {
         {
           this.state
             .confirmIssuers
-            .map(issuer => <li key={issuer}>{issuer}{isHiddenDid(issuer) ? "*" : ""}</li>)
+            .map(issuer =>
+                 <li key={issuer}>{issuer}{isHiddenDid(issuer) ? "*" : ""}
+                 {this.state.confirmPublicUrls[issuer]
+                  ? <a href={this.state.confirmPublicUrls[issuer]}>&nbsp;- Public</a>
+                  : ""
+                 }
+                 </li>)
         }
         </ul>
 
