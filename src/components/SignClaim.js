@@ -1,6 +1,6 @@
 // Frameworks
 import { verifyJWT } from 'did-jwt'
-import { DateTime } from 'luxon'
+import { DateTime, Duration } from 'luxon'
 import R from 'ramda'
 import React from 'react'
 import JSONInput from 'react-json-editor-ajrm'
@@ -19,8 +19,6 @@ import { uportConnect } from '../utilities/uportSetup'
 
 
 
-const ACTION = "Action"
-const TENURE = "Tenure"
 const SignReqID = 'SignRequest'
 const WelcomeWrap = styled.section``
 
@@ -56,7 +54,6 @@ const DEFAULT_ORG_NAME = "Bountiful Voluntaryist Community"
 const DEFAULT_EVENT_NAME = "Saturday Morning Meeting"
 const DEFAULT_ROLE_NAME = "Secretary"
 
-const TODAY_START_TIME_STRING = DateTime.local().set({hour:0}).startOf("day").toISO()
 const THIS_YEAR_START_DATE_STRING = DateTime.local().startOf('year').toISODate()
 const THIS_YEAR_END_DATE_STRING = DateTime.local().endOf('year').toISODate()
 
@@ -66,14 +63,6 @@ function confirmClaim(claims) {
     "@type": "Confirmation",
     "originalClaims": claims
   }
-}
-
-function objectifyClaimArray(type, claims) {
-  var result = {}
-  for (var claim of claims) {
-    result[type + ":" + claim.id] = claim
-  }
-  return result
 }
 
 function imgPerConfirm(num) {
@@ -90,17 +79,14 @@ class SignClaim extends ErrorHandlingComponent {
     super(props)
     this.state = {
       claimStoredResponse: '',
+      jwtsToConfirm: [], // from JWTs in DB
+      loadedConfirmsStarting: null,
       loadingClaimStoreResponse: false,
       loadingConfirmations: false,
       loadingMoreConfirmations: false,
-      loadedMore: false,
       responseJWT: '',
       responseJSON: null,
       unsignedClaim: this.defaultClaim(props),
-      // For the type of claimsToConfirm, see no-parameter result from: http://localhost:3000/api/action/
-      // ... with API doc: http://localhost:3000/api-docs#/action/get_api_action_
-      // but where the array is turned into an object with keys of the "type:id" of each claim type & ID.
-      claimsToConfirm: {},
     }
     this.signClaim = this.signClaim.bind(this)
     this.handleSignedClaim = this.handleSignedClaim.bind(this)
@@ -238,18 +224,34 @@ class SignClaim extends ErrorHandlingComponent {
     return result
   }
 
-  loadTodayActions() {
-    this.setState({loadingConfirmations: true, loadedMore: false})
-    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/?eventStartTime_greaterThanOrEqualTo=' + TODAY_START_TIME_STRING, {
+  componentDidMount() {
+  }
+
+  loadMoreJwts() {
+    this.setState({loadingConfirmations: true})
+
+    var loadMoreEnding, loadMoreStarting
+    if (!this.state.loadedConfirmsStarting) {
+      loadMoreEnding = DateTime.local()
+      loadMoreStarting = DateTime.local().startOf("day")
+    } else {
+      loadMoreEnding = this.state.loadedConfirmsStarting
+      loadMoreStarting = this.state.loadedConfirmsStarting.minus(Duration.fromISO("P1M")) // - 1 month
+    }
+    let loadMoreEndingStr = loadMoreEnding.toISO()
+    let loadMoreStartingStr = loadMoreStarting.toISO()
+
+
+    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim/?issuedAt_greaterThanOrEqualTo=' + loadMoreStartingStr + "&issuedAt_lessThan=" + loadMoreEndingStr + "&excludeConfirmations=true", {
       headers: {
         "Content-Type": "application/json",
         "Uport-Push-Token": getUserToken(this.props)
       }})
       .then(response => response.json())
-      .then(data => this.setState({ claimsToConfirm: objectifyClaimArray(ACTION, data), loadingConfirmations: false }))
-  }
-
-  componentDidMount() {
+      .then(data => {
+        let newClaims = R.concat(this.state.jwtsToConfirm, data)
+        this.setState({ jwtsToConfirm: newClaims, loadedConfirmsStarting: loadMoreStarting, loadingConfirmations: false  })
+      })
   }
 
   handleSignedClaim(res) {
@@ -284,59 +286,49 @@ class SignClaim extends ErrorHandlingComponent {
 
   }
 
-  signClaim () {
+  moveJwtClaimToUnsigned(jwt) {
+    // add this claim to the confirmation
+    // (Weird: without this clone it doesn't update in the setState, even though it does inside the old "fetch")
+    var oldUnsigned = this.state.unsignedClaim
+    this.setState({ unsignedClaim: {} })
+    var newConfirm = JSON.parse(JSON.stringify(oldUnsigned))
+    newConfirm.originalClaims.push(jwt.claim)
+
+    // remove this claim from the buttons
+    var newClaims = R.reject((remaining)=>remaining.id === jwt.id, this.state.jwtsToConfirm)
+
+    // now set the state
+    this.setState({ unsignedClaim: newConfirm, jwtsToConfirm: newClaims })
+  }
+
+  signClaim() {
     this.setState({responseJWT: ''})
     let claimToSign = this.state.unsignedClaim
     var subject = this.getSubject(claimToSign) || ''
     uportConnect.requestVerificationSignature(claimToSign, subject, SignReqID)
   }
 
-  render () {
+  render() {
 
     const confirmClaimButtons = <div>
       {
-        Object.keys(this.state.claimsToConfirm)
-          .map(claimId => {
-            if (!this.state.unsignedClaim.originalClaims) {
-              return <span key={claimId}></span>
-            } else {
-              let apiClaim = this.state.claimsToConfirm[claimId]
-              var originalClaim = undefined
-              if (claimId.startsWith(ACTION)) {
-                originalClaim = this.joinActionClaim(apiClaim.eventOrgName, apiClaim.eventName, apiClaim.eventStartTime, apiClaim.agentDid)
-              } else if (claimId.startsWith(TENURE)) {
-                originalClaim = this.ownershipClaim(apiClaim.partyDid, apiClaim.polygon)
-              } else {
-                console.log("Unknown claim type of " + claimId + " won't be added to confirmations.")
-              }
-              if (!originalClaim) {
-                return ""
-              } else {
-                return <span key={claimId}>
-                  <ClaimButton onClick={() => {
-
-                    // add this claim to the confirmation
-                    // (Weird: without this clone it doesn't update in the setState, even though it does inside the old "fetch")
-                    var newConfirm = JSON.parse(JSON.stringify(this.state.unsignedClaim))
-                    this.setState({ unsignedClaim: {} })
-                    newConfirm.originalClaims.push(originalClaim)
-
-                    // remove this claim from the buttons
-                    var newClaims = this.state.claimsToConfirm
-                    delete newClaims[claimId]
-
-                    // now set the state
-                    this.setState({ unsignedClaim: newConfirm, claimsToConfirm: newClaims })
-
-                  }}>
-                  {claimId.substring(0, claimId.indexOf(":"))}<br/>
-                  {claimDescription(originalClaim)}
-                  </ClaimButton>
-                  </span>
-
-              }
+        R.map(jwt => {
+          return <span key={jwt.id}>
+            {
+              this.state.unsignedClaim.originalClaims
+              ?
+                <ClaimButton onClick={() => this.moveJwtClaimToUnsigned(jwt) }>
+                  {jwt.claimType}<br/>
+                  {claimDescription(jwt.claim)}
+                </ClaimButton>
+              :
+                // whenever there is no "Confirmation" type loaded in the unsignedClam Claim Details (though that shouldn't happen)
+                ""
             }
-          })
+            </span>
+        },
+        this.state.jwtsToConfirm
+        )
       }
       {
         <HashLoader
@@ -347,21 +339,9 @@ class SignClaim extends ErrorHandlingComponent {
         />
       }
       {
-        (this.state.unsignedClaim.originalClaims && !this.state.loadedMore)
+        (this.state.unsignedClaim.originalClaims)
           ?
-          <MoreLink href="#" onClick={()=>{
-            this.setState({loadingMoreConfirmations: true})
-            fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/action/?eventStartTime_lessThan=' + TODAY_START_TIME_STRING, {
-              headers: {
-                "Content-Type": "application/json",
-                "Uport-Push-Token": getUserToken(this.props)
-              }})
-              .then(response => response.json())
-              .then(data => {
-                let newClaims = R.merge(this.state.claimsToConfirm, objectifyClaimArray(ACTION, data))
-                this.setState({ claimsToConfirm: newClaims, loadedMore: true, loadingMoreConfirmations: false })
-              })
-          }}>Load More</MoreLink>
+          <MoreLink href="#" onClick={()=>this.loadMoreJwts()}>Load More</MoreLink>
           :
           <span/>
       }
@@ -429,19 +409,19 @@ class SignClaim extends ErrorHandlingComponent {
         {/* Confirmations */}
         <input type="radio" name="claimType" onClick={()=>{
           this.setState({unsignedClaim: null})
-          this.setState({unsignedClaim: confirmClaim([])})
-          this.loadTodayActions()
+          this.setState({unsignedClaim: confirmClaim([]), loadedConfirmsStarting: null},
+                        () => this.loadMoreJwts())
         }}/> Set to Confirmation...
 
         <span>{
-          this.state.unsignedClaim['@type'] === 'Confirmation' 
+          this.state.unsignedClaim['@type'] === 'Confirmation'
             ? imgPerConfirm(this.state.unsignedClaim.originalClaims.length)
             : ""
         }</span>
         <br/>
         <br/>
 
-        <span>{confirmClaimButtons}</span>
+          <div>{confirmClaimButtons}</div>
 
           <div style={{textAlign: 'center'}}>
             <ConnectUport onClick={this.signClaim}>
