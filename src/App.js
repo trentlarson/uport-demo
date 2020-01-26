@@ -61,6 +61,7 @@ class ErrorBoundary extends Component {
   componentDidCatch(error, info) {
     // You can also log the error to an error reporting service
     console.log("We in uport-demo are putting this in the console.log but nowhere else right now.", error, info);
+    this.setState({hasError: true})
   }
 
   render() {
@@ -82,6 +83,10 @@ class App extends ErrorBoundary {
 
   render () {
     return (
+      this.state.hasError
+      ?
+        <h1>Something went terribly wrong. <br/> Text your contact to let them know what you were trying to do.</h1>
+      :
       <AppWrap>
         <AppNavbar/>
         <AppBody>
