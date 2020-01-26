@@ -85,7 +85,7 @@ class App extends ErrorBoundary {
     return (
       this.state.hasError
       ?
-        <h1>Something went terribly wrong. <br/> Text your contact to let them know what you were trying to do.</h1>
+        <h1>Something went terribly wrong. <br/> Text someone with this project to let them know what you were trying to do.</h1>
       :
       <AppWrap>
         <AppNavbar/>

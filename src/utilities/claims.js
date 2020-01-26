@@ -3,9 +3,10 @@
 // See https://github.com/trentlarson/endorser-ch/blob/0cb626f803028e7d9c67f095858a9fc8542e3dbd/server/api/services/util.js#L6
 const HIDDEN_DID = 'did:none:HIDDEN'
 
-// insert a space in front of any capital letters
+// insert a space in front of any capital letters (after the first letter)
+// returm "" for null or undefined input
 export const insertSpacesBeforeCaps = (text) =>{
-  return text[0] + text.substr(1).replace(/([A-Z])/g, ' $1')
+  return text ? text[0] + text.substr(1).replace(/([A-Z])/g, ' $1') : ""
 }
 
 // return first 3 chars + "..." + last 3 chars
