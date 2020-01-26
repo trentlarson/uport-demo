@@ -341,7 +341,9 @@ class SignClaim extends ErrorHandlingComponent {
       {
         (this.state.unsignedClaim.originalClaims)
           ?
-          <MoreLink href="#" onClick={()=>this.loadMoreJwts()}>Load More</MoreLink>
+            <MoreLink href="#" onClick={()=>this.loadMoreJwts()}>
+              Load Previous to {this.state.loadedConfirmsStarting ? this.state.loadedConfirmsStarting.toISODate() : "today"}
+            </MoreLink>
           :
           <span/>
       }
@@ -409,7 +411,7 @@ class SignClaim extends ErrorHandlingComponent {
         {/* Confirmations */}
         <input type="radio" name="claimType" onClick={()=>{
           this.setState({unsignedClaim: null})
-          this.setState({unsignedClaim: confirmClaim([]), loadedConfirmsStarting: null},
+          this.setState({unsignedClaim: confirmClaim([]), jwtsToConfirm: [], loadedConfirmsStarting: null},
                         () => this.loadMoreJwts())
         }}/> Set to Confirmation...
 
