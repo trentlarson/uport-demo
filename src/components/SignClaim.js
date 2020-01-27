@@ -1,5 +1,5 @@
 // Frameworks
-import { verifyJWT } from 'did-jwt'
+import { decodeJWT, verifyJWT } from 'did-jwt'
 import { DateTime, Duration } from 'luxon'
 import R from 'ramda'
 import React from 'react'
@@ -117,6 +117,7 @@ class SignClaim extends ErrorHandlingComponent {
     return claim || this.joinActionClaim()
   }
 
+  // Note that the default values cause the did-jwt library to fails when verifying a confirmation of that length, so we've changed the eventStartDate to an ISO date string without milliseconds to hack around it.
   joinActionClaim(eventOrgName, eventName, eventStartDate, agentDid) {
     if (!eventOrgName) {
       eventOrgName = DEFAULT_ORG_NAME
@@ -130,7 +131,9 @@ class SignClaim extends ErrorHandlingComponent {
         // it's not Saturday, so let's default to last Saturday
         bvolTime = bvolTime.minus({week:1})
       }
-      eventStartDate = bvolTime.set({weekday:6}).set({hour:8}).startOf("hour").toISO()
+      let eventStartDateObj = bvolTime.set({weekday:6}).set({hour:8}).startOf("hour")
+      // Hack, but the full ISO pushes the length to 340 which crashes verifyJWT!  Crazy!
+      eventStartDate = eventStartDateObj.toISO({suppressMilliseconds:true})
     }
     agentDid = getUserDid() || agentDid
     if (!agentDid) {
@@ -258,14 +261,14 @@ class SignClaim extends ErrorHandlingComponent {
 
   signClaim() {
     if (this.state.claimStoredSuccess || this.state.claimStoredError) {
-      // somehow, the claim gets lost after it's signed and we get no resolution message
+      // somehow a second claim gets lost after it's signed and we get no resolution message
       window.alert("Please reload the page to submit another claim or confirmation.")
     } else {
       console.log("Sending claim to be signed...")
       this.setState({claimStoredError: '', claimStoredSuccess: '', loadingClaimStoreResponse: true, responseJWT: ''})
       let claimToSign = this.state.unsignedClaim
       var subject = this.getSubject(claimToSign) || ''
-      uportConnect.requestVerificationSignature(claimToSign, subject, SignReqID)
+      uportConnect.requestVerificationSignature(claimToSign, {sub:subject}, SignReqID)
     }
   }
 
@@ -273,25 +276,25 @@ class SignClaim extends ErrorHandlingComponent {
     console.log("Successfully received signed claim.  Now will verify it...")
     console.log(res) // format: { id: "SignRequest", payload: "[JWT]...", data: undefined }
 
+    // format: {header:..., payload:..., signature:... data:...}
+    let decoded = decodeJWT(res.payload)
+
     this.setState({
       responseJWT: res.payload,
-      responseJSON: null
+      responseJSON: decoded.payload
     })
 
     verifyJWT(res.payload)
     .then(json => {
       console.log("Successfully verified signed claim.  Now will record it...")
 
-      // json format: https://github.com/uport-project/did-jwt/blob/288b8a57b44706036ad440c1e0ea7dde06365810/src/JWT.js#L103
+      // json format: https://github.com/decentralized-identity/did-jwt/blob/v0.1.3/src/JWT.js#L103
       // { "payload":{"iat":1547430185,"exp":1547516585,"sub":"did:ethr:...","claim":{...},"iss":"did:ethr:..."},
       //   "doc":{"@context":"https://w3id.org/did/v1","id":"did:ethr:...","publicKey":[{"id":"did:ethr:...#owner","type":"Secp256k1VerificationKey2018","owner":"did:ethr:...","ethereumAddress":"..."}],"authentication":[{"type":"Secp256k1SignatureAuthentication2018","publicKey":"did:ethr:...#owner"}]},
       //    "issuer":"did:ethr:...",
       //    "signer":{"id":"did:ethr:...#owner","type":"Secp256k1VerificationKey2018","owner":"did:ethr:...","ethereumAddress":"..."},"jwt":"..."}
       //console.log('json', JSON.stringify(json))
 
-      this.setState({
-        responseJSON: json.payload
-      })
       fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim', {
         method: 'POST',
         headers: {
@@ -311,7 +314,7 @@ class SignClaim extends ErrorHandlingComponent {
     })
     .catch(message => {
       console.log("Failed to handle signed claim with error '" + message + "' for signed-claim response:", res)
-      this.setState({ claimStoredError: "Some error happened.  Try reloading the page and signing again.", loadingClaimStoreResponse: false })
+      this.setState({ claimStoredError: "Some error happened.  Try reloading the page and signing again.  Sometimes adding or removing characters from the message (eg. date milliseconds) makes a difference.", loadingClaimStoreResponse: false })
       window.alert(message)
     })
 
