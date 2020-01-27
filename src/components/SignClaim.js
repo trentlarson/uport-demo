@@ -78,6 +78,7 @@ class SignClaim extends ErrorHandlingComponent {
   constructor (props) {
     super(props)
     this.state = {
+      claimStoredError: '',
       claimStoredResponse: '',
       jwtsToConfirm: [], // from JWTs in DB
       loadedConfirmsStarting: null,
@@ -94,7 +95,8 @@ class SignClaim extends ErrorHandlingComponent {
     uportConnect.onResponse(SignReqID)
       .then(this.handleSignedClaim)
       .catch(error => {
-        this.setState({responseJWT: error})
+        console.log("Failed to handle signed claim with error:", error)
+        this.setState({claimStoredError: "Some error happened.  Try reloading the page and signing again.", loadingClaimStoreResponse: false, responseJWT: error})
       })
 
   }
@@ -255,10 +257,12 @@ class SignClaim extends ErrorHandlingComponent {
   }
 
   handleSignedClaim(res) {
+    console.log("Successfully received signed claim.  Now will verify it...")
     //console.log(res) // format: { id: "SignRequest", payload: "...", data: undefined }
-    this.setState({loadingClaimStoreResponse: true})
 
-    verifyJWT(res.payload).then(json => {
+    verifyJWT(res.payload)
+    .then(json => {
+      console.log("Successfully verified signed claim.  Now will record it...")
 
       // json format: https://github.com/uport-project/did-jwt/blob/288b8a57b44706036ad440c1e0ea7dde06365810/src/JWT.js#L103
       // { "payload":{"iat":1547430185,"exp":1547516585,"sub":"did:ethr:...","claim":{...},"iss":"did:ethr:..."},
@@ -279,10 +283,20 @@ class SignClaim extends ErrorHandlingComponent {
         },
         body: JSON.stringify({jwtEncoded:res.payload})})
         .then(this.alertOrReturnJson("saving signed claim"))
-        .then(data => this.setState({ loadingClaimStoreResponse: false, claimStoredResponse: "Success!  Your claim is saved with ID " + data }))
-        .catch(err => this.setState({ loadingClaimStoreResponse: false }))
+        .then(data => {
+          console.log("Successfully finished recording signed claim.")
+          this.setState({ claimStoredResponse: "Success!  Your claim is saved with ID " + data, loadingClaimStoreResponse: false })
+        })
+        .catch(err => {
+          console.log("Failed to fully record signed claim.")
+          this.setState({ claimStoredError: "Some error happened.  Try reloading the page and signing again.", loadingClaimStoreResponse: false })
+        })
     })
-    .catch(window.alert)
+    .catch(message => {
+      console.log("Failed to handle signed claim with error '" + message + "' for signed-claim response:", res)
+      this.setState({ claimStoredError: "Some error happened.  Try reloading the page and signing again.", loadingClaimStoreResponse: false })
+      window.alert(message)
+    })
 
   }
 
@@ -302,10 +316,16 @@ class SignClaim extends ErrorHandlingComponent {
   }
 
   signClaim() {
-    this.setState({responseJWT: ''})
-    let claimToSign = this.state.unsignedClaim
-    var subject = this.getSubject(claimToSign) || ''
-    uportConnect.requestVerificationSignature(claimToSign, subject, SignReqID)
+    if (this.state.claimStoredResponse || this.state.claimStoredError) {
+      // somehow, the claim gets lost after it's signed and we get no resolution message
+      window.alert("Please reload the page to submit another claim or confirmation.")
+    } else {
+      console.log("Sending claim to be signed...")
+      this.setState({claimStoredError: '', claimStoredResponse: '', loadingClaimStoreResponse: true, responseJWT: ''})
+      let claimToSign = this.state.unsignedClaim
+      var subject = this.getSubject(claimToSign) || ''
+      uportConnect.requestVerificationSignature(claimToSign, subject, SignReqID)
+    }
   }
 
   render() {
@@ -372,6 +392,7 @@ class SignClaim extends ErrorHandlingComponent {
             sizeUnit={"px"}
           />
           <span style={{'color':'#66FF00'}}>{this.state.claimStoredResponse}</span>
+          <span style={{'color':'#FF6600'}}>{this.state.claimStoredError}</span>
         </div>
 
       {
