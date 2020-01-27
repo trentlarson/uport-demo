@@ -79,7 +79,7 @@ class SignClaim extends ErrorHandlingComponent {
     super(props)
     this.state = {
       claimStoredError: '',
-      claimStoredResponse: '',
+      claimStoredSuccess: '',
       jwtsToConfirm: [], // from JWTs in DB
       loadedConfirmsStarting: null,
       loadingClaimStoreResponse: false,
@@ -256,9 +256,27 @@ class SignClaim extends ErrorHandlingComponent {
       })
   }
 
+  signClaim() {
+    if (this.state.claimStoredSuccess || this.state.claimStoredError) {
+      // somehow, the claim gets lost after it's signed and we get no resolution message
+      window.alert("Please reload the page to submit another claim or confirmation.")
+    } else {
+      console.log("Sending claim to be signed...")
+      this.setState({claimStoredError: '', claimStoredSuccess: '', loadingClaimStoreResponse: true, responseJWT: ''})
+      let claimToSign = this.state.unsignedClaim
+      var subject = this.getSubject(claimToSign) || ''
+      uportConnect.requestVerificationSignature(claimToSign, subject, SignReqID)
+    }
+  }
+
   handleSignedClaim(res) {
     console.log("Successfully received signed claim.  Now will verify it...")
-    //console.log(res) // format: { id: "SignRequest", payload: "...", data: undefined }
+    console.log(res) // format: { id: "SignRequest", payload: "[JWT]...", data: undefined }
+
+    this.setState({
+      responseJWT: res.payload,
+      responseJSON: null
+    })
 
     verifyJWT(res.payload)
     .then(json => {
@@ -272,7 +290,6 @@ class SignClaim extends ErrorHandlingComponent {
       //console.log('json', JSON.stringify(json))
 
       this.setState({
-        responseJWT: res.payload,
         responseJSON: json.payload
       })
       fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim', {
@@ -285,7 +302,7 @@ class SignClaim extends ErrorHandlingComponent {
         .then(this.alertOrReturnJson("saving signed claim"))
         .then(data => {
           console.log("Successfully finished recording signed claim.")
-          this.setState({ claimStoredResponse: "Success!  Your claim is saved with ID " + data, loadingClaimStoreResponse: false })
+          this.setState({ claimStoredSuccess: "Success!  Your claim is saved with ID " + data, loadingClaimStoreResponse: false })
         })
         .catch(err => {
           console.log("Failed to fully record signed claim.")
@@ -313,19 +330,6 @@ class SignClaim extends ErrorHandlingComponent {
 
     // now set the state
     this.setState({ unsignedClaim: newConfirm, jwtsToConfirm: newClaims })
-  }
-
-  signClaim() {
-    if (this.state.claimStoredResponse || this.state.claimStoredError) {
-      // somehow, the claim gets lost after it's signed and we get no resolution message
-      window.alert("Please reload the page to submit another claim or confirmation.")
-    } else {
-      console.log("Sending claim to be signed...")
-      this.setState({claimStoredError: '', claimStoredResponse: '', loadingClaimStoreResponse: true, responseJWT: ''})
-      let claimToSign = this.state.unsignedClaim
-      var subject = this.getSubject(claimToSign) || ''
-      uportConnect.requestVerificationSignature(claimToSign, subject, SignReqID)
-    }
   }
 
   render() {
@@ -391,7 +395,7 @@ class SignClaim extends ErrorHandlingComponent {
             size={30}
             sizeUnit={"px"}
           />
-          <span style={{'color':'#66FF00'}}>{this.state.claimStoredResponse}</span>
+          <span style={{'color':'#66FF00'}}>{this.state.claimStoredSuccess}</span>
           <span style={{'color':'#FF6600'}}>{this.state.claimStoredError}</span>
         </div>
 
