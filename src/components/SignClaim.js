@@ -482,7 +482,7 @@ class SignClaim extends ErrorHandlingComponent {
           </JSONWrapper>
 
           <SignLink href={"/signClaim?claim=" + encodeURIComponent(JSON.stringify(this.state.unsignedClaim))}>
-          Here is a link to this claim, useful for sharing.
+          Here is a link to this claim (useful for sharing).
           </SignLink>
 
 

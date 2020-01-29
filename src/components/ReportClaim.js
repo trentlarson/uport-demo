@@ -126,7 +126,7 @@ class ReportClaim extends Component {
             .map(issuer =>
                  <li key={issuer}>{issuer}{isHiddenDid(issuer) ? "*" : ""}
                  {this.state.confirmPublicUrls && this.state.confirmPublicUrls[issuer]
-                  ? <a href={this.state.confirmPublicUrls[issuer]}>&nbsp;- Public</a>
+                  ? <a href={this.state.confirmPublicUrls[issuer]}><span style={{'textDecoration': 'underline', 'color':'#8888FF'}}>&nbsp;- Public</span></a>
                   : ""
                  }
                  </li>)
