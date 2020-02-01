@@ -1,5 +1,6 @@
 // Frameworks
 import qs from 'qs'
+import R from 'ramda'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { HashLoader } from 'react-spinners'
@@ -132,6 +133,13 @@ class ReportClaim extends Component {
                  </li>)
         }
         </ul>
+        <div>
+        {
+          R.any(isHiddenDid, this.state.confirmIssuers)
+          ? "* You cannot see HIDDEN IDs because they're not in your network.  They must confirm one of your claims to be visible to you."
+          : ""
+        }
+        </div>
 
         <h5>Claim Details</h5>
 
