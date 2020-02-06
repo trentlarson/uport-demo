@@ -10,6 +10,7 @@ import { HashLoader } from 'react-spinners'
 import { bindActionCreators } from 'redux'
 import qs from 'qs'
 import styled from 'styled-components'
+import util from 'util'
 
 import ErrorHandlingComponent from './ErrorHandlingComponent'
 import * as AppActions from '../actions/AppActions'
@@ -85,6 +86,7 @@ class SignClaim extends ErrorHandlingComponent {
       loadingClaimStoreResponse: false,
       loadingConfirmations: false,
       loadingMoreConfirmations: false,
+      progressLog: [],
       responseJWT: '',
       responseJSON: null,
       unsignedClaim: this.defaultClaim(props),
@@ -99,6 +101,12 @@ class SignClaim extends ErrorHandlingComponent {
         this.setState({claimStoredError: "Some error happened.  Try reloading the page and signing again.", loadingClaimStoreResponse: false, responseJWT: error})
       })
 
+  }
+
+  logMessage(messageObj) {
+    console.log(messageObj)
+    // ... plus, for times we're on mobile:
+    this.setState({progressLog: R.append(messageObj, this.state.progressLog)})
   }
 
   defaultClaim(props) {
@@ -264,7 +272,7 @@ class SignClaim extends ErrorHandlingComponent {
       // somehow a second claim gets lost after it's signed and we get no resolution message
       window.alert("Please reload the page to submit another claim or confirmation.")
     } else {
-      console.log("Sending claim to be signed...")
+      this.logMessage("Sending claim to be signed...")
       this.setState({claimStoredError: '', claimStoredSuccess: '', loadingClaimStoreResponse: true, responseJWT: ''})
       let claimToSign = this.state.unsignedClaim
       var subject = this.getSubject(claimToSign) || ''
@@ -273,8 +281,8 @@ class SignClaim extends ErrorHandlingComponent {
   }
 
   handleSignedClaim(res) {
-    console.log("Successfully received signed claim.  Now will verify it...")
-    console.log(res) // format: { id: "SignRequest", payload: "[JWT]...", data: undefined }
+    this.logMessage("Successfully received signed claim.  Now will verify it...")
+    this.logMessage(res) // format: { id: "SignRequest", payload: "[JWT]...", data: undefined }
 
     // format: {header:..., payload:..., signature:... data:...}
     let decoded = decodeJWT(res.payload)
@@ -286,14 +294,14 @@ class SignClaim extends ErrorHandlingComponent {
 
     verifyJWT(res.payload)
     .then(json => {
-      console.log("Successfully verified signed claim.  Now will record it...")
+      this.logMessage("Successfully verified signed claim.  Now will record it...")
 
       // json format: https://github.com/decentralized-identity/did-jwt/blob/v0.1.3/src/JWT.js#L103
       // { "payload":{"iat":1547430185,"exp":1547516585,"sub":"did:ethr:...","claim":{...},"iss":"did:ethr:..."},
       //   "doc":{"@context":"https://w3id.org/did/v1","id":"did:ethr:...","publicKey":[{"id":"did:ethr:...#owner","type":"Secp256k1VerificationKey2018","owner":"did:ethr:...","ethereumAddress":"..."}],"authentication":[{"type":"Secp256k1SignatureAuthentication2018","publicKey":"did:ethr:...#owner"}]},
       //    "issuer":"did:ethr:...",
       //    "signer":{"id":"did:ethr:...#owner","type":"Secp256k1VerificationKey2018","owner":"did:ethr:...","ethereumAddress":"..."},"jwt":"..."}
-      //console.log('json', JSON.stringify(json))
+      //this.logMessage('Result json: ' + JSON.stringify(json))
 
       fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim', {
         method: 'POST',
@@ -304,18 +312,21 @@ class SignClaim extends ErrorHandlingComponent {
         body: JSON.stringify({jwtEncoded:res.payload})})
         .then(this.alertOrReturnJson("saving signed claim"))
         .then(data => {
-          console.log("Successfully finished recording signed claim.")
+          this.logMessage("Successfully finished recording signed claim.")
           this.setState({ claimStoredSuccess: "Success!  Your claim is saved with ID " + data, loadingClaimStoreResponse: false })
         })
         .catch(err => {
-          console.log("Failed to fully record signed claim.")
+          this.logMessage("Failed to fully record signed claim:")
+          this.logMessage(err)
           this.setState({ claimStoredError: "Some error happened.  Try reloading the page and signing again.", loadingClaimStoreResponse: false })
         })
     })
     .catch(message => {
-      console.log("Failed to handle signed claim with error '" + message + "' for signed-claim response:", res)
+      this.logMessage("Failed to handle signed claim with error for signed-claim response:" + message)
+      this.logMessage(message)
+      this.logMessage("Response:")
+      this.logMessage(res)
       this.setState({ claimStoredError: "Some error happened.  Try reloading the page and signing again.  Sometimes adding or removing characters from the message (eg. date milliseconds) makes a difference.", loadingClaimStoreResponse: false })
-      window.alert(message)
     })
 
   }
@@ -548,6 +559,14 @@ class SignClaim extends ErrorHandlingComponent {
                 locale='en'
            />
            </JSONWrapper>
+           <ul>
+            { this.state.progressLog.length === 0 ? "" : "Progress Log" }
+            { this.state.progressLog.map((val, idx) => {
+              return <li key={idx}>{val.toString()}<br/>
+                Inspected: {util.inspect(val, {depth: null})}
+              </li>
+            })}
+           </ul>
         </div>
         </div>
       </WelcomeWrap>
