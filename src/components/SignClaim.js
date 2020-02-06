@@ -196,7 +196,9 @@ class SignClaim extends ErrorHandlingComponent {
   }
 
   getSubject(claim) {
-    var subject
+    // Now the "sub" is required.
+    // https://github.com/uport-project/uport-connect/blob/v1.1.11/src/Connect.js#L332
+    var subject = "UNKNOWN"
     switch (claim['@type']) {
       case 'JoinAction': subject = claim.agent && claim.agent.did; break;
       case 'Organization': subject = claim.member && claim.member.member && claim.member.member.identifier; break;
@@ -205,6 +207,8 @@ class SignClaim extends ErrorHandlingComponent {
         var subjects = R.uniq(R.map(this.getSubject)(claim.originalClaims))
         if (subjects.length === 1) {
           subject = subjects[0]
+        } else {
+          subject = "MULTIPLE"
         }
         break;
       default:
@@ -376,6 +380,7 @@ class SignClaim extends ErrorHandlingComponent {
           sizeUnit={"px"}
         />
       }
+      <br/>
       {
         (this.state.unsignedClaim.originalClaims)
           ?
