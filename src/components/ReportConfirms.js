@@ -33,7 +33,7 @@ class EventDetails extends Component {
       <ChoiceButton
         onClick={() => {
           this.props.onChoice(this.state.event)
-          let url = 'http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/event/' + this.state.event.id + '/actionClaimsAndConfirmations'
+          let url = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/event/' + this.state.event.id + '/actionClaimsAndConfirmations'
           fetch(url, {
             headers: {
               "Content-Type": "application/json",
@@ -82,7 +82,7 @@ class Reports extends Component {
   }
 
   componentDidMount() {
-    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/event', {
+    fetch(process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/event', {
       headers: {
         "Content-Type": "application/json",
         "Uport-Push-Token": getUserToken(this.props)

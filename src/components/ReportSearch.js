@@ -53,7 +53,7 @@ class ReportClaims extends ErrorHandlingComponent {
   }
 
   doSearch(text) {
-    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + `/api/claim?claimContents=${this.state.queryValue}`, {
+    fetch(process.env.REACT_APP_ENDORSER_CH_HOST_PORT + `/api/claim?claimContents=${this.state.queryValue}`, {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",
@@ -67,7 +67,7 @@ class ReportClaims extends ErrorHandlingComponent {
   }
 
   doEndpointCall(endpoint) {
-    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + endpoint, {
+    fetch(process.env.REACT_APP_ENDORSER_CH_HOST_PORT + endpoint, {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",

@@ -259,7 +259,7 @@ class SignClaim extends ErrorHandlingComponent {
     let loadMoreStartingStr = loadMoreStarting.toISO()
 
 
-    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim/?issuedAt_greaterThanOrEqualTo=' + loadMoreStartingStr + "&issuedAt_lessThan=" + loadMoreEndingStr + "&excludeConfirmations=true", {
+    fetch(process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim/?issuedAt_greaterThanOrEqualTo=' + loadMoreStartingStr + "&issuedAt_lessThan=" + loadMoreEndingStr + "&excludeConfirmations=true", {
       headers: {
         "Content-Type": "application/json",
         "Uport-Push-Token": getUserToken(this.props)
@@ -307,7 +307,7 @@ class SignClaim extends ErrorHandlingComponent {
       //    "signer":{"id":"did:ethr:...#owner","type":"Secp256k1VerificationKey2018","owner":"did:ethr:...","ethereumAddress":"..."},"jwt":"..."}
       //this.logMessage('Result json: ' + JSON.stringify(json))
 
-      fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim', {
+      fetch(process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",

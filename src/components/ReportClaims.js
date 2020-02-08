@@ -40,7 +40,7 @@ class ReportClaims extends Component {
   }
 
   componentDidMount() {
-    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim?issuer=' + this.state.subject, {
+    fetch(process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim?issuer=' + this.state.subject, {
       headers: {
         "Content-Type": "application/json",
         "Uport-Push-Token": getUserToken(this.props)

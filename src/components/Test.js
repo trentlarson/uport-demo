@@ -89,8 +89,8 @@ class SignClaim extends Component {
 
   async componentDidMount() {
     /**
-    if (process.env.REACT_APP_ENDORSER_CH_HOST_PORT.startsWith("localhost")) {
-      fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim', {
+    if (process.env.REACT_APP_ENDORSER_CH_HOST_PORT.startsWith("http://localhost")) {
+      fetch(process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",

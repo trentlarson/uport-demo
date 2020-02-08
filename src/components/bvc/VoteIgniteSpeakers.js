@@ -143,7 +143,7 @@ class VoteIgniteSpeakers extends ErrorHandlingComponent {
   }
 
   componentDidMount() {
-    fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/report/voteCounts', {
+    fetch(process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/report/voteCounts', {
       headers: {
         "Content-Type": "application/json",
         "Uport-Push-Token": getUserToken(this.props)
@@ -176,7 +176,7 @@ class VoteIgniteSpeakers extends ErrorHandlingComponent {
     verifyJWT(res.payload).then(json => {
       console.log("Response JWT", res.payload)
       console.log("Response JSON", json.payload)
-      fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim', {
+      fetch(process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",

@@ -50,7 +50,7 @@ class ReportClaim extends Component {
   retrieveForClaim() {
     if (this.state.claimId) {
       this.setState({claimObj: null, confirmIssuers: [], errorMessage: "", loadingConfirmations: true }, () =>
-        fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim/' + this.state.claimId, {
+        fetch(process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim/' + this.state.claimId, {
           headers: {
             "Content-Type": "application/json",
             "Uport-Push-Token": getUserToken(this.props)
@@ -67,7 +67,7 @@ class ReportClaim extends Component {
           this.setState({ claimObj: data })
         })
         .then(() => {
-          fetch('http://' + process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/report/issuersWhoClaimedOrConfirmed?claimId=' + this.state.claimId, {
+          fetch(process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/report/issuersWhoClaimedOrConfirmed?claimId=' + this.state.claimId, {
             headers: {
               "Content-Type": "application/json",
               "Uport-Push-Token": getUserToken(this.props)
