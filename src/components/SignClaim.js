@@ -14,7 +14,7 @@ import util from 'util'
 
 import ErrorHandlingComponent from './ErrorHandlingComponent'
 import * as AppActions from '../actions/AppActions'
-import { claimDescription } from '../utilities/claims'
+import { claimDescription, isHiddenDid } from '../utilities/claims'
 import { getUserDid, getUserToken } from '../utilities/claimsTest'
 import { uportConnect } from '../utilities/uportSetup'
 
@@ -97,7 +97,8 @@ class SignClaim extends ErrorHandlingComponent {
     uportConnect.onResponse(SignReqID)
       .then(this.handleSignedClaim)
       .catch(error => {
-        console.log("Failed to handle signed claim with error:", error)
+        this.logMessage("Failed to handle signed claim with error:")
+        this.logMessage(error)
         this.setState({claimStoredError: "Some error happened.  Try reloading the page and signing again.", loadingClaimStoreResponse: false, responseJWT: error})
       })
 
@@ -195,6 +196,9 @@ class SignClaim extends ErrorHandlingComponent {
     return result
   }
 
+  /**
+   @return either a single DID subject or MULTIPLE if many or UNKNOWN if none
+   **/
   getSubject(claim) {
     // Now the "sub" is required.
     // https://github.com/uport-project/uport-connect/blob/v1.1.11/src/Connect.js#L332
@@ -205,13 +209,21 @@ class SignClaim extends ErrorHandlingComponent {
       case 'Tenure': subject = claim.party && claim.party.did; break;
       case 'Confirmation':
         var subjects = R.uniq(R.map(this.getSubject)(claim.originalClaims))
-        if (subjects.length === 1) {
+        // some people sign hidden DIDs; let's just ignore them
+        subjects = R.reject(isHiddenDid, subjects)
+        if (subjects.length === 0) {
+          // Weird... there's either no claim or they're all hidden DIDs.
+          // We'll just keep it "UNKNOWN".
+        } else if (subjects.length === 1) {
           subject = subjects[0]
         } else {
           subject = "MULTIPLE"
         }
         break;
       default:
+    }
+    if (subject === null) {
+      subject = "UNKNOWN"
     }
     return subject
   }
@@ -279,7 +291,7 @@ class SignClaim extends ErrorHandlingComponent {
       this.logMessage("Sending claim to be signed...")
       this.setState({claimStoredError: '', claimStoredSuccess: '', loadingClaimStoreResponse: true, responseJWT: ''})
       let claimToSign = this.state.unsignedClaim
-      var subject = this.getSubject(claimToSign) || ''
+      var subject = this.getSubject(claimToSign)
       uportConnect.requestVerificationSignature(claimToSign, {sub:subject}, SignReqID)
     }
   }
