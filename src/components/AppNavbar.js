@@ -21,16 +21,14 @@ const NavBar = styled.nav`
 `
 const LogoLink = styled.a`
   color: #FFFFFF;
-  text-decoration: none;
+  text-decoration: underline;
 `
 const DemoText = styled.span`
   font-weight: bold;
-  text-decoration: none
 `
 
 const LeftArea = styled.div`
   display: block;
-  text-decoration: none
 `
 const RightArea = styled.div`
   display: block;

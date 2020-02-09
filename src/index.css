@@ -40,15 +40,7 @@ section {
 
 a {
   color: white;
-  text-decoration: none;
   display: inline-block;
-}
-a:hover {
-  color: white;
-  text-decoration: underline;
-}
-a.external {
-  text-decoration: underline;
 }
 
 h4 {

@@ -31,11 +31,9 @@ const ConnectUport = styled.button`
 `
 const MoreLink = styled.a`
   color: #AAAAFF;
-  text-decoration: underline;
 `
 const SignLink = styled.a`
   color: #AAAAFF;
-  text-decoration: underline;
 `
 const ClaimButton = styled.button`
   margin-right: 20px;
