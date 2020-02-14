@@ -194,6 +194,20 @@ class SignClaim extends ErrorHandlingComponent {
     return result
   }
 
+  ageClaim(agentDid) {
+    agentDid = getUserDid() || agentDid
+    if (!agentDid) {
+      agentDid = uportConnect.did
+    }
+    let result = {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      additionalType: 'http://endorser.ch/schema/PersonOver21',
+      identifier: agentDid
+    }
+    return result
+  }
+
   /**
    @return either a single DID subject or MULTIPLE if many or UNKNOWN if none
    **/
@@ -445,6 +459,14 @@ class SignClaim extends ErrorHandlingComponent {
         defaultChecked={this.state.unsignedClaim && this.state.unsignedClaim['@type'] && this.state.unsignedClaim['@type'] === 'JoinAction'}
         /> Set to Join Action
         <br/>
+
+        {/* Over 21 */}
+        <input type="radio" name="claimType" onClick={()=>{
+          this.setState({unsignedClaim: null})
+          this.setState({unsignedClaim: this.ageClaim()})
+        }}/> Set to Over 21
+        <br/>
+
 
         {/* Org Role */}
         <input type="radio" name="claimType" onClick={()=>{
