@@ -240,6 +240,28 @@ class SignClaim extends ErrorHandlingComponent {
     return subject
   }
 
+  domicileClaim(agentDid) {
+    let result = {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "homeLocation": {
+        name: "Bountiful",
+        containedInPlace: {
+          name: "Utah"
+        }
+      }
+    }
+    // These settings are a bit different because it's possible that they give no user ID.
+    if (getUserDid()) {
+      result.identifier = { "did": getUserDid() }
+    } else if (agentDid) {
+      result.identifier = { "did": agentDid }
+    } else if (uportConnect.did) {
+      result.identifier = { "did": uportConnect.did }
+    }
+    return result
+  }
+
   ownershipClaim(agentDid, polygon) {
     if (!polygon) {
       polygon = DEFAULT_GEO_SHAPE
@@ -473,6 +495,14 @@ class SignClaim extends ErrorHandlingComponent {
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: this.orgRoleClaim()})
         }}/> Set to Organization Role
+        <br/>
+
+
+        {/* Domicile */}
+        <input type="radio" name="claimType" onClick={()=>{
+          this.setState({unsignedClaim: null})
+          this.setState({unsignedClaim: this.domicileClaim()})
+        }}/> Set to Domicile
         <br/>
 
 
