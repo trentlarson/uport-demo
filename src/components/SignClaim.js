@@ -479,14 +479,14 @@ class SignClaim extends ErrorHandlingComponent {
           this.setState({unsignedClaim: this.joinActionClaim()})
         }}
         defaultChecked={this.state.unsignedClaim && this.state.unsignedClaim['@type'] && this.state.unsignedClaim['@type'] === 'JoinAction'}
-        /> Set to Join Action
+        /> Join Action
         <br/>
 
         {/* Over 21 */}
         <input type="radio" name="claimType" onClick={()=>{
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: this.ageClaim()})
-        }}/> Set to Over 21
+        }}/> Over 21
         <br/>
 
 
@@ -494,7 +494,7 @@ class SignClaim extends ErrorHandlingComponent {
         <input type="radio" name="claimType" onClick={()=>{
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: this.orgRoleClaim()})
-        }}/> Set to Organization Role
+        }}/> Organization Role
         <br/>
 
 
@@ -502,7 +502,7 @@ class SignClaim extends ErrorHandlingComponent {
         <input type="radio" name="claimType" onClick={()=>{
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: this.domicileClaim()})
-        }}/> Set to Domicile
+        }}/> Domicile
         <br/>
 
 
@@ -510,7 +510,7 @@ class SignClaim extends ErrorHandlingComponent {
         <input type="radio" name="claimType" onClick={()=>{
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: this.ownershipClaim()})
-        }}/> Set to Plot Ownership
+        }}/> Plot Ownership
         <br/>
 
 
@@ -519,7 +519,7 @@ class SignClaim extends ErrorHandlingComponent {
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: confirmClaim([]), jwtsToConfirm: [], loadedConfirmsStarting: null},
                         () => this.loadMoreJwts())
-        }}/> Set to Confirmation...
+        }}/> Confirmation...
 
         <span>{
           this.state.unsignedClaim['@type'] === 'Confirmation'
