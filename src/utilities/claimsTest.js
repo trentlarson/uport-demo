@@ -17,7 +17,7 @@ export const TEST_CREDS = [
   { creds: { did: 'did:ethr:0x888acf84fa5793a5e0dd64ac25bcfc55e7f25d8f', privateKey: '9c18f36cdf8ff55e9b0ceef77ed5fe69e5d93009a881d5c552afe8aad66175a7' }},
   { creds: { did: 'did:ethr:0x999676de3eaa1bcf5ebae2467ac36682069215e1', privateKey: '83239f76f6eb46f75b977b43c60184f57410a4039ce19a674aa815f0203ae773' }},
   { creds: { did: 'did:ethr:0xaaa29f09c29fb0666b8302b64871d7029032b479', privateKey: 'b4507c7473031d213a1e0a6c3eaf68517519ef0f852928d6d7dffdc851d5ccda' }, name: "Annabelle"},
-  { creds: { did: 'did:ethr:0xbbbee8d9c34746aac37116be7384a8228d73e6aa', privateKey: 'feb8d652df079b3c6d85f78be40804f6993b107482787cf9a9ec761f452432b9' }, name: "Annabelle's Boyfriend"},
+  { creds: { did: 'did:ethr:0xbbbee8d9c34746aac37116be7384a8228d73e6aa', privateKey: 'feb8d652df079b3c6d85f78be40804f6993b107482787cf9a9ec761f452432b9' }, name: "Annabelle's Friend"},
   { creds: { did: 'did:ethr:0xccc4645181a6158aa253a5765e1edde893fb164b', privateKey: 'b4d3efaf5475ebbbd665fe31cba81e398248971b5708093e3a89fcecb0824d3f' }},
   { creds: { did: 'did:ethr:0xddd6c03f186c9e27bc150d3629d14d5dbea0effd', privateKey: 'aa7a540eb94f9a24682cb4ff9ee6918be7397b1f3349e4eda4493ab7e95c32c0' }},
   { creds: { did: 'did:ethr:0xeeed589b09a449ae6ccf89ad0e9effe74072f829', privateKey: 'bad6e7ab26eb2cc98ec39ccc6bb7b814b8bf08dcde184e7d0514a914d032b963' }},
