@@ -29,7 +29,7 @@ class Welcome extends Component {
       console.log("res.payload")
       console.log(res.payload)
       this.props.actions.connectUport(uportConnect.state)
-      this.props.history.push('/signclaim')
+      this.props.history.push('/signClaim')
     })
   }
 

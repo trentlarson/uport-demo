@@ -1,14 +1,16 @@
 // Frameworks
 import React, { Component } from 'react'
+import JSONInput from 'react-json-editor-ajrm'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import { HashLoader } from 'react-spinners'
 import { bindActionCreators } from 'redux'
+
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
 import { uportConnect } from '../utilities/uportSetup'
 import { insertSpacesBeforeCaps, claimDescription } from '../utilities/claims'
 import { getUserToken } from '../utilities/claimsTest'
-import { withRouter } from 'react-router-dom'
-import JSONInput from 'react-json-editor-ajrm'
 
 
 const WelcomeWrap = styled.section``
@@ -35,6 +37,7 @@ class ReportClaims extends Component {
       claim: {},
       claims: [],
       confirmations: [],
+      loading: true,
       subject: subject
     }
   }
@@ -56,7 +59,7 @@ class ReportClaims extends Component {
             claims.push(d)
           }
         }
-        this.setState({ claims: claims, confirmations: confirmations })
+        this.setState({ claims: claims, confirmations: confirmations, loading: false })
       })
   }
 
@@ -84,29 +87,32 @@ class ReportClaims extends Component {
         </div>
 
         <h3>Your Claims</h3>
+
+        <div style={{'marginLeft':'auto','marginRight':'auto','width':'2em'}}>
+        <HashLoader
+          color={'#FF0000'}
+          loading={this.state.loading}
+          size={30}
+          sizeUnit={"px"}
+        />
+        </div>
+
         {
           this.state
             .claims
             .map(jwt =>
                  {
-                   var claim = jwt.claim
-                   if (!claim && jwt.claimEncoded) {
-                     claim = JSON.parse(atob(jwt.claimEncoded))
-                   }
-                   if (claim) {
-                     return <div key={jwt.id}>
-                       <ChoiceButton onClick={() => { this.setState({claim:claim}) }}>{insertSpacesBeforeCaps(jwt.claimType)}</ChoiceButton>
-                       <ul>
-                       <li>
-                       <span>{claimDescription(claim)}</span>
-                       </li>
-                       </ul>
-                       </div>
-                   } else {
-                     return <div key={jwt.id}>
-                       <ChoiceButton>{insertSpacesBeforeCaps(jwt.claimType) + " (no details)"}</ChoiceButton>
-                       </div>
-                   }
+                   // REMEMBER: if you change this format you'll probably want to change the confirmation format, too (below).
+                   return <div key={jwt.id}>
+                     <ChoiceButton onClick={() => { this.props.history.push('/reportClaim?claimId=' + jwt.id) }}>{insertSpacesBeforeCaps(jwt.claimType)}</ChoiceButton>
+                       <br/>
+                       <br/>
+                       { jwt.claim ? claimDescription(jwt.claim) : "(details error)" }
+                       &nbsp;
+                       <a href="#" onClick={() => { if (jwt.claim) { this.setState({claim:jwt.claim}) } } }>(load above)</a>
+                       <br/>
+                       <br/>
+                     </div>
                  }
                 )
         }
@@ -116,30 +122,24 @@ class ReportClaims extends Component {
             .confirmations
             .map(jwt =>
                  {
-                   if (jwt.encoded) {
-                     let claim = JSON.parse(atob(jwt.claimEncoded))
-                     let embeddedClaims = claim.originalClaims || []
-                     if (claim.originalClaim) {
-                       embeddedClaims.push(claim.originalClaim)
-                     }
-                     let result = []
-                     for (var i = 0; i < embeddedClaims.length; i++) {
-                       var embeddedClaim = embeddedClaims[i]
-                       result.push(
-                           <div key={jwt.id + "_" + i}>
-                           <ChoiceButton onClick={() => { this.setState({claim:claim}) }}>{jwt.claimType}</ChoiceButton>
-                           <ul>
-                           <li>{insertSpacesBeforeCaps(embeddedClaim['@type'])}</li>
-                           </ul>
-                           </div>
-                       )
-                     }
-                     return result
-                   } else {
-                     return <div key={jwt.id}>
-                       <ChoiceButton>{insertSpacesBeforeCaps(jwt.claimType) + " (no details)"}</ChoiceButton>
-                       </div>
+                   let embeddedClaims = jwt.claim.originalClaims || []
+                   if (jwt.claim.originalClaim) {
+                     embeddedClaims.push(jwt.claim.originalClaim)
                    }
+                   return <div key={jwt.id}>
+                     <ChoiceButton onClick={() => { this.props.history.push('/reportClaim?claimId=' + jwt.id) } }>{jwt.claimType}</ChoiceButton>
+                     <ul>
+                       { embeddedClaims.map(
+                         embeddedClaim =>
+                           <li>
+                           { claimDescription(embeddedClaim) }
+                           &nbsp;
+                           <a href="#" onClick={() => { this.setState({claim:embeddedClaim}) }}>(load above)</a>
+                           </li>
+                         )
+                       }
+                     </ul>
+                   </div>
                  }
                 )
         }
