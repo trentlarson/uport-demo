@@ -138,7 +138,7 @@ class SignClaim extends ErrorHandlingComponent {
         // it's not Saturday, so let's default to last Saturday
         bvolTime = bvolTime.minus({week:1})
       }
-      let eventStartDateObj = bvolTime.set({weekday:6}).set({hour:8}).startOf("hour")
+      let eventStartDateObj = bvolTime.set({weekday:6}).set({hour:9}).startOf("hour")
       // Hack, but the full ISO pushes the length to 340 which crashes verifyJWT!  Crazy!
       eventStartDate = eventStartDateObj.toISO({suppressMilliseconds:true})
     }
