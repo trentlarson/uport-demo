@@ -33,7 +33,7 @@ class ReportClaims extends ErrorHandlingComponent {
     super(props)
     this.state = {
       queryValue: "",
-      endpointValue: "",
+      endpointValue: '/api/report/orgRoleClaimsAndConfirmationsOnDate?orgName=Bountiful%20Voluntaryist%20Community&roleName=Secretary&onDate=2020-02-02T00:00:00Z',
       searchResults: {},
       processCode: `searchResults.map((obj) => obj.id)`,
       processed: {}
@@ -114,7 +114,7 @@ class ReportClaims extends ErrorHandlingComponent {
         <br/>
 
         <div>
-        <input type='text' defaultValue='/api/report/orgRoleClaimsAndConfirmationsOnDate?orgName=&roleName=&onDate='onChange={this.updateEndpointValue.bind(this)}/>
+        <input type='text' defaultValue={ this.state.endpointValue } onChange={this.updateEndpointValue.bind(this)}/>
         <ChoiceButton onClick={() => this.doEndpointCall(this.state.endpointValue)}>Call Endpoint</ChoiceButton>
         </div>
 
