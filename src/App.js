@@ -104,6 +104,7 @@ class App extends ErrorBoundary {
           <Route path='/logout' component={LogOut}/>
 
           <Route path='/bvc' component={BvcVoteIgniteSpeakers}/>
+          <Route path='/tasks' render={() => window.location = "https://raw.githubusercontent.com/trentlarson/endorser-ch/master/tasks.yml"}/>
 
           <Route path='/transaction' component={SignTransaction}/>
           <Route path='/credentials' component={CollectCredentials}/>
