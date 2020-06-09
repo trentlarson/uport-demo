@@ -25,7 +25,7 @@ To run as a particular test user, edit src/utilities/claimsTest.js and set TEST_
 
 Cloned from [uPort Demo](https://github.com/uport-project/demo)
 
-
+Note that new deployments can remove the "legacy Confirmation" code.
 
 
 

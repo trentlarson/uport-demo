@@ -58,9 +58,9 @@ const THIS_YEAR_END_DATE_STRING = DateTime.local().endOf('year').toISODate()
 
 function confirmClaim(claims) {
   return {
-    "@context": "http://endorser.ch",
-    "@type": "Confirmation",
-    "originalClaims": claims
+    "@context": "http://schema.org",
+    "@type": "AgreeAction",
+    "object": claims
   }
 }
 
@@ -208,6 +208,20 @@ class SignClaim extends ErrorHandlingComponent {
     return result
   }
 
+  confirmationSubject(claim) {
+    var subjects = R.uniq(R.map(this.getSubject)(claim.object))
+    // some people sign hidden DIDs; let's just ignore them
+    subjects = R.reject(isHiddenDid, subjects)
+    if (subjects.length === 0) {
+      // Weird... there's either no claim or they're all hidden DIDs.
+      return null
+    } else if (subjects.length === 1) {
+      return subjects[0]
+    } else {
+      return "MULTIPLE"
+    }
+  }
+
   /**
    @return either a single DID subject or MULTIPLE if many or UNKNOWN if none
    **/
@@ -216,22 +230,10 @@ class SignClaim extends ErrorHandlingComponent {
     // https://github.com/uport-project/uport-connect/blob/v1.1.11/src/Connect.js#L332
     var subject = "UNKNOWN"
     switch (claim['@type']) {
+      case 'AgreeAction': subject = this.confirmationSubject(claim) || subject; break;
       case 'JoinAction': subject = claim.agent && claim.agent.did; break;
       case 'Organization': subject = claim.member && claim.member.member && claim.member.member.identifier; break;
       case 'Tenure': subject = claim.party && claim.party.did; break;
-      case 'Confirmation':
-        var subjects = R.uniq(R.map(this.getSubject)(claim.originalClaims))
-        // some people sign hidden DIDs; let's just ignore them
-        subjects = R.reject(isHiddenDid, subjects)
-        if (subjects.length === 0) {
-          // Weird... there's either no claim or they're all hidden DIDs.
-          // We'll just keep it "UNKNOWN".
-        } else if (subjects.length === 1) {
-          subject = subjects[0]
-        } else {
-          subject = "MULTIPLE"
-        }
-        break;
       default:
     }
     if (subject === null) {
@@ -387,7 +389,7 @@ class SignClaim extends ErrorHandlingComponent {
     var oldUnsigned = this.state.unsignedClaim
     this.setState({ unsignedClaim: {} })
     var newConfirm = JSON.parse(JSON.stringify(oldUnsigned))
-    newConfirm.originalClaims.push(jwt.claim)
+    newConfirm.object.push(jwt.claim)
 
     // remove this claim from the buttons
     var newClaims = R.reject((remaining)=>remaining.id === jwt.id, this.state.jwtsToConfirm)
@@ -403,14 +405,14 @@ class SignClaim extends ErrorHandlingComponent {
         R.map(jwt => {
           return <span key={jwt.id}>
             {
-              this.state.unsignedClaim.originalClaims
+              this.state.unsignedClaim.object
               ?
                 <ClaimButton onClick={() => this.moveJwtClaimToUnsigned(jwt) }>
                   {jwt.claimType}<br/>
                   {claimDescription(jwt.claim)}
                 </ClaimButton>
               :
-                // whenever there is no "Confirmation" type loaded in the unsignedClam Claim Details (though that shouldn't happen)
+                // whenever there is no "AgreeAction" type loaded in the unsignedClam Claim Details (though that shouldn't happen)
                 ""
             }
             </span>
@@ -428,7 +430,7 @@ class SignClaim extends ErrorHandlingComponent {
       }
       <br/>
       {
-        (this.state.unsignedClaim.originalClaims)
+        (this.state.unsignedClaim.object)
           ?
             <MoreLink href="#" onClick={()=>this.loadMoreJwts()}>
               Load Previous to {this.state.loadedConfirmsStarting ? this.state.loadedConfirmsStarting.toISODate() : "today"}
@@ -514,7 +516,7 @@ class SignClaim extends ErrorHandlingComponent {
         <br/>
 
 
-        {/* Confirmations */}
+        {/* AgreeAction */}
         <input type="radio" name="claimType" onClick={()=>{
           this.setState({unsignedClaim: null})
           this.setState({unsignedClaim: confirmClaim([]), jwtsToConfirm: [], loadedConfirmsStarting: null},
@@ -522,8 +524,8 @@ class SignClaim extends ErrorHandlingComponent {
         }}/> Confirmation...
 
         <span>{
-          this.state.unsignedClaim['@type'] === 'Confirmation'
-            ? imgPerConfirm(this.state.unsignedClaim.originalClaims.length)
+          this.state.unsignedClaim['@type'] === 'AgreeAction'
+            ? imgPerConfirm(this.state.unsignedClaim.object.length)
             : ""
         }</span>
         <br/>

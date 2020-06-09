@@ -26,9 +26,9 @@ let jwtTemplate = {
 }
 
 let confirmationTemplate = {
-  "@context": "http://endorser.ch",
-  "@type": "Confirmation",
-  "originalClaims": [
+  "@context": "http://schema.org",
+  "@type": "AgreeAction",
+  "object": [
     // supply claims
   ]
 }
@@ -57,13 +57,13 @@ claimCornerBakeryTenureFor0.party.did = TEST_CREDS[0].did
 let confirmCornerBakeryTenureFor0By2Jwt = R.clone(jwtTemplate)
 confirmCornerBakeryTenureFor0By2Jwt.sub = TEST_CREDS[0].did
 confirmCornerBakeryTenureFor0By2Jwt.claim = R.clone(confirmationTemplate)
-confirmCornerBakeryTenureFor0By2Jwt.claim.originalClaims.push(R.clone(claimCornerBakeryTenureFor0))
+confirmCornerBakeryTenureFor0By2Jwt.claim.object.push(R.clone(claimCornerBakeryTenureFor0))
 confirmCornerBakeryTenureFor0By2Jwt.iss = TEST_CREDS[2].did
 
 let confirmCornerBakeryTenureFor0By3Jwt = R.clone(jwtTemplate)
 confirmCornerBakeryTenureFor0By3Jwt.sub = TEST_CREDS[0].did
 confirmCornerBakeryTenureFor0By3Jwt.claim = R.clone(confirmationTemplate)
-confirmCornerBakeryTenureFor0By3Jwt.claim.originalClaims.push(R.clone(claimCornerBakeryTenureFor0))
+confirmCornerBakeryTenureFor0By3Jwt.claim.object.push(R.clone(claimCornerBakeryTenureFor0))
 confirmCornerBakeryTenureFor0By3Jwt.iss = TEST_CREDS[3].did
 
 let claimProms =

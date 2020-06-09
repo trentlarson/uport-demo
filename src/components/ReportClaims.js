@@ -53,7 +53,9 @@ class ReportClaims extends Component {
         var claims = [], confirmations = []
         for (var i = 0; i < data.length; i++) {
           let d = data[i]
-          if (d.claimType === 'Confirmation') {
+          if (d.claimType === 'AgreeAction'
+              // can remove this for any new deployments without legacy Confirmation data
+              || d.claimType === 'Confirmation') {
             confirmations.push(d)
           } else {
             claims.push(d)
@@ -122,7 +124,10 @@ class ReportClaims extends Component {
             .confirmations
             .map(jwt =>
                  {
-                   let embeddedClaims = jwt.claim.originalClaims || []
+                   let embeddedClaims = jwt.claim.object || []
+                   if (jwt.claim.originalClaims) {
+                     embeddedClaims = embeddedClaims.concat(jwt.claim.originalClaims)
+                   }
                    if (jwt.claim.originalClaim) {
                      embeddedClaims.push(jwt.claim.originalClaim)
                    }
