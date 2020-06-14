@@ -16,7 +16,7 @@ cp .env.local .env
 
 ###### Development
 ```
-npm run start
+npm start
 ```
 
 

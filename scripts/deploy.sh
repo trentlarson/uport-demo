@@ -14,8 +14,20 @@ fi
 
 if ! [ -z "$(git status --porcelain)" ]
 then
-    echo "Sorry: you've got changes.  Run 'git status'"
-    exit 1
+    git status
+    echo ""
+    echo "Note that you've got those uncommitted changes.  They'll be pushed in the deploy."
+    echo "Will continue in 5..."
+    sleep 1
+    echo "4..."
+    sleep 1
+    echo "3..."
+    sleep 1
+    echo "2..."
+    sleep 1
+    echo "1..."
+    sleep 1
+    echo "Continuing with deploy."
 fi
 
 git checkout $1
@@ -26,12 +38,18 @@ rsync -azv --exclude .git --exclude-from .gitignore -e "ssh -i $2" . ubuntu@endo
 
 ssh -i $2 ubuntu@endorser.ch << EOF
   cd $DEPLOY_DIR
-  # since we're still running this as root (which is bad)
-  sudo chown -R ubuntu.ubuntu node_modules/.cache
-  # need to add --production on the end of "npm ci"
+
+  echo "Running: npm ci"
+  # Don't we need to add --production on the end of "npm ci"?
   npm ci
-  # need to add this
-  # npm prune --production
+
+  # There's a "deploy-production" script we should look into.
+  #npm run deploy-production
+
+  # I think this is useful, but it causes a failure at startup.
+  #echo "Running: npm prune"
+  #npm prune --production
+
   perl -p -i -e "s/VERSION=.*/VERSION=$1/g" .env
 EOF
 
