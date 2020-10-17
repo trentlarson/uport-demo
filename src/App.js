@@ -91,7 +91,7 @@ class App extends ErrorBoundary {
         <AppNavbar/>
         <AppBody>
           <Route exact path='/' component={Welcome}/>
-          <Route path='/signclaim' component={SignClaim} />
+          <Route path='/signClaim' component={SignClaim} />
           <Route path='/reportList' component={ReportList}/>
           <Route path='/publicReportList' component={PublicReportList}/>
           <Route path='/reportClaim' component={ReportClaim}/>

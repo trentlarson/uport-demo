@@ -22,6 +22,13 @@ const SubText = styled.p`
 const JSONWrapper = styled.div`
   font-family: monospace !important
 `
+const FullClaimButton = styled.button`
+margin-right: 20px;
+margin-top: 10px;
+margin-bottom: 10px;
+font-size: 12pt;
+padding: 10px;
+`
 
 class ReportClaim extends Component {
 
@@ -43,13 +50,16 @@ class ReportClaim extends Component {
       confirmIssuers: [],
       confirmPublicUrls: undefined, // may be an object with DID keys and URL values
       errorMessage: "",
+      fullClaimErrorMessage: "",
+      fullClaimObj: null,
       loadingConfirmations: false,
+      loadingFullClaimObj: false,
     }
   }
 
   retrieveForClaim() {
     if (this.state.claimId) {
-      this.setState({claimObj: null, confirmIssuers: [], errorMessage: "", loadingConfirmations: true }, () =>
+      this.setState({claimObj: null, confirmIssuers: [], errorMessage: "", fullClaimObj: null, loadingConfirmations: true }, () =>
         fetch(process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim/' + this.state.claimId, {
           headers: {
             "Content-Type": "application/json",
@@ -92,6 +102,32 @@ class ReportClaim extends Component {
     }
   }
 
+
+  retrieveFullClaim() {
+    if (this.state.claimId) {
+      this.setState({loadingFullClaimObj: true }, () => {
+        fetch(process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim/full/' + this.state.claimId, {
+          headers: {
+            "Content-Type": "application/json",
+            "Uport-Push-Token": getUserToken(this.props)
+          }})
+        .then(response => {
+          if (response.ok) {
+            return response.json()
+          } else {
+            console.log("Error on /api/claim/full/" + this.state.claimId + " with response" , response)
+            throw Error("Unable to access that full claim.")
+          }
+        })
+        .then(data => {
+          this.setState({ fullClaimObj: data, loadingFullClaimObj: false })
+        })
+        .catch(error => this.setState({fullClaimErrorMessage: error.message, loadingFullClaimObj: false}))
+      })
+    }
+  }
+
+
   componentDidMount() {
     this.retrieveForClaim()
   }
@@ -110,7 +146,11 @@ class ReportClaim extends Component {
         <br/>
         <div style={{'color':'#FF0000'}}>{ this.state.errorMessage }</div>
 
-        <h5>Confirmers</h5>
+        {
+          this.state.claimId
+          ? <h5>Confirmers</h5>
+          : ""
+        }
 
         <div style={{'marginLeft':'auto','marginRight':'auto','width':'2em'}}>
         <HashLoader
@@ -153,6 +193,39 @@ class ReportClaim extends Component {
           locale='en'
         />
         </JSONWrapper>
+
+      {
+        !this.state.claimId
+          ? ""
+          : (!this.state.fullClaimObj
+             ? <FullClaimButton onClick={() => this.retrieveFullClaim()}>
+               Load Full Claim
+             </FullClaimButton>
+             : <div>
+               Full Claim Data
+               <JSONWrapper>
+                 <JSONInput
+                   id='fullClaim'
+                   placeholder={ this.state.fullClaimObj ? this.state.fullClaimObj : [] }
+                   height='400px'
+                   width='590px'
+                   style={{body: {'fontSize': '10pt', textAlign: 'left', flex: 1}}}
+                   locale='en'
+                   viewOnly='true'
+                 />
+               </JSONWrapper>
+             </div>
+
+          )
+      }
+      <div style={{'color':'#FF0000'}}>{ this.state.fullClaimErrorMessage }</div>
+
+      <HashLoader
+        color={'#FF0000'}
+        loading={this.state.loadingFullClaimObj}
+        size={30}
+        sizeUnit={"px"}
+      />
 
       </WelcomeWrap>
     )
