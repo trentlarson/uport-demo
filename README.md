@@ -27,6 +27,13 @@ Cloned from [uPort Demo](https://github.com/uport-project/demo)
 
 Note that new deployments can remove the "legacy Confirmation" code.
 
+###### Release
+
+Create a release in GitHub, `git pull`, `scripts/deploy.sh release-endorser.ch.XXX ~/.ssh/id_rsa`
+
+
+
+
 
 
 
