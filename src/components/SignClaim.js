@@ -1,3 +1,13 @@
+
+/**
+
+ If you make changes here, also see the following which were copied:
+
+ AgreeAction.js
+ AttendedSaturdayMorning.js
+
+ */
+
 // Frameworks
 import { decodeJWT, verifyJWT } from 'did-jwt'
 import { DateTime, Duration } from 'luxon'

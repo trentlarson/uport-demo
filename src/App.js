@@ -7,6 +7,7 @@ import { Route, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
 // Components
+import AgreeAction from './components/AgreeAction'
 import AppNavbar from './components/AppNavbar'
 import Welcome from './components/Welcome'
 import PublicReportList from './components/PublicReportList'
@@ -92,6 +93,7 @@ class App extends ErrorBoundary {
         <AppNavbar/>
         <AppBody>
           <Route exact path='/' component={Welcome}/>
+          <Route path='/agreeAction' component={AgreeAction} />
           <Route path='/signClaim' component={SignClaim} />
           <Route path='/reportList' component={ReportList}/>
           <Route path='/publicReportList' component={PublicReportList}/>

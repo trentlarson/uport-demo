@@ -21,11 +21,11 @@ import qs from 'qs'
 import styled from 'styled-components'
 import util from 'util'
 
-import ErrorHandlingComponent from '../ErrorHandlingComponent'
-import * as AppActions from '../../actions/AppActions'
-import { isHiddenDid } from '../../utilities/claims'
-import { getUserDid, getUserToken } from '../../utilities/claimsTest'
-import { uportConnect } from '../../utilities/uportSetup'
+import ErrorHandlingComponent from './ErrorHandlingComponent'
+import * as AppActions from '../actions/AppActions'
+import { claimDescription, isHiddenDid } from '../utilities/claims'
+import { getUserToken } from '../utilities/claimsTest'
+import { uportConnect } from '../utilities/uportSetup'
 
 
 
@@ -38,17 +38,40 @@ const JSONWrapper = styled.div`
 const ConnectUport = styled.button`
   background-color: #4C8F50;
 `
+const MoreLink = styled.a`
+  color: #AAAAFF;
+`
 const SignLink = styled.a`
   color: #AAAAFF;
+`
+const ClaimButton = styled.button`
+  margin-right: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 12pt;
+  padding: 10px;
 `
 
 
 
 
-const DEFAULT_ORG_NAME = "Bountiful Voluntaryist Community"
-const DEFAULT_EVENT_NAME = "Saturday Morning Meeting"
+function confirmClaim(claims) {
+  return {
+    "@context": "http://schema.org",
+    "@type": "AgreeAction",
+    "object": claims
+  }
+}
 
-class AttendedSaturdayMeeting extends ErrorHandlingComponent {
+function imgPerConfirm(num) {
+  var result = []
+  for (var i = 0; i < num; i++) {
+    result.push(<img src="/green-check.png" key={i} alt="selected"/>)
+  }
+  return result
+}
+
+class SignClaim extends ErrorHandlingComponent {
 
   constructor (props) {
     super(props)
@@ -67,6 +90,8 @@ class AttendedSaturdayMeeting extends ErrorHandlingComponent {
     }
     this.signClaim = this.signClaim.bind(this)
     this.handleSignedClaim = this.handleSignedClaim.bind(this)
+
+    this.loadMoreJwts()
 
     uportConnect.onResponse(SignReqID)
       .then(this.handleSignedClaim)
@@ -97,42 +122,7 @@ class AttendedSaturdayMeeting extends ErrorHandlingComponent {
         }
       }
     }
-    return claim || this.joinActionClaim()
-  }
-
-  // Note that the default values cause the did-jwt library to fails when verifying a confirmation of that length, so we've changed the eventStartDate to an ISO date string without milliseconds to hack around it.
-  joinActionClaim(eventOrgName, eventName, eventStartDate, agentDid) {
-    if (!eventOrgName) {
-      eventOrgName = DEFAULT_ORG_NAME
-    }
-    if (!eventName) {
-      eventName = DEFAULT_EVENT_NAME
-    }
-    if (!eventStartDate) {
-      var bvolTime = DateTime.local()
-      if (bvolTime.weekday < 6) {
-        // it's not Saturday, so let's default to last Saturday
-        bvolTime = bvolTime.minus({week:1})
-      }
-      let eventStartDateObj = bvolTime.set({weekday:6}).set({hour:9}).startOf("hour")
-      // Hack, but the full ISO pushes the length to 340 which crashes verifyJWT!  Crazy!
-      eventStartDate = eventStartDateObj.toISO({suppressMilliseconds:true})
-    }
-    agentDid = getUserDid() || agentDid
-    if (!agentDid) {
-      agentDid = uportConnect.did
-    }
-    return {
-      "@context": "http://schema.org",
-      "@type": "JoinAction",
-      // note that there is constructor code below that sets "did" inside "agent"
-      "agent": { "did": agentDid },
-      "event": {
-        "organizer": { "name": eventOrgName },
-        "name": eventName,
-        "startTime": eventStartDate
-      }
-    }
+    return claim || confirmClaim([])
   }
 
   confirmationSubject(claim) {
@@ -158,37 +148,12 @@ class AttendedSaturdayMeeting extends ErrorHandlingComponent {
     var subject = "UNKNOWN"
     switch (claim['@type']) {
       case 'AgreeAction': subject = this.confirmationSubject(claim) || subject; break;
-      case 'JoinAction': subject = claim.agent && claim.agent.did; break;
-      case 'Organization': subject = claim.member && claim.member.member && claim.member.member.identifier; break;
-      case 'Tenure': subject = claim.party && claim.party.did; break;
       default:
     }
     if (subject === null) {
       subject = "UNKNOWN"
     }
     return subject
-  }
-
-  domicileClaim(agentDid) {
-    let result = {
-      "@context": "http://schema.org",
-      "@type": "Person",
-      "homeLocation": {
-        name: "Bountiful",
-        containedInPlace: {
-          name: "Utah"
-        }
-      }
-    }
-    // These settings are a bit different because it's possible that they give no user ID.
-    if (getUserDid()) {
-      result.identifier = { "did": getUserDid() }
-    } else if (agentDid) {
-      result.identifier = { "did": agentDid }
-    } else if (uportConnect.did) {
-      result.identifier = { "did": uportConnect.did }
-    }
-    return result
   }
 
   componentDidMount() {
@@ -208,7 +173,7 @@ class AttendedSaturdayMeeting extends ErrorHandlingComponent {
     let loadMoreEndingStr = loadMoreEnding.toISO()
     let loadMoreStartingStr = loadMoreStarting.toISO()
 
-
+console.log("-------------- funning a claim fetch")
     fetch(process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim/?issuedAt_greaterThanOrEqualTo=' + loadMoreStartingStr + "&issuedAt_lessThan=" + loadMoreEndingStr + "&excludeConfirmations=true", {
       headers: {
         "Content-Type": "application/json",
@@ -216,6 +181,7 @@ class AttendedSaturdayMeeting extends ErrorHandlingComponent {
       }})
       .then(response => response.json())
       .then(data => {
+console.log("-------------- got the claim fetch")
         let newClaims = R.concat(this.state.jwtsToConfirm, data)
         this.setState({ jwtsToConfirm: newClaims, loadedConfirmsStarting: loadMoreStarting, loadingConfirmations: false  })
       })
@@ -302,9 +268,58 @@ class AttendedSaturdayMeeting extends ErrorHandlingComponent {
 
   render() {
 
+    const confirmClaimButtons = <div>
+      {
+        R.map(jwt => {
+          return <span key={jwt.id}>
+            {
+              this.state.unsignedClaim.object
+              ?
+                <ClaimButton onClick={() => this.moveJwtClaimToUnsigned(jwt) }>
+                  {jwt.claimType}<br/>
+                  {claimDescription(jwt.claim)}
+                </ClaimButton>
+              :
+                // whenever there is no "AgreeAction" type loaded in the unsignedClam Claim Details (though that shouldn't happen)
+                ""
+            }
+            </span>
+        },
+        this.state.jwtsToConfirm
+        )
+      }
+      {
+        <HashLoader
+          color={'#FF0000'}
+          loading={this.state.loadingConfirmations}
+          size={30}
+          sizeUnit={"px"}
+        />
+      }
+      <br/>
+      {
+        (this.state.unsignedClaim.object)
+          ?
+            <MoreLink href="#" onClick={()=>this.loadMoreJwts()}>
+              Load Previous to {this.state.loadedConfirmsStarting ? this.state.loadedConfirmsStarting.toISODate() : "today"}
+            </MoreLink>
+          :
+          <span/>
+      }
+      {
+        <HashLoader
+          color={'#FF0000'}
+          loading={this.state.loadingMoreConfirmations}
+          size={30}
+          sizeUnit={"px"}
+        />
+      }
+    </div>
+
     return (
         <WelcomeWrap>
-        <h4>Attended {this.state.unsignedClaim.event.startTime.substring(5, 10).replace('-', '/')}</h4>
+        <h4>Confirmations</h4>
+
         <div style={{display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', textAlign: 'left', marginBottom: '20px'}}>
         <div style={{marginRight: '20px'}}>
 
@@ -325,10 +340,19 @@ class AttendedSaturdayMeeting extends ErrorHandlingComponent {
           ?
 
         (<div>
+        <span>{
+          this.state.unsignedClaim['@type'] === 'AgreeAction'
+            ? imgPerConfirm(this.state.unsignedClaim.object.length)
+            : ""
+        }</span>
+        <br/>
+        <br/>
+
+          <div>{confirmClaimButtons}</div>
 
           <div style={{textAlign: 'center'}}>
             <ConnectUport onClick={this.signClaim}>
-              Sign Claim
+              Confirm
             </ConnectUport>
           </div>
 
@@ -444,4 +468,4 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
   return { actions: bindActionCreators(AppActions, dispatch) }
 }
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AttendedSaturdayMeeting))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignClaim))
