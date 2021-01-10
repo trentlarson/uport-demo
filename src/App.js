@@ -22,6 +22,7 @@ import SignClaim from './components/SignClaim'
 import Test from './components/Test'
 
 import BvcVoteIgniteSpeakers from './components/bvc/VoteIgniteSpeakers'
+import BvcAttendedSaturdayMorning from './components/bvc/AttendedSaturdayMorning'
 
 import SignTransaction from './components/SignTransaction'
 import CollectCredentials from './components/CollectCredentials'
@@ -103,7 +104,8 @@ class App extends ErrorBoundary {
           <Route path='/test' component={Test}/>
           <Route path='/logout' component={LogOut}/>
 
-          <Route path='/bvc' component={BvcVoteIgniteSpeakers}/>
+          <Route path='/bvc/voteIgnite' component={BvcVoteIgniteSpeakers}/>
+          <Route path='/bvc/attendedSat' component={BvcAttendedSaturdayMorning}/>
           <Route path='/tasks' render={() => window.location = "https://raw.githubusercontent.com/trentlarson/endorser-ch/master/tasks.yml"}/>
 
           <Route path='/transaction' component={SignTransaction}/>
