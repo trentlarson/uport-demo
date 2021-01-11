@@ -91,8 +91,6 @@ class SignClaim extends ErrorHandlingComponent {
     this.signClaim = this.signClaim.bind(this)
     this.handleSignedClaim = this.handleSignedClaim.bind(this)
 
-    this.loadMoreJwts()
-
     uportConnect.onResponse(SignReqID)
       .then(this.handleSignedClaim)
       .catch(error => {
@@ -157,6 +155,7 @@ class SignClaim extends ErrorHandlingComponent {
   }
 
   componentDidMount() {
+    this.loadMoreJwts()
   }
 
   loadMoreJwts() {
