@@ -5,6 +5,7 @@
 
  AgreeAction.js
  AttendedSaturdayMorning.js
+ AttendedFirearmTraining.js
 
  */
 

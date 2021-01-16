@@ -1,9 +1,7 @@
 
 /**
 
-   If you make changes here, also see this from which it was copied:
-
-   SignClaim.js
+   See SignClaim.js for other similar code to refactor
 
 */
 
