@@ -54,6 +54,14 @@ class Welcome extends Component {
                 <Link to="/reportList">
                   <NextButton>Reports</NextButton>
                 </Link>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <h2>Special Purposes</h2>
+                <Link to="/bvc/index">
+                  <NextButton>Bountiful Voluntaryist Community</NextButton>
+                </Link>
               </div>
             )
             : (

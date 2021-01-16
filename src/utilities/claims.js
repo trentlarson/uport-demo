@@ -30,7 +30,15 @@ export const firstAndLast3OfDid = (did) => {
 export const claimDescription = (claim) => {
   let type = claim['@type']
   if (type === "JoinAction") {
-    return firstAndLast3OfDid(claim.agent.did) + " at " + claim.event.organizer.name + " " + claim.event.name + " at " + claim.event.startTime
+    let eventOrganizer = claim.event && claim.event.organizer && claim.event.organizer.name;
+    eventOrganizer = eventOrganizer ? eventOrganizer : "";
+    let eventName = claim.event && claim.event.name;
+    eventName = eventName ? " " + eventName : "";
+    let fullEvent = eventOrganizer + eventName;
+    fullEvent = fullEvent ? " at " + fullEvent : "";
+    let eventDate = claim.event && claim.event.startTime;
+    eventDate = eventDate ? " at " + eventDate : "";
+    return firstAndLast3OfDid(claim.agent.did) + fullEvent + eventDate;
   } else if (type === "Tenure") {
     var polygon = claim.spatialUnit.geo.polygon
     return firstAndLast3OfDid(claim.party.did) + " holding [" + polygon.substring(0, polygon.indexOf(" ")) + "...]"

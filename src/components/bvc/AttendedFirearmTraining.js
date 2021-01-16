@@ -7,7 +7,6 @@
 
 // Frameworks
 import { decodeJWT, verifyJWT } from 'did-jwt'
-import { DateTime } from 'luxon'
 import R from 'ramda'
 import React from 'react'
 import JSONInput from 'react-json-editor-ajrm'
@@ -21,7 +20,7 @@ import util from 'util'
 import ErrorHandlingComponent from '../ErrorHandlingComponent'
 import * as AppActions from '../../actions/AppActions'
 import { isHiddenDid } from '../../utilities/claims'
-import { getUserDid, getUserToken } from '../../utilities/claimsTest'
+import { getUserToken } from '../../utilities/claimsTest'
 import { uportConnect } from '../../utilities/uportSetup'
 
 
@@ -41,11 +40,7 @@ const SignLink = styled.a`
 
 
 
-
-const DEFAULT_ORG_NAME = "Bountiful Voluntaryist Community"
-const DEFAULT_EVENT_NAME = "Saturday Morning Meeting"
-
-class AttendedSaturdayMeeting extends ErrorHandlingComponent {
+class AttendedFirearmTraining extends ErrorHandlingComponent {
 
   constructor (props) {
     super(props)
@@ -82,36 +77,16 @@ class AttendedSaturdayMeeting extends ErrorHandlingComponent {
   }
 
   // Note that the default values cause the did-jwt library to fails when verifying a confirmation of that length, so we've changed the eventStartDate to an ISO date string without milliseconds to hack around it.
-  joinActionClaim(eventOrgName, eventName, eventStartDate, agentDid) {
-    if (!eventOrgName) {
-      eventOrgName = DEFAULT_ORG_NAME
-    }
-    if (!eventName) {
-      eventName = DEFAULT_EVENT_NAME
-    }
-    if (!eventStartDate) {
-      var bvolTime = DateTime.local()
-      if (bvolTime.weekday < 6) {
-        // it's not Saturday, so let's default to last Saturday
-        bvolTime = bvolTime.minus({week:1})
-      }
-      let eventStartDateObj = bvolTime.set({weekday:6}).set({hour:9}).startOf("hour")
-      // Hack, but the full ISO pushes the length to 340 which crashes verifyJWT!  Crazy!
-      eventStartDate = eventStartDateObj.toISO({suppressMilliseconds:true})
-    }
-    agentDid = getUserDid() || agentDid
-    if (!agentDid) {
-      agentDid = uportConnect.did
-    }
+  joinActionClaim() {
+    let agentDid = uportConnect.did
     return {
       "@context": "http://schema.org",
       "@type": "JoinAction",
-      // note that there is constructor code below that sets "did" inside "agent"
       "agent": { "did": agentDid },
       "event": {
-        "organizer": { "name": eventOrgName },
-        "name": eventName,
-        "startTime": eventStartDate
+        "director": { "did": "did:ethr:0x27e919d4f29fb19c1a20b2809e787b1257b8048a" },
+        "name": "Basic Firearms Training",
+        "startTime": "2021-01-16T09:00:00"
       }
     }
   }
@@ -236,7 +211,7 @@ class AttendedSaturdayMeeting extends ErrorHandlingComponent {
 
     return (
         <WelcomeWrap>
-        <h4>Attended {this.state.unsignedClaim.event.startTime.substring(5, 10).replace('-', '/')}</h4>
+        <h4>Attended {this.state.unsignedClaim.event.name} {this.state.unsignedClaim.event.startTime.substring(5, 10).replace('-', '/')}</h4>
         <div style={{display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', textAlign: 'left', marginBottom: '20px'}}>
         <div style={{marginRight: '20px'}}>
 
@@ -409,4 +384,4 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
   return { actions: bindActionCreators(AppActions, dispatch) }
 }
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AttendedSaturdayMeeting))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AttendedFirearmTraining))
