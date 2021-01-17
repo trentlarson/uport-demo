@@ -86,7 +86,7 @@ class AttendedFirearmTraining extends ErrorHandlingComponent {
       "event": {
         "director": { "did": "did:ethr:0x27e919d4f29fb19c1a20b2809e787b1257b8048a" },
         "name": "Basic Firearms Training",
-        "startTime": "2021-01-16T09:00:00"
+        "startTime": "2021-01-16T09:00:00-0700"
       }
     }
   }
