@@ -29,7 +29,7 @@ Note that new deployments can remove the "legacy Confirmation" code.
 
 ###### Release
 
-Create a release in GitHub, `git pull`, `scripts/deploy.sh release-endorser.ch.XXX ~/.ssh/id_rsa`
+Create a release in GitHub, `git pull`, `./scripts/deploy.sh release-endorser.ch.XXX ~/.ssh/id_rsa`
 
 
 

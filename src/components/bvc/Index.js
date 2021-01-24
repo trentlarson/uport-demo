@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -13,12 +14,15 @@ margin-top: 20px;
 class Index extends Component {
 
   render () {
+
+    const IS_SATURDAY = DateTime.local().weekday === 6
+
     return (
       <div>
         <h1>Bountiful Voluntaryist Community</h1>
 
         <Link to="/bvc/attendedSat">
-          <NextButton>Attended Last Saturday Meeting</NextButton>
+        <NextButton>Attended {IS_SATURDAY ? "Today's" : "Last Saturday's"} Meeting</NextButton>
         </Link>
 
         <br/>

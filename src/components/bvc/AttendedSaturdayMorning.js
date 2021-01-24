@@ -45,6 +45,15 @@ const SignLink = styled.a`
 const DEFAULT_ORG_NAME = "Bountiful Voluntaryist Community"
 const DEFAULT_EVENT_NAME = "Saturday Morning Meeting"
 
+var currentOrPreviousSat = DateTime.local()
+if (currentOrPreviousSat.weekday < 6) {
+  // it's not Saturday, so let's default to last Saturday
+  currentOrPreviousSat = currentOrPreviousSat.minus({week:1})
+}
+const eventStartDateObj = currentOrPreviousSat.set({weekday:6}).set({hour:9}).startOf("hour")
+// Hack, but the full ISO pushes the length to 340 which crashes verifyJWT!  Crazy!
+const CURRENT_OR_PREV_MEET_TIME = eventStartDateObj.toISO({suppressMilliseconds:true})
+
 class AttendedSaturdayMeeting extends ErrorHandlingComponent {
 
   constructor (props) {
@@ -90,14 +99,7 @@ class AttendedSaturdayMeeting extends ErrorHandlingComponent {
       eventName = DEFAULT_EVENT_NAME
     }
     if (!eventStartDate) {
-      var bvolTime = DateTime.local()
-      if (bvolTime.weekday < 6) {
-        // it's not Saturday, so let's default to last Saturday
-        bvolTime = bvolTime.minus({week:1})
-      }
-      let eventStartDateObj = bvolTime.set({weekday:6}).set({hour:9}).startOf("hour")
-      // Hack, but the full ISO pushes the length to 340 which crashes verifyJWT!  Crazy!
-      eventStartDate = eventStartDateObj.toISO({suppressMilliseconds:true})
+      eventStartDate = CURRENT_OR_PREV_MEET_TIME
     }
     agentDid = getUserDid() || agentDid
     if (!agentDid) {
@@ -248,8 +250,16 @@ class AttendedSaturdayMeeting extends ErrorHandlingComponent {
             size={30}
             sizeUnit={"px"}
           />
-          <span style={{'color':'#66FF00'}}>{this.state.claimStoredSuccess}</span>
-          <span style={{'color':'#FF6600'}}>{this.state.claimStoredError}</span>
+         {
+           (!this.state.claimStoredSuccess && !this.state.claimStoredError) ? (
+             "(If you just signed, watch for a green success message here.)"
+           ) : (
+             <div>
+               <span style={{'color':'#66FF00'}}>{this.state.claimStoredSuccess}</span>
+               <span style={{'color':'#FF6600'}}>{this.state.claimStoredError}</span>
+             </div>
+           )
+          }
         </div>
 
         <br/>
