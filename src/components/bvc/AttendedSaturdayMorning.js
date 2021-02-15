@@ -46,7 +46,7 @@ const DEFAULT_ORG_NAME = "Bountiful Voluntaryist Community"
 const DEFAULT_EVENT_NAME = "Saturday Morning Meeting"
 
 var currentOrPreviousSat = DateTime.local()
-if (currentOrPreviousSat.weekday < 6) {
+if (currentOrPreviousSat.weekday !== 6) {
   // it's not Saturday, so let's default to last Saturday
   currentOrPreviousSat = currentOrPreviousSat.minus({week:1})
 }

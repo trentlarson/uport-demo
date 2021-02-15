@@ -170,7 +170,6 @@ class SignClaim extends ErrorHandlingComponent {
     let loadMoreEndingStr = loadMoreEnding.toISO()
     let loadMoreStartingStr = loadMoreStarting.toISO()
 
-console.log("-------------- funning a claim fetch")
     fetch(process.env.REACT_APP_ENDORSER_CH_HOST_PORT + '/api/claim/?issuedAt_greaterThanOrEqualTo=' + loadMoreStartingStr + "&issuedAt_lessThan=" + loadMoreEndingStr + "&excludeConfirmations=true", {
       headers: {
         "Content-Type": "application/json",
@@ -178,7 +177,6 @@ console.log("-------------- funning a claim fetch")
       }})
       .then(response => response.json())
       .then(data => {
-console.log("-------------- got the claim fetch")
         let newClaims = R.concat(this.state.jwtsToConfirm, data)
         this.setState({ jwtsToConfirm: newClaims, loadedConfirmsStarting: loadMoreStarting, loadingConfirmations: false  })
       })

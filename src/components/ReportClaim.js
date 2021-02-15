@@ -176,7 +176,7 @@ class ReportClaim extends Component {
         <div>
         {
           R.any(isHiddenDid, this.state.confirmIssuers)
-          ? "* You cannot see HIDDEN IDs because they're not in your network.  They must confirm one of your claims to be visible to you."
+          ? "* You cannot see HIDDEN IDs because they're not in your network.  For you to see them, they must claim or confirm something about you."
           : ""
         }
         </div>
