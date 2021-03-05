@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import AgreeAction from './components/AgreeAction'
 import AppNavbar from './components/AppNavbar'
 import Welcome from './components/Welcome'
+import PrivacyPolicy from './components/PrivacyPolicy'
 import PublicReportList from './components/PublicReportList'
 import ReportList from './components/ReportList'
 import ReportClaim from './components/ReportClaim'
@@ -95,6 +96,7 @@ class App extends ErrorBoundary {
         <AppNavbar/>
         <AppBody>
           <Route exact path='/' component={Welcome}/>
+          <Route path='/privacyPolicy' component={PrivacyPolicy}/>
           <Route path='/agreeAction' component={AgreeAction} />
           <Route path='/signClaim' component={SignClaim} />
           <Route path='/reportList' component={ReportList}/>
