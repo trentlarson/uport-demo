@@ -9,8 +9,16 @@ export const insertSpacesBeforeCaps = (text) =>{
   return text ? text[0] + text.substr(1).replace(/([A-Z])/g, ' $1') : ""
 }
 
+function isDid(value) {
+  return value && value.startsWith("did:")
+}
+
 // return first 3 chars + "..." + last 3 chars
+// or the whole string if it's <= 9 characters long
 const firstAndLast3 = (text) => {
+  if (!text || text.length <= 9) {
+    return text
+  }
   return text.slice(0,3) + "..." + text.slice(-3)
 }
 
@@ -20,11 +28,23 @@ export const isHiddenDid = (did) => {
 
 // take DID and extract address and return first and last 3 chars
 export const firstAndLast3OfDid = (did) => {
+  if (!did) {
+    return "(BLANK)"
+  }
   if (isHiddenDid(did)) {
     return "(HIDDEN)"
-  } else {
-    return firstAndLast3(did.split(":")[2].substring(2))
   }
+  if (!isDid(did)) {
+    return "(NOT_A_DID)"
+  }
+  const lastChars = did.split(":")[2]
+  if (!lastChars) {
+    return firstAndLast3(did.substring("did:".length))
+  }
+  if (lastChars.startsWith("0x")) { // Ethereum DIDs
+    firstAndLast3(lastChars.substring(2))
+  }
+  return firstAndLast3(lastChars)
 }
 
 export const claimDescription = (claim) => {
