@@ -176,7 +176,9 @@ class ReportClaim extends Component {
         <div>
         {
           R.any(isHiddenDid, this.state.confirmIssuers)
-          ? "* You cannot see HIDDEN IDs because they're not in your network.  For you to see them, they must claim or confirm something about you."
+          ? this.props.uport && this.props.uport.name
+            ? "* You cannot see HIDDEN IDs because they're not in your network.  In other words, they haven't claimed or confirmed something about you (or they've explicitly blocked your view of them)."
+            : "* You cannot see HIDDEN IDs because you're not logged in."
           : ""
         }
         </div>
