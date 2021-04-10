@@ -66,24 +66,45 @@ class Welcome extends Component {
             )
             : (
               <div>
-              <ConnectUport onClick={this.connectUport}>
-                Connect with uPort
-              </ConnectUport>
 
-              <br/>
-              <br/>
-              <a href="https://itunes.apple.com/us/app/uport-id/id1123434510?mt=8" target="_blank">
-              <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae108bd47cd15_app-store-badge.svg" alt=""/>
-              </a>
-              <a href="https://play.google.com/store/apps/details?id=com.uportMobile&amp;hl=en" target="_blank">
-              <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae15b7047cd13_google-play-badge.svg" alt=""/>
-              </a>
+                <Link to="/publicReportList">
+                <NextButton>Public Reports</NextButton>
+                </Link>
 
-              <br/>
-              <br/>
-              <Link to="/publicReportList">
-              <NextButton>Public Reports</NextButton>
-              </Link>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                The simplest way to record claims is to use the Endorser mobile app.
+                <br/>
+                <br/>
+                <a href="https://apps.apple.com/us/app/endorser-mobile/id1556368693" target="_blank">
+                  <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae108bd47cd15_app-store-badge.svg" alt=""/>
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=ch.endorser.mobile" target="_blank">
+                  <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae15b7047cd13_google-play-badge.svg" alt=""/>
+                </a>
+
+                <br/>
+                <br/>
+                <br/>
+
+                Alternatively, you can use this website together with the uPort app.
+                <br/>
+                <br/>
+                <a href="https://itunes.apple.com/us/app/uport-id/id1123434510?mt=8" target="_blank">
+                  <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae108bd47cd15_app-store-badge.svg" alt=""/>
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=com.uportMobile&amp;hl=en" target="_blank">
+                  <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae15b7047cd13_google-play-badge.svg" alt=""/>
+                </a>
+
+                <br/>
+                <br/>
+
+                <ConnectUport onClick={this.connectUport}>
+                  Connect with uPort
+                </ConnectUport>
 
               </div>
 
