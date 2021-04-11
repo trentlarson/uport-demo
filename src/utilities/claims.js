@@ -31,18 +31,18 @@ export const firstAndLast3OfDid = (did) => {
   if (!did) {
     return "(BLANK)"
   }
-  if (isHiddenDid(did)) {
-    return "(HIDDEN)"
-  }
   if (!isDid(did)) {
     return "(NOT_A_DID)"
+  }
+  if (isHiddenDid(did)) {
+    return "(HIDDEN)"
   }
   const lastChars = did.split(":")[2]
   if (!lastChars) {
     return firstAndLast3(did.substring("did:".length))
   }
   if (lastChars.startsWith("0x")) { // Ethereum DIDs
-    firstAndLast3(lastChars.substring(2))
+    return firstAndLast3(lastChars.substring(2))
   }
   return firstAndLast3(lastChars)
 }
