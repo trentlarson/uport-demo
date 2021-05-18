@@ -3,7 +3,9 @@
 
 A UI for recording claims and reporting on them
 
-This is for use with https://github.com/trentlarson/endorser-ch
+However, instead of uPort and this web app, we now recommend using just our mobile app for [Android](https://play.google.com/store/apps/details?id=ch.endorser.mobile) or [iPhone](https://apps.apple.com/us/app/endorser-mobile/id1556368693).
+
+This project is for use with https://github.com/trentlarson/endorser-ch
 
 ###### Getting started
 ```

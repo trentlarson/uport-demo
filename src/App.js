@@ -9,6 +9,7 @@ import styled from 'styled-components'
 // Components
 import AgreeAction from './components/AgreeAction'
 import AppNavbar from './components/AppNavbar'
+import Documentation from './components/Documentation'
 import LogOut from './components/LogOut'
 import PrivacyPolicy from './components/PrivacyPolicy'
 import PublicReportList from './components/PublicReportList'
@@ -90,13 +91,17 @@ class App extends ErrorBoundary {
     return (
       this.state.hasError
       ?
-        <h1>Something went terribly wrong. <br/> Text someone with this project to let them know what you were trying to do.</h1>
+        <h1>Something went terribly wrong. <br/> Notify someone with this project to let them know what you were trying to do.</h1>
       :
       <AppWrap>
         <AppNavbar/>
         <AppBody>
           <Route exact path='/' component={Welcome}/>
+
+          <Route path='/docs' component={Documentation}/>
+          <Route path='/privacy-policy' component={PrivacyPolicy}/>
           <Route path='/privacyPolicy' component={PrivacyPolicy}/>
+
           <Route path='/agreeAction' component={AgreeAction} />
           <Route path='/signClaim' component={SignClaim} />
           <Route path='/reportList' component={ReportList}/>

@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 const TextBody = styled.div`
-flex: 1 100%;
-display: flex;
-flex-direction: column;
-justify-content: center;
-text-align: left;
-max-width: 80%;
-padding: 20px;
+  flex: 1 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  max-width: 80%;
+  padding: 20px;
 `
 
 export default class PrivacyPolicy extends Component {

@@ -72,11 +72,15 @@ class AppNavbar extends Component {
   render () {
     return (
       <NavBar>
-        <Link to="/">
         <LeftArea>
-          <DemoText>Home</DemoText>
+          <Link to="/">
+            <DemoText>Home</DemoText>
+          </Link>
+          &nbsp;&nbsp;&nbsp;
+          <Link to="/docs">
+            <DemoText>Docs</DemoText>
+          </Link>
         </LeftArea>
-        </Link>
 
         <RightArea>
           {

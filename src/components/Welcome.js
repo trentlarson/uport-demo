@@ -10,7 +10,10 @@ import { withRouter, Link } from 'react-router-dom'
 
 const ConnectReqID = 'ConnectRequest'
 const WelcomeWrap = styled.section``
-const ConnectUport = styled.button``
+const ConnectUport = styled.button`
+  padding: 0.5rem 0;
+  font-size: 12px;
+`
 const SubText = styled.p`
   margin: 0 auto 3em auto;
   font-size: 18px;
@@ -75,7 +78,7 @@ class Welcome extends Component {
                 <br/>
                 <br/>
                 <br/>
-                The simplest way to record claims is to use the Endorser mobile app.
+                To record claims, use the Endorser mobile app.
                 <br/>
                 <br/>
                 <a href="https://apps.apple.com/us/app/endorser-mobile/id1556368693" target="_blank">
@@ -89,22 +92,28 @@ class Welcome extends Component {
                 <br/>
                 <br/>
 
-                Alternatively, you can use this website together with the uPort app.
-                <br/>
-                <br/>
-                <a href="https://itunes.apple.com/us/app/uport-id/id1123434510?mt=8" target="_blank">
+              (
+                For the old approach:
+
+                install uPort
+                  &nbsp;
+                  <a href="https://itunes.apple.com/us/app/uport-id/id1123434510?mt=8" target="_blank">
                   <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae108bd47cd15_app-store-badge.svg" alt=""/>
-                </a>
-                <a href="https://play.google.com/store/apps/details?id=com.uportMobile&amp;hl=en" target="_blank">
+                  </a>
+                  <a href="https://play.google.com/store/apps/details?id=com.uportMobile&amp;hl=en" target="_blank">
                   <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae15b7047cd13_google-play-badge.svg" alt=""/>
-                </a>
-
-                <br/>
-                <br/>
-
+                  </a>
+                  &nbsp;
+                and then
+                  &nbsp;
                 <ConnectUport onClick={this.connectUport}>
-                  Connect with uPort
+                  connect with uPort
                 </ConnectUport>
+                  &nbsp;
+              .)
+
+                <br/>
+                <br/>
 
               </div>
 
