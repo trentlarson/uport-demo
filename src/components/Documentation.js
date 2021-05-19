@@ -26,7 +26,7 @@ export default class Documentation extends Component {
 
         <p>
 
-      We are building human-sovereign networking (where individuals can control their data and their connections) with the goals of making it easy to begin and then scaling in capability.  This is a set of projects which supports that goal, with the following features:
+      We are building human-sovereign networking (where individuals can control their data and their connections) by making it easy to begin and to easy scale in capability.  This is a set of projects which supports that goal, with the following features:
 
         </p>
 
