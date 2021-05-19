@@ -26,14 +26,14 @@ export default class Documentation extends Component {
 
         <p>
 
-      To build out human-sovereign networking (where individuals can control their data and their connections) we want to start easily and then scale in capability.  This is a set of projects supports that goal with the following features:
+      We are building human-sovereign networking (where individuals can control their data and their connections) with the goals of making it easy to begin and then scaling in capability.  This is a set of projects which supports that goal, with the following features:
 
         </p>
 
         <NonBoldList>
 
         <li>
-        Easily, verifiably assert & confirm -- create credentials for -- facts about yourself and your community.
+        Easily & verifiably assert & confirm -- ie credential -- facts about yourself and your community.
         </li>
 
         <li>
@@ -43,7 +43,7 @@ export default class Documentation extends Component {
         </NonBoldList>
 
 <p>
-<h3>Easily, verifiably assert.</h3>
+<h3>Easily & verifiably assert.</h3>
 This is done based on standards for Verifiable Credentials that use everyone's public & private keys, with apps to make the process as simple as possible.  Most other approaches assume mature, centralized credential authorities; there is a place for those, but there are even more uses for an evolving credential system based on existing networks.
 </p>
 
