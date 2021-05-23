@@ -26,7 +26,7 @@ export default class Documentation extends Component {
 
         <p>
 
-      We are building human-sovereign networking (where individuals can control their data and their connections) by making it easy to begin and to easy scale in capability.  This is a set of projects which supports that goal, with the following features:
+      We are building human-sovereign networking (where individuals can control their data and their connections) by making it easy to begin and easy to grow capabilities.  This is a set of projects which supports that goal, with the following features:
 
         </p>
 
@@ -37,7 +37,7 @@ export default class Documentation extends Component {
         </li>
 
         <li>
-        Privately query those credentials to check their reputation with people you know in the real world.
+        Privately query those credentials to check someone's reputation with people you know in the real world.
         </li>
 
         </NonBoldList>

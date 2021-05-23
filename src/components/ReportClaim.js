@@ -148,7 +148,7 @@ class ReportClaim extends Component {
 
         {
           this.state.claimId
-          ? <h5>Confirmers</h5>
+          ? <h5>Confirmers (including Originator)</h5>
           : ""
         }
 
