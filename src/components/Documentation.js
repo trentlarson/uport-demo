@@ -70,11 +70,11 @@ This is not ideal: someday you will even store your own network so that you don'
 
 <NonBoldList>
 
+  <li>The <Link to="/privacy-policy">Privacy Policy</Link> emphasizes these concepts.</li>
+
   <li><a href="https://whimsical.com/liberty-certification-KS6ocCfbFWSPhY4uKFWsTx">Here, see a diagram for a simple workflow.</a></li>
 
-<li>Daniel Hardman (an identity & cryptography guru) has written <a href="https://docs.google.com/document/d/1M_PmELevT6uIGIENmZebM1oHFkU8OPTrHqORohGEdjA/edit">a paper about the ideal solutions</a>, and has created <a href="https://docs.google.com/presentation/d/1V1kFE_QCrElavfT7mqQFdkMw0eKMn7hbjStrg99vLZ0/edit#slide=id.ga47a6c451a_0_181">a fantastic summary slide deck</a>.
-
-  <li>The <Link to="/privacy-policy">Privacy Policy</Link> emphasizes these concepts.</li>
+  <li><a href="https://www.linkedin.com/in/danielhardman/">Daniel Hardman</a> has written <a href="https://docs.google.com/document/d/1M_PmELevT6uIGIENmZebM1oHFkU8OPTrHqORohGEdjA/edit">a paper about the ideal solutions</a>, and has created <a href="https://docs.google.com/presentation/d/1V1kFE_QCrElavfT7mqQFdkMw0eKMn7hbjStrg99vLZ0/edit#slide=id.ga47a6c451a_0_181">a fantastic summary slide deck</a>.</li>
 
 </NonBoldList>
 
