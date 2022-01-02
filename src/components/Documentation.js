@@ -33,7 +33,7 @@ export default class Documentation extends Component {
         <NonBoldList>
 
         <li>
-        Easily & verifiably assert & confirm -- ie credential -- facts about yourself and your community.
+        Easily & verifiably assert & confirm -- ie 'credential' -- facts about yourself and your community.
         </li>
 
         <li>
@@ -53,22 +53,28 @@ You can choose to store claims on a server with nothing but network links; peopl
 </p>
 
 <p>
+This is not ideal: someday you will even store your own network so that you don't have to share with anyone else's server. There is currently work on encryption and selective disclosure such that you can share only what you want other people to discover, and provide various levels of access for them to contact you... all controlled by you, provably. We intend to migrate to that technology when it is more readily available, but for now we offer this service and require the minimal amount of knowledge while still providing value.
+</p>
+
+<p>
 <h3>Source Code</h3>
 
-        <NonBoldList>
-        <li><a href="https://github.com/trentlarson/endorser-ch">the server that stores and reports on claims</a></li>
-        <li><a href="https://github.com/trentlarson/endorser-mobile">the mobile app to create verifiable credentials</a></li>
-        <li><a href="https://github.com/trentlarson/uport-demo">this website (which supports the old approach to claims using uPort)</a></li>
-        </NonBoldList>
+  <NonBoldList>
+  <li><a href="https://github.com/trentlarson/endorser-ch">the server that stores and reports on claims</a></li>
+  <li><a href="https://github.com/trentlarson/endorser-mobile">the mobile app to create verifiable credentials</a></li>
+  <li><a href="https://github.com/trentlarson/uport-demo">this website</a></li>
+  </NonBoldList>
 </p>
 
 <h3>Other References</h3>
 
 <NonBoldList>
 
-<li><a href="https://whimsical.com/liberty-certification-KS6ocCfbFWSPhY4uKFWsTx">Here, see a diagram for a simple workflow.</a></li>
+  <li><a href="https://whimsical.com/liberty-certification-KS6ocCfbFWSPhY4uKFWsTx">Here, see a diagram for a simple workflow.</a></li>
 
-<li>The <Link to="/privacy-policy">Privacy Policy</Link> also emphasizes some of these concepts.</li>
+<li>Daniel Hardman (an identity & cryptography guru) has written <a href="https://docs.google.com/document/d/1M_PmELevT6uIGIENmZebM1oHFkU8OPTrHqORohGEdjA/edit">a paper about the ideal solutions</a>, and has created <a href="https://docs.google.com/presentation/d/1V1kFE_QCrElavfT7mqQFdkMw0eKMn7hbjStrg99vLZ0/edit#slide=id.ga47a6c451a_0_181">a fantastic summary slide deck</a>.
+
+  <li>The <Link to="/privacy-policy">Privacy Policy</Link> emphasizes these concepts.</li>
 
 </NonBoldList>
 
