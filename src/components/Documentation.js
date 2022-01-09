@@ -32,7 +32,7 @@ export default class Documentation extends Component {
         <NonBoldList>
 
         <li>
-        Easily & verifiably credential -- ie. assert & confirm -- facts about yourself and your community.
+        Easily & verifiably issue credentials about yourself and your community.
         </li>
 
         <li>
@@ -42,13 +42,13 @@ export default class Documentation extends Component {
         </NonBoldList>
 
 <p>
-Easily & verifiably assert.<br/>
+Easily & verifiably issue credentials.<br/>
 This is done based on standards for Verifiable Credentials that use personal public & private keys, with apps to make the process as simple as possible.  Most other approaches assume mature, centralized credential authorities; there is a place for those, but there are even more uses for an evolving credential system based on existing networks.
 </p>
 
 <p>
 Privately query.<br/>
-You can choose to store claims on a server with nothing but network links; people are then permissioned to only see facts about others who are allowed to see them.  By default, if you make a claim about someone else, they can then see facts about you (though you can hide yourself at any time). This allows for discovery: although you may not have access to other people's claims, if you are linked by a contact then that contact has the ability to introduce you.
+You can choose to store claims on a server with no other info but permission links; people may then see claims about others only if allowed to see them.  By default, if you make a claim about someone else, they can then see facts about you (though you can hide yourself at any time). This allows for discovery: although you may not have access to other people's claims, if you are linked by a contact then that contact has the ability to introduce you.
 </p>
 
 <p>
