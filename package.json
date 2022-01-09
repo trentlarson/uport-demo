@@ -53,6 +53,7 @@
     "google-maps-react": "^2.0.2",
     "kjua": "^0.1.2",
     "luxon": "^1.10.0",
+    "markdown-to-jsx": "^7.1.5",
     "mnid": "^0.1.1",
     "qrious": "^2.2.0",
     "qs": "^6.7.0",
