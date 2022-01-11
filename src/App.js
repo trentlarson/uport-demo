@@ -12,6 +12,7 @@ import AppNavbar from './components/AppNavbar'
 import Documentation from './components/Documentation'
 import DocTransactions from './components/DocTransactions'
 import LogOut from './components/LogOut'
+import ParseContactJwt from './components/ParseContactJwt'
 import PrivacyPolicy from './components/PrivacyPolicy'
 import PublicReportList from './components/PublicReportList'
 import ReportList from './components/ReportList'
@@ -105,6 +106,7 @@ class App extends ErrorBoundary {
           <Route path='/privacyPolicy' component={PrivacyPolicy}/>
 
           <Route path='/agreeAction' component={AgreeAction} />
+          <Route path='/contact' component={ParseContactJwt} />
           <Route path='/signClaim' component={SignClaim} />
           <Route path='/reportList' component={ReportList}/>
           <Route path='/publicReportList' component={PublicReportList}/>
