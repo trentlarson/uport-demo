@@ -18,11 +18,11 @@ Here are a few scenarios:
 
   1. I delivered those resources.
 
-  1. Someone confirms that I delivered. In other words, I followed through on my commitment.
+  1. Someone confirms that I delivered. In other words, they agree that I followed through on my commitment.
 
 Here are the verbs used for assertions recorded in the app by default:
 
-  - These are all actions initiated:
+  - Here are actions one might initiate:
 
     - "Join" shows attendance or membership in a group. Technically: [schema.org "JoinAction"](https://schema.org/JoinAction)
 
@@ -40,17 +40,19 @@ Here are the verbs used for assertions recorded in the app by default:
 
 Hopefully it's clear how to apply those assertions to the "few scenarios" above:
 
-  1. ["Give"](https://schema.org/GiveAction) 'object' to 'recipient', or ["Offer"](https://schema.org/Offer) an "itemOffered"... time or money or even a ["Service"](https://schema.org/Service).
+  1. ["Give"](https://schema.org/GiveAction) an 'object' to a 'recipient', or ["Offer"](https://schema.org/Offer) an 'itemOffered'... time or money or even a ["Service"](https://schema.org/Service).
 
-  1. ["Ask"](https://schema.org/AskAction) for 'object 'or ["Demand"](https://schema.org/Demand) some help or resource 'itemOffered'.
+    - One could also ["Grant"](https://schema.org/Grant), which is new to the schema.
 
-  1. ["Offer"](https://schema.org/Offer) or some help or resource, eg. some 'eligibleQuantity' of 'itemOffered' at a 'price' when 'availabilityStarts'.
+  1. ["Ask"](https://schema.org/AskAction) for 'object', or ["Demand"](https://schema.org/Demand) some help or resource 'itemOffered'.
 
-    - Could also ["LoanOrCredit"](https://schema.org/LoanOrCredit) some 'amount' of 'currency' for 'loanTerm'.
+  1. ["Offer"](https://schema.org/Offer) some help or resource, eg. some 'eligibleQuantity' of 'itemOffered' at a 'price' when 'availabilityStarts'.
+
+    - One could also ["LoanOrCredit"](https://schema.org/LoanOrCredit) some 'amount' of 'currency' for 'loanTerm'.
 
   1. ["Give"](https://schema.org/GiveAction) to say that a transfer is done.
 
-  1. ["Take"](https://schema.org/TakeAction) confirms delivery of 'object'.
+  1. ["Take"](https://schema.org/TakeAction) to confirm delivery of 'object'.
 
 For future work, we would like to see totals of credits & promise held, or know whether some credit has been redeemed.
 
