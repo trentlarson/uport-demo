@@ -49,6 +49,9 @@ export default class ParseContactJwt extends Component {
     return (
       <div>
       <h1>Contact Info</h1>
+        This is only for informational purposes. This URL is meant to be used in the app to import a new contact.
+        <br />
+        <br />
         { this.state.decodeMessage }
         <br />
         <br />
