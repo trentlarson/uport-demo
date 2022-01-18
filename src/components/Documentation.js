@@ -49,11 +49,20 @@ The goals of this implementation are as follows:
 
     This is achieved by storing only user-managed IDs in the credentials; there are also explicit permissions that allow the user to only reveal them to users with selected IDs (ie. holders of the permissioned keys).
 
-Note that these goals don't aim for a system that handles worldwide traffic but rather one that will support close-knit communities.
+Credentials and claims are good primitives for a wide range of functions such as: voting, workflows, membership, and even transactions.
 
-Credentials and claims are good primitives for a wide range of functions such as: voting, workflows, membership, and even transactions. [Here's a page all about using these for transactional commitments.](/doc-transactions)
+  - [Advertize & discover skills & services.](/doc-discovery)
 
-The current implementation is not ideal: someday you will even store your own network so that you don't have to share with anyone else's server. There is currently work on encryption and selective disclosure such that you can share only what you want other people to discover, and provide various levels of access for them to contact you... all controlled by you, provably. We intend to migrate to that technology when it is more readily available, but for now we offer this service and require the minimal amount of knowledge while still providing value.
+  - [Record time commitments (or any transactions).](/doc-transactions)
+
+  - [Record pledges & membership.](/doc-pledge)
+
+  - Show appreciation privately. Do this with a "Witness" claim in the app.
+
+
+Note that these goals do not aim for a system that handles worldwide traffic but rather one that will support close-knit communities.
+
+Also note that the current implementation is not ideal because -- although it keeps personal identifiers private from the public -- it stores them on a central server (which is a target for hackers). Someday you will even store your own network and claims so that you don't have to share with anyone else's server. There is currently work on encryption and selective disclosure such that you can share only what you want other people to discover, and provide various levels of access for them to contact you... all controlled by you, provably. We intend to migrate to that technology when it is more readily available, but for now we offer this service and require the minimal amount of knowledge while still providing value.
 
 One other shortcoming of this codebase: it is not particularly easy to use. We hope it demonstrates the capabilities, enough that we can then start creating domain-specific apps that are powerful and easy to use.
 
@@ -95,7 +104,6 @@ Here is our source code:
 
   - [Self-Sovereign Identity](https://en.wikipedia.org/wiki/Self-sovereign_identity) is a set of emerging standards based on cryptography and specifications like [Decentralized IDs](https://w3c.github.io/did-core/) (DIDs) and [Verifiable Credentials](https://www.w3.org/TR/vc-data-model/) (VCs). [There are many SSI wallets](https://github.com/Gimly-Blockchain/ssi-wallets). (Our mobile app creates both DIDs and VCs.)
 
-  - Identity guru <a href="https://www.linkedin.com/in/danielhardman/">Daniel Hardman</a> has written <a href="https://docs.google.com/document/d/1M_PmELevT6uIGIENmZebM1oHFkU8OPTrHqORohGEdjA/edit">a paper about the ideal solutions for discovery</a> (with <a href="https://docs.google.com/presentation/d/1V1kFE_QCrElavfT7mqQFdkMw0eKMn7hbjStrg99vLZ0/edit#slide=id.ga47a6c451a_0_181">an introductory slide deck</a>).
 
 `
 
