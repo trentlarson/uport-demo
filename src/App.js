@@ -13,6 +13,7 @@ import Documentation from './components/Documentation'
 import DocDiscovery from './components/DocProjectSkillsDiscovery'
 import DocPledge from './components/DocPledge'
 import DocTransactions from './components/DocTransactions'
+import DocWitness from './components/DocWitness'
 import LogOut from './components/LogOut'
 import ParseContactJwt from './components/ParseContactJwt'
 import PrivacyPolicy from './components/PrivacyPolicy'
@@ -106,6 +107,7 @@ class App extends ErrorBoundary {
           <Route path='/doc-discovery' component={DocDiscovery}/>
           <Route path='/doc-pledge' component={DocPledge}/>
           <Route path='/doc-transactions' component={DocTransactions}/>
+          <Route path='/doc-witness' component={DocWitness}/>
           <Route path='/privacy-policy' component={PrivacyPolicy}/>
           <Route path='/privacyPolicy' component={PrivacyPolicy}/>
 

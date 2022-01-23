@@ -51,6 +51,8 @@ This service makes the data available to other users in the following ways:
 
         </ul>
 
+We have never delivered the non-public back-end data to anyone.
+
 </p>
 
       <h2>Collaborating Apps</h2>
@@ -74,6 +76,11 @@ This service makes the data available to other users in the following ways:
 In all client apps, the user can see and review all data before it is sent.
 Other data on the client apps -- such as the user's name and contacts -- are not sent to this service.
         </p>
+
+<h2>Data Removal</h2>
+<p>
+As a rule, the data in this service is open for publication and searching. However, since it is possible to publish sensitive data about people who don't want it to be public, there may be times when data is selectively erased from the server. In addition, the original submitter of data may afterward want their claims erased. These will be addressed on a case-by-case basis (and we expect that rules will evolve over time). This is different from offensive or false data, which generally won't be erased; rather than be a curator of data, this service aims to be a minimal platform for owning and selectively sharing data that is vetted by users.
+</p>
 
 Endorser.ch Privacy Policy v1
 

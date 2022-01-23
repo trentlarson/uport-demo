@@ -9,9 +9,11 @@ const content = `
 
 ## Overview
 
-We are building human-sovereign networking where individuals can control their data and their connections, by making it easy to begin and then easy to grow capabilities. We want to support the growth of community networks at whatever level of privacy you prefer; Facebook/Meta has created an engaging user interface around networks but they control it all, so here's one way to create a network where individuals have as much control as possible while still allowing some random discovery.
+Human-Sovereign Networking & Data Under Your Control
 
-This is a set of projects to support that goal, with the following features:
+We want to support the growth of community networks at whatever level of privacy you prefer. Meta (AKA Facebook) has created an engaging user interface around networks but they control it all, so let's build networks where individuals have as much control as possible while still allowing discovery.
+
+This is a set of projects to do just that, with the following features:
 
  - Easily & verifiably issue credentials about yourself and your community.
 
@@ -57,16 +59,17 @@ Credentials and claims are good primitives for a wide range of functions such as
 
   - [Record pledges & membership.](/doc-pledge)
 
-  - Show appreciation privately. Do this with a "Witness" claim in the app.
+  - [Show appreciation semi-privately.](/doc-witness)
 
+See the [Home Page](/) to install our app.
 
-Note that these goals do not aim for a system that handles worldwide traffic but rather one that will support close-knit communities.
+Here are some other details about the current system, for the technically-minded:
 
-Also note that the current implementation is not ideal because -- although it keeps personal identifiers private from the public -- it stores them on a central server (which is a target for hackers). Someday you will even store your own network and claims so that you don't have to share with anyone else's server. There is currently work on encryption and selective disclosure such that you can share only what you want other people to discover, and provide various levels of access for them to contact you... all controlled by you, provably. We intend to migrate to that technology when it is more readily available, but for now we offer this service and require the minimal amount of knowledge while still providing value.
+* These goals aim for a system that will support close-knit communities; they do not work well for worldwide traffic.
 
-One other shortcoming of this codebase: it is not particularly easy to use. We hope it demonstrates the capabilities, enough that we can then start creating domain-specific apps that are powerful and easy to use.
+* One other quirk of this codebase: it is very general-purpose so it does a lot but that means it takes some practice to use. We hope it demonstrates the capabilities, enough that we can then start creating domain-specific apps that are powerful and easy to use.
 
-
+* Also note that the current implementation is not ideal yet because -- although it keeps personal identifiers private from the public -- it stores your IDs on a central server (which is a target for hackers). Someday you will even store your own network and claims so that you don't have to share with anyone else's server. There is currently work on encryption and selective disclosure such that you can share only what you want other people to discover, and provide various levels of access for them to contact you... all controlled by you, provably. We intend to migrate to that technology when it is more readily available, but for now we offer this service and require the minimal amount of knowledge while still providing value.
 
 Here is our source code:
 
@@ -102,8 +105,9 @@ Here is our source code:
 
 ##### Outside Work
 
-  - [Self-Sovereign Identity](https://en.wikipedia.org/wiki/Self-sovereign_identity) is a set of emerging standards based on cryptography and specifications like [Decentralized IDs](https://w3c.github.io/did-core/) (DIDs) and [Verifiable Credentials](https://www.w3.org/TR/vc-data-model/) (VCs). [There are many SSI wallets](https://github.com/Gimly-Blockchain/ssi-wallets). (Our mobile app creates both DIDs and VCs.)
+- [Self-Sovereign Identity](https://en.wikipedia.org/wiki/Self-sovereign_identity) is a set of emerging standards based on cryptography and specifications like [Decentralized IDs](https://w3c.github.io/did-core/) (DIDs) and [Verifiable Credentials](https://www.w3.org/TR/vc-data-model/) (VCs). [There are many SSI wallets](https://github.com/Gimly-Blockchain/ssi-wallets). (Our mobile app creates both DIDs and VCs.)
 
+- Besides [schema.org](https://schema.org/), there are many other vocabularies to use: [Linked Open Vocabularies (LOV)](https://lov.linkeddata.es/dataset/lov/) is a great place to start looking (though some of the pointers no longer work).
 
 `
 
