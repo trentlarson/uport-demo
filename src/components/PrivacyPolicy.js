@@ -51,7 +51,7 @@ This service makes the data available to other users in the following ways:
 
         </ul>
 
-We have never delivered the non-public back-end data to anyone.
+We have never delivered the non-public back-end data to anyone; only our system administrators have seen the contents and only for the purposes described above.
 
 </p>
 
