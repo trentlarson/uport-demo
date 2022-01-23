@@ -1,8 +1,10 @@
 #!/bin/bash
 
+# This script is very similar to the one in https://github.com/trentlarson/endorser-ch/blob/master/scripts/deploy.sh
+
 if [ -z "$1" ]
 then
-    echo 'No release environment supplied (arg 1 of "" or "test")'
+    echo 'No release environment supplied (arg 1 of "ubuntu" or "ubuntutest")'
     exit 1
 fi
 
@@ -38,7 +40,14 @@ fi
 
 git checkout $2
 
-USERNAME=ubuntu$1
+if ! [ -z "$(echo $?)" ]
+then
+  echo ""
+  echo "You've got local changes, so we cannot change to that branch."
+  exit 1
+fi
+
+USERNAME=$1
 DEPLOY_DIR=uport-demo
 
 rsync -azv --exclude .git --exclude-from .gitignore -e "ssh -i $3" . $USERNAME@endorser.ch:$DEPLOY_DIR
@@ -49,7 +58,7 @@ ssh -i $3 $USERNAME@endorser.ch << EOF
   whoami
 
   # I've brought the server to its knees trying to do this with the app still running.
-  echo "Killing any running uport-demo by this user."
+  echo "Killing any running processes."
   ps -u | grep "node scripts/start.js" | grep -v "sh -c" | grep -v grep | awk "{print \$2}" | xargs kill
 
   cd $DEPLOY_DIR
