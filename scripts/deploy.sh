@@ -40,10 +40,10 @@ fi
 
 git checkout $2
 
-if ! [ -z "$(echo $?)" ]
+if ! [ "$(echo $?)" -eq "0" ]
 then
   echo ""
-  echo "You've got local changes, so we cannot change to that branch."
+  echo "You've got local changes that aborted switching to the branch, so will stop now."
   exit 1
 fi
 
@@ -58,7 +58,7 @@ ssh -i $3 $USERNAME@endorser.ch << EOF
   whoami
 
   # I've brought the server to its knees trying to do this with the app still running.
-  echo "Killing any running processes."
+  echo "Killing any running processes. If it shows 'Usage' instructions then it wasn't running."
   ps -u | grep "node scripts/start.js" | grep -v "sh -c" | grep -v grep | awk "{print \$2}" | xargs kill
 
   cd $DEPLOY_DIR
@@ -80,4 +80,4 @@ EOF
 
 git checkout master
 
-echo "Deployed.  Now log in and start the app -- and be careful of a CPU spike."
+echo "Deployed.  Now log in and start the app -- and be careful of a CPU spike longer than about 10 seconds."
