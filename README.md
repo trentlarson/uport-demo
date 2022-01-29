@@ -31,7 +31,7 @@ Note that new deployments can remove the "legacy Confirmation" code.
 
 ###### Release
 
-Create a release in GitHub, `git pull`, then: `./scripts/deploy.sh DEPLOY release-endorser.ch.XXX ~/.ssh/id_rsa` ... where DEPLOY="" or "test"
+Create a release in GitHub, `git pull`, then: `./scripts/deploy.sh ubuntutest release-endorser.ch.XXX ~/.ssh/id_rsa` ... and change "ubuntutest" to "ubuntu" when deploying to production
 
 
 
