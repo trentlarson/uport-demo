@@ -101,13 +101,32 @@ Here is our source code:
 
   - Although this is a labor of love and (we hope) a good foundation to support community work, we'd like to get resources to support this development effort. Great user-interfaces take time and effort to create, so that's worth something. We can also build more infrastructure that cater to organizations who could pay.
 
+  - Always appreciate how far we've come. :-) For example, this used to be [based on uPort](https://github.com/trentlarson/uport-demo/blob/5c3d7fcb751ad34ed10ebb7adab650b2cfebb7d1/src/components/Welcome.js#L96). The [first shared transaction was on Jan 2019](https://endorser.ch/claim?claimId=01D25AVGQG1N8E9JNGK7C7DZRD) (before the Verified Credentials Working Draft was submitted).
 
 
 ##### Outside Work
 
 - [Self-Sovereign Identity](https://en.wikipedia.org/wiki/Self-sovereign_identity) is a set of emerging standards based on cryptography and specifications like [Decentralized IDs](https://w3c.github.io/did-core/) (DIDs) and [Verifiable Credentials](https://www.w3.org/TR/vc-data-model/) (VCs). [There are many SSI wallets](https://github.com/Gimly-Blockchain/ssi-wallets). (Our mobile app creates both DIDs and VCs.)
 
+- https://mobilecoin.com/cryptorenaissance
+slide at 4:45, 2-minute description starting at 3:00
+https://patternsinthevoid.net/hyphae/hyphae.pdf
+
+
 - Besides [schema.org](https://schema.org/), there are many other vocabularies to use: [Linked Open Vocabularies (LOV)](https://lov.linkeddata.es/dataset/lov/) is a great place to start looking (though some of the pointers no longer work).
+
+- Other projects that are close but still missing some elements:
+
+  - [Other wallets](https://github.com/Gimly-Blockchain/ssi-wallets) allow creation of VCs but are typically for organizational use.
+
+  - Yingme.co has some time-banking, but it's still working on the onboarding and how to share the technology.
+
+  - Keybase
+
+  - MetaMask & Trezor 
+
+  - We must give a shout-out to blockchains...
+
 
 `
 

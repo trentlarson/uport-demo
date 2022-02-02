@@ -40,7 +40,7 @@ Here are the verbs used for assertions -- many recorded in the app by default:
 
   - "Agree" says that the user concurs with some other assertion. Technically: [schema.org "AgreeAction"](https://schema.org/AgreeAction)
 
-  - "Accept" signals that someone accepts some contract or pledge. (This could be used to acknowledge and approve something that's involved in a later transfer. This is different from "Agree" because it signals a commitment, eg. to a policy or proposal. See [schema.org](https://schema.org/) for concrete definitions.) Technically: [schema.org "AcceptAction"](https://schema.org/AcceptAction)
+  - "Accept" signals that someone accepts some contract or pledge. (This could be used to state alignment to terms for a later transfer. This is different from "Agree" because it signals a commitment, eg. to a policy or proposal. See [schema.org](https://schema.org/) for concrete definitions.) Technically: [schema.org "AcceptAction"](https://schema.org/AcceptAction)
 
     - There is also a "Take" to show that something has been received or redeemed, which is the opposite of "Give"; however, in these applications, a recipient shows fulfilment of a previous "Give" action with an "AgreeAction" where the 'object' has the originating "Give" action (or 'identifier'). Technically: [schema.org "TakeAction"](https://schema.org/TakeAction).
 
