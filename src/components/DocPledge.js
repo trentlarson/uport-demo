@@ -26,6 +26,10 @@ If you're looking for confirmation from people other than youself, hopefully you
 
 ##### Outside Work
 
+Pledges are used in many places:
+
+  - The [Developer Certificate of Origin](https://developercertificate.org/) is a pledge that the developer created their contribution, and git projects can enforce that pledge, eg. at [GitHub](https://github.com/apps/dco).
+
   - The [Thick Red Line](https://thickredline.org/) aims to build membership inside police departments with a simple pledge (regarding victimless crimes -- see [page 3 here](https://thickredline.org/wp-content/uploads/2020/10/The_Police_and_Sheriffs_Dept_Starter_Pack_Handbook-1.pdf)).
 
 
