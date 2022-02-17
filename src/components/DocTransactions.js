@@ -26,15 +26,15 @@ Here are the verbs used for assertions -- many recorded in the app by default:
 
     - "Join" shows attendance or membership in a group. Technically: [schema.org "JoinAction"](https://schema.org/JoinAction)
 
-    - "Loan Or Credit" represents money. Technically: [schema.org "LoanOrCredit"](https://schema.org/LoanOrCredit)
+    - "Give" shows transfer of ownership. Fungible items like money and time would  Technically: [schema.org "GiveAction"](https://schema.org/GiveAction)
 
-    - "Grant" represents a donation. (Note that this isn't yet fully accepted at schema.org.) Technically: [schema.org "Grant"](https://schema.org/Grant)
+      - "Donate" is an act of giving a gift, typically toward an entity rather than a project (as opposed to a "Grant" for a goal). It is similar to "Give" but used to explicitly record that these is no reciprocation. Technically: [schema.org "DonateAction"](https://schema.org/DonateAction)
 
-    - "Donate" is an act of donation. Technically: [schema.org "DonateAction"](https://schema.org/DonateAction)
+      - "Grant" represents donations toward a goal or project (as opposed to "Donate" to an entity for whatever purpose they choose). (Note that this isn't yet fully accepted at schema.org.) Technically: [schema.org "Grant"](https://schema.org/Grant)
 
-    - "Give" shows transfer of ownership or a donation (eg. of time). Technically: [schema.org "GiveAction"](https://schema.org/GiveAction)
+    - "Loan Or Credit" represents temporary transfer of money. Technically: [schema.org "LoanOrCredit"](https://schema.org/LoanOrCredit)
 
-    - "Offer" proposes a transfer or service, often with conditions or a price.. Technically: [schema.org "Offer"](https://schema.org/Offer)
+    - "Offer" proposes a transfer or service, often with conditions or a price. When the proposal is fulfilled, there is a resulting "Give" or "Donate" or more complicated transfer such as "Trade". Technically: [schema.org "Offer"](https://schema.org/Offer) (The opposite is a ["Demand"](https://schema.org/Demand).)
 
     - "Watch" says that something was seen. Technically: [schema.org "WatchAction"](https://schema.org/WatchAction)
 

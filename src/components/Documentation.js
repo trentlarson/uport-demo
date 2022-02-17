@@ -115,17 +115,17 @@ https://patternsinthevoid.net/hyphae/hyphae.pdf
 
 - Besides [schema.org](https://schema.org/), there are many other vocabularies to use: [Linked Open Vocabularies (LOV)](https://lov.linkeddata.es/dataset/lov/) is a great place to start looking (though some of the pointers no longer work).
 
-- Other projects that are close but still missing some elements:
+- Other projects that are close but don't cover all our use-cases:
 
   - [Other wallets](https://github.com/Gimly-Blockchain/ssi-wallets) allow creation of VCs but are typically for organizational use.
 
   - Yingme.co has some time-banking, but it's still working on the onboarding and how to share the technology.
 
-  - Keybase
+  - Keybase aims to be a general-purpose identity wallet. It doesn't have VCs built-in, but it could be a viable approach. Their sigchains could be useful.
 
-  - MetaMask & Trezor 
+  - MetaMask & Trezor also don't have VCs built in; while they could sign transactions, they're oriented toward cryptocurrencies so we don't envision their use for VCs.
 
-  - We must give a shout-out to blockchains...
+  - We must give a shout-out to blockchains because they brought user-managed cryptography to the mainstream (and still pushing the boundaries for self-sovereign asset management). They're public, so they're not good candidates for any private data.
 
 
 `
