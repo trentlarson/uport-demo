@@ -1,6 +1,7 @@
 import Markdown from 'markdown-to-jsx';
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { uportConnect } from '../utilities/uportSetup'
 
 // Sad that @mdx-js/react doesn't work, so gotta include all this inside here.
 const content = `
@@ -53,7 +54,7 @@ The goals of this implementation are as follows:
 
 Credentials and claims are good primitives for a wide range of functions such as: voting, workflows, membership, and even transactions.
 
-  - [Advertize & discover skills & services.](/doc-discovery)
+  - [Advertise & discover skills & services.](/doc-discovery)
 
   - [Record time commitments (or any transactions).](/doc-transactions)
 
@@ -128,6 +129,9 @@ https://patternsinthevoid.net/hyphae/hyphae.pdf
   - We must give a shout-out to blockchains because they brought user-managed cryptography to the mainstream (and still pushing the boundaries for self-sovereign asset management). They're public, so they're not good candidates for any private data.
 
 
+##### Selected History
+
+
 `
 
 const TextBody = styled.div`
@@ -140,6 +144,37 @@ const TextBody = styled.div`
   padding: 20px;
 `
 
+const ConnectReqID = 'ConnectRequest'
+
 export default class Documentation extends Component {
-  render() { return <TextBody><Markdown>{ content }</Markdown></TextBody> }
+
+  constructor (props) {
+    super(props)
+    this.connectUport = this.connectUport.bind(this)
+    uportConnect.onResponse(ConnectReqID).then(res => {
+      console.log("res.payload", res.payload)
+      this.props.actions.connectUport(uportConnect.state)
+      this.props.history.push('/signClaim')
+    })
+  }
+  connectUport () {
+    const reqObj = { requested: ['name', 'phone', 'country'],
+                     notifications: true }
+    uportConnect.requestDisclosure(reqObj, ConnectReqID)
+  }
+
+  render() {
+    return (
+      <TextBody>
+        <Markdown>{ content }</Markdown>
+        <div>
+          <ul>
+            <li>
+              For the old approach: install uPort via <a href="https://itunes.apple.com/us/app/uport-id/id1123434510?mt=8" target="_blank">App Store</a> or <a href="https://play.google.com/store/apps/details?id=com.uportMobile&amp;hl=en" target="_blank">Google Play</a> and then: <div style={{ textDecoration: 'underline'}} onClick={this.connectUport}>connect with uPort</div>
+            </li>
+          </ul>
+        </div>
+      </TextBody>
+    )
+  }
 }

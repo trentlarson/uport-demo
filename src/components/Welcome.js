@@ -4,16 +4,11 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as AppActions from '../actions/AppActions'
 import styled from 'styled-components'
-import { uportConnect } from '../utilities/uportSetup'
 import { withRouter, Link } from 'react-router-dom'
 
 
-const ConnectReqID = 'ConnectRequest'
 const WelcomeWrap = styled.section``
-const ConnectUport = styled.button`
-  padding: 0.5rem 0;
-  font-size: 12px;
-`
+
 const SubText = styled.p`
   margin: 0 auto 3em auto;
   font-size: 18px;
@@ -23,24 +18,6 @@ const NextButton = styled.button`
 `
 
 class Welcome extends Component {
-
-  constructor (props) {
-    super(props)
-    this.connectUport = this.connectUport.bind(this)
-
-    uportConnect.onResponse(ConnectReqID).then(res => {
-      console.log("res.payload")
-      console.log(res.payload)
-      this.props.actions.connectUport(uportConnect.state)
-      this.props.history.push('/signClaim')
-    })
-  }
-
-  connectUport () {
-    const reqObj = { requested: ['name', 'phone', 'country'],
-                     notifications: true }
-    uportConnect.requestDisclosure(reqObj, ConnectReqID)
-  }
 
   render () {
     return (
@@ -89,29 +66,6 @@ class Welcome extends Component {
                 </a>
 
                 <br/>
-                <br/>
-                <br/>
-
-              (
-                For the old approach:
-
-                install uPort
-                  &nbsp;
-                  <a href="https://itunes.apple.com/us/app/uport-id/id1123434510?mt=8" target="_blank">
-                  <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae108bd47cd15_app-store-badge.svg" alt=""/>
-                  </a>
-                  <a href="https://play.google.com/store/apps/details?id=com.uportMobile&amp;hl=en" target="_blank">
-                  <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae15b7047cd13_google-play-badge.svg" alt=""/>
-                  </a>
-                  &nbsp;
-                and then
-                  &nbsp;
-                <ConnectUport onClick={this.connectUport}>
-                  connect with uPort
-                </ConnectUport>
-                  &nbsp;
-              .)
-
                 <br/>
                 <br/>
 
