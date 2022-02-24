@@ -1,6 +1,6 @@
 {
   "name": "demo",
-  "version": "1.5.0-endorser.ch.1.41",
+  "version": "1.5.0-endorser.ch.1.45",
   "private": true,
   "devDependencies": {
     "autoprefixer": "6.5.1",
