@@ -5,12 +5,12 @@ import styled from 'styled-components'
 const content =
 `
 
-# Claims & Credentials
+# Create & Search Claims & Credentials
 
 This shows an interaction of four people:
 
   * User 5 submits a claim.
-  * Users 6 and 7 know User 5 directly, and vice versa. They share info and can see one another's claims.
+  * Users 6 and 7 know User 5 directly, and vice versa.
   * User 8 knows Users 6 and 7, but not User 5.
 
 <table style='border-spacing: 20px'>

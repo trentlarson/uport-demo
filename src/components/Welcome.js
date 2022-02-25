@@ -55,7 +55,7 @@ class Welcome extends Component {
                 <br/>
                 <br/>
                 <br/>
-                To record claims, use the Endorser mobile app.
+                Use the Endorser mobile app to record claims. <Link to="/doc-tutorial">Like this.</Link>
                 <br/>
                 <br/>
                 <a href="https://apps.apple.com/us/app/endorser-mobile/id1556368693" target="_blank">

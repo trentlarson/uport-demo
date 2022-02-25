@@ -8,6 +8,13 @@ const content = `
 
 # Community Credentials
 
+## Quick Start
+
+  - See [demos here](/doc-tutorial).
+
+  - The mobile app is on [Google Play](https://play.google.com/store/apps/details?id=ch.endorser.mobile) and [Apple's App Store](https://apps.apple.com/us/app/endorser-mobile/id1556368693).
+
+
 ## Overview
 
 Human-Sovereign Networking & Data Under Your Control
@@ -36,7 +43,7 @@ When credentials are saved to our server, people may then see claims about other
 
 ## Implementation
 
-##### Now
+##### State-of-the-Art
 
 The goals of this implementation are as follows:
 
@@ -87,8 +94,6 @@ Here is our source code:
 - The [Privacy Policy](/privacy-policy) emphasizes these concepts.
 
 - There is <a href="https://whimsical.com/liberty-certification-KS6ocCfbFWSPhY4uKFWsTx">a diagram for a simple workflow.</a>
-
-- The mobile app is on [Google Play](https://play.google.com/store/apps/details?id=ch.endorser.mobile) and [Apple's App Store](https://apps.apple.com/us/app/endorser-mobile/id1556368693).
 
 
 
