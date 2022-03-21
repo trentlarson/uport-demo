@@ -95,6 +95,7 @@ Here is our source code:
 
 - There is <a href="https://whimsical.com/liberty-certification-KS6ocCfbFWSPhY4uKFWsTx">a diagram for a simple workflow.</a>
 
+- There are [Sample Claims](/doc-sample-claims) to scan into the mobile app.
 
 
 ##### Future

@@ -12,6 +12,7 @@ import AppNavbar from './components/AppNavbar'
 import Documentation from './components/Documentation'
 import DocDiscovery from './components/DocProjectSkillsDiscovery'
 import DocPledge from './components/DocPledge'
+import DocSampleClaims from './components/DocSampleClaims'
 import DocTransactions from './components/DocTransactions'
 import DocTutorial from './components/DocTutorial'
 import DocWitness from './components/DocWitness'
@@ -107,6 +108,7 @@ class App extends ErrorBoundary {
           <Route path='/docs' component={Documentation}/>
           <Route path='/doc-discovery' component={DocDiscovery}/>
           <Route path='/doc-pledge' component={DocPledge}/>
+          <Route path='/doc-sample-claims' component={DocSampleClaims}/>
           <Route path='/doc-transactions' component={DocTransactions}/>
           <Route path='/doc-tutorial' component={DocTutorial}/>
           <Route path='/doc-witness' component={DocWitness}/>
