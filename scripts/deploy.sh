@@ -50,7 +50,7 @@ fi
 USERNAME=$1
 DEPLOY_DIR=uport-demo
 
-cp -r ../endorser-mobile-assets/endorser.ch/demo public
+cp -r ../endorser-mobile-assets/endorser.ch/demo* public
 
 rsync -azv --exclude .git --exclude-from .gitignore -e "ssh -i $3" . $USERNAME@endorser.ch:$DEPLOY_DIR
 
@@ -62,6 +62,7 @@ ssh -i $3 $USERNAME@endorser.ch << EOF
   # I've brought the server to its knees trying to do this with the app still running.
   echo "Killing any running processes. If it shows 'Usage' instructions then it wasn't running."
   ps -ef | grep "node scripts/start.js" | grep -v "sh -c" | grep -v grep | awk '{print \$2}' | xargs kill
+  sleep 3 # maybe this stops it from hanging
 
   cd $DEPLOY_DIR
 
