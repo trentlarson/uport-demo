@@ -12,7 +12,7 @@ Here are a few scenarios:
 
   1. I want to publish a project, problem, or skill for someone to find it.
 
-  1. I want to find someone with the certain interests or skills.
+  1. I want to find someone with certain interests or skills.
 
 Here are the verbs used for assertions:
 
@@ -27,6 +27,8 @@ Hopefully it's clear how to apply those assertions to the scenarios above, avail
 ##### Other References
 
 - [Daniel Hardman](https://www.linkedin.com/in/danielhardman/) wrote <a href="https://docs.google.com/document/d/1M_PmELevT6uIGIENmZebM1oHFkU8OPTrHqORohGEdjA/edit">a paper about the ideal solutions for discovery</a> (with <a href="https://docs.google.com/presentation/d/1V1kFE_QCrElavfT7mqQFdkMw0eKMn7hbjStrg99vLZ0/edit#slide=id.ga47a6c451a_0_181">an introductory slide deck</a>).
+
+- ["Private Algorithms For The Protected In Social Network Search"](https://www.pnas.org/doi/10.1073/pnas.1510612113) may give hints about privacy-preserving correlations in networks.
 
 
 `

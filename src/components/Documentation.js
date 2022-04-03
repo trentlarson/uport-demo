@@ -19,7 +19,7 @@ const content = `
 
 Human-Sovereign Networking & Data Under Your Control
 
-We want to support the growth of community networks at whatever level of privacy you prefer. Meta (AKA Facebook) has created an engaging user interface around networks but they control it all, so let's build networks where individuals have as much control as possible while still allowing discovery.
+We want to support the growth of community networks at whatever level of privacy you prefer. Meta (AKA Facebook) has created an engaging user interface around networks but they control it all; Google allows more control but still has access to your data and shares it. Let's build networks where individuals have as much control as possible while still allowing discovery.
 
 This is a set of projects to do just that, with the following features:
 
@@ -37,6 +37,14 @@ __Privately query.__
 
 When credentials are saved to our server, people may then see claims about others -- only if allowed to see them. But there's one further possibility: if someone is two friends away, then your common friend can introduce you. This allows for discovery: although you may not have access to other people's claims, if you are linked by a contact then you can use other means to find that information, depending on the comfort level of your shared contact.
 
+
+Scenarios
+
+  - [Commit time or other resources, maybe conditionally.]()
+
+  - [Find other people in your community with similar interests and even goals.]()
+
+  - [Verify someone's contributions or connectedness.]()
 
 
 
@@ -110,9 +118,11 @@ Here is our source code:
 
     - [Signal](https://signal.org). It's amazing. For example, they store [minimal information about your contacts on their servers](https://signal.org/blog/private-contact-discovery/), such that they cannot even tell who are your contacts while still letting you find ones that are in your address book. Add to that their work with [anonymous credentials](https://eprint.iacr.org/2019/1416.pdf), groups, and payments (the latter is still in progress) and that seems the best platform on which to build these features. We'll go there as soon as we can figure out how.
 
-    - [Hyphae](https://patternsinthevoid.net/hyphae/hyphae.pdf) by Isis Lovecruft
+    - [Hyphae](https://patternsinthevoid.net/hyphae/hyphae.pdf) by [Isis Agora Lovecruft](https://www.youtube.com/watch?v=vtu0fzcC7n0&list=PLQGdAUnPH3T2h0EuYjVBSSF-FVG9CY5KY)
 
   - Let's move more functionality to our own devices. An always-connected service makes things convenient, but we should all have the option of owning our data and managing it on our own phones and computers. We could connect through bluetooth or a local network when in close proximity. A search request might be sent out and results could trickle back in as devices respond. It would be fun!
+
+  - Create or leverage a browser extension. A friend told how easy it is to use MetaMask for various platforms, and how inconvenient it is to have to pull out a phone to do work.
 
   - Although this is a labor of love and (we hope) a good foundation to support community work, we'd like to get resources to support this development effort. Great user-interfaces take time and effort to create, so that's worth something. We can also build more infrastructure that cater to organizations who could pay.
 
