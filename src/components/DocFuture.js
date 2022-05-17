@@ -51,6 +51,8 @@ const content = `
 
     - [Hyphae](https://patternsinthevoid.net/hyphae/hyphae.pdf) by [Isis Agora Lovecruft](https://www.youtube.com/watch?v=vtu0fzcC7n0&list=PLQGdAUnPH3T2h0EuYjVBSSF-FVG9CY5KY)
 
+    - [Holochain](https://www.holochain.org/)
+
   - Let's move more functionality to our own devices. An always-connected service makes things convenient, but we should all have the option of owning our data and managing it on our own phones and computers. We could connect through bluetooth or a local network when in close proximity. A search request might be sent out and results could trickle back in as devices respond. It would be fun!
 
   - Create or leverage a browser extension. A friend told how easy it is to use MetaMask for various platforms, and how inconvenient it is to have to pull out a phone to do work.
