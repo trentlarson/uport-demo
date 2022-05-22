@@ -10,7 +10,7 @@ const content = `
 
 ## Goodlaw Guardian
 
-![{'@context':'https://schema.org','@type':'Organization','name':'Goodlaw','member':{'@type':'OrganizationRole','roleName':'Guardian','member':{'@type':'Person','identifier':'PUT_USER_DID'}}}](/mobile/qr-goodlaw-guardian.png)
+![{'@context':'https://schema.org','@type':'Organization','name':'Goodlaw','member':{'@type':'OrganizationRole','roleName':'Guardian','member':{'@type':'Person','identifier':'PUT_USER_DID'}}}](/demo-mobile/qr-goodlaw-guardian.png)
 
 Contents:
 
