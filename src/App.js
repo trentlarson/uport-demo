@@ -14,6 +14,7 @@ import DocDiscovery from './components/DocProjectSkillsDiscovery'
 import DocFuture from './components/DocFuture'
 import DocPledge from './components/DocPledge'
 import DocSampleClaims from './components/DocSampleClaims'
+import DocSamplePledgesZ4A from './components/DocSamplePledgesZ4A'
 import DocTransactions from './components/DocTransactions'
 import DocTutorial from './components/DocTutorial'
 import DocWitness from './components/DocWitness'
@@ -111,6 +112,7 @@ class App extends ErrorBoundary {
           <Route path='/doc-future' component={DocFuture}/>
           <Route path='/doc-pledge' component={DocPledge}/>
           <Route path='/doc-sample-claims' component={DocSampleClaims}/>
+          <Route path='/doc-sample-pledges-z4a' component={DocSamplePledgesZ4A}/>
           <Route path='/doc-transactions' component={DocTransactions}/>
           <Route path='/doc-tutorial' component={DocTutorial}/>
           <Route path='/doc-witness' component={DocWitness}/>
