@@ -28,11 +28,10 @@ This is a set of projects to do just that, with the following features:
 
 Scenarios
 
-  - [Commit time or other resources, maybe conditionally.]()
+  - [Commit time or other resources (conditionally or unconditionally), then verify their follow-throug.](/doc-transactions)
 
-  - [Find other people in your community with similar interests and even goals.]()
+  - [Find other people in your community with similar interests and even goals.](/doc-discovery)
 
-  - [Verify someone's contributions or connectedness.]()
 
 
 

@@ -14,15 +14,15 @@ Here are a few scenarios:
 
 1. I want to record membership for my users.
 
-The verbs used in these are "Accept" & "Agree", along with a text description of the pledge. Technically: schema.org ["AcceptAction"](https://schema.org/AcceptAction) and ["AgreeAction"](https://schema.org/AgreeAction)
+The specific verbs used in these are "Accept" & "Agree", along with a text description of the pledge. Technically: schema.org ["AcceptAction"](https://schema.org/AcceptAction) and ["AgreeAction"](https://schema.org/AgreeAction)
 
 So we can apply that to the scenarios above, available in the app:
 
-1. Sign a "Pledge" commitment (which creates an "AcceptAction").
+1. Sign a pledge commitment (which creates an "AcceptAction").
 
-1. Confirm someone else's pledge or claim (which creates a "ConfirmAction").
+1. Agree with someone else's membership claim (which creates an "AgreeAction" with their "OrganizationRole").
 
-If you're looking for confirmation from people other than youself, hopefully you'll see those with a search in the app. If not, there's no good way to confirm for yourself... you need to be connected somehow.
+To get confirmation from people other than youself, search in the app for those with the right authority. If you cannot see the details, ask others personally for a connection... you need to be connected somehow.
 
 ##### Outside Work
 

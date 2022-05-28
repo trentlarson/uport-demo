@@ -16,11 +16,11 @@ Here are a few scenarios:
 
 Here are the verbs used for assertions:
 
-  - A "Person" 'knowsAbout' and 'seeks' data, as well as 'homeLocation'. Technically: [schema.org "Person"](https://schema.org/Person)
+  - A person 'knowsAbout' and 'seeks' data, as well as 'homeLocation'. Technically: [schema.org "Person"](https://schema.org/Person)
 
 Hopefully it's clear how to apply those assertions to the scenarios above, available in the app:
 
-  1. Create a ["Person"](https://schema.org/Person) and include any descriptive words about the project, problem, or skill.
+  1. Create a [Person](https://schema.org/Person) and include any descriptive words about the project, problem, or skill.
 
   1. Search for any criteria. If you cannot see them directly, then hopefully the skill or project already exists and someone can connect you together. If no DIDs are visible at all in your search results, that means that nobody visible... neither directly nor in your shared network to introduce you to each other.
 

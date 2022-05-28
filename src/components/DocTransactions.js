@@ -36,7 +36,7 @@ Here are the verbs used for assertions -- many recorded in the app by default:
 
     - "Offer" proposes a transfer or service, often with conditions or a price. When the proposal is fulfilled, there is a resulting "Give" or "Donate" or more complicated transfer such as "Trade". Technically: [schema.org "Offer"](https://schema.org/Offer) (The opposite is a ["Demand"](https://schema.org/Demand).)
 
-    - "Plan" proposes some activity to achieve a result. Technically: [schema.org "PlanAction"](https://schema.org/PlanAction)
+    - "Plan" proposes some activity to achieve a result. This is different from "Offer" because it is not targeted toward a particular recipient; this is useful for advertising and proposing an initiative for others to join. Technically: [schema.org "PlanAction"](https://schema.org/PlanAction)
 
     - "Project" is for a large-scale initiative, typically associated with an organization for some long-term benefit. Technically: [schema.org "Project" proposal](https://schema.org/Project)
 
