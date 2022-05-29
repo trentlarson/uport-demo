@@ -41,7 +41,7 @@ const content = `
 
   - [BBS+ signature schemes](https://mattrglobal.github.io/bbs-signatures-spec/) and [zero-knowledge proofs](https://en.wikipedia.org/wiki/Zero-knowledge_proof) enable you to send hidden data and later reveal parts of it or even just prove that it fits your purpose without revealing the data. (An example is proving that you're over 21 without revealing your exact age. Magic, right?) We can use these to iterate our way to better server-side privacy. This may be what Evernym calls "safe signatures", but we've got to understand this more.
 
-  - Build on another platform:
+  - Build on another platform for transport:
 
     - [Element](https://element.io)
 
@@ -49,9 +49,9 @@ const content = `
 
     - [Signal](https://signal.org). It's amazing. For example, they store [minimal information about your contacts on their servers](https://signal.org/blog/private-contact-discovery/), such that they cannot even tell who are your contacts while still letting you find ones that are in your address book. Add to that their work with [anonymous credentials](https://eprint.iacr.org/2019/1416.pdf), groups, and payments (the latter is still in progress) and that seems the best platform on which to build these features. We'll go there as soon as we can figure out how.
 
-    - [Hyphae](https://patternsinthevoid.net/hyphae/hyphae.pdf) by [Isis Agora Lovecruft](https://www.youtube.com/watch?v=vtu0fzcC7n0&list=PLQGdAUnPH3T2h0EuYjVBSSF-FVG9CY5KY)
-
     - [Holochain](https://www.holochain.org/)
+
+    - [Backchannel](https://www.inkandswitch.com/backchannel/)
 
   - Let's move more functionality to our own devices. An always-connected service makes things convenient, but we should all have the option of owning our data and managing it on our own phones and computers. We could connect through bluetooth or a local network when in close proximity. A search request might be sent out and results could trickle back in as devices respond. It would be fun!
 
@@ -82,7 +82,6 @@ https://patternsinthevoid.net/hyphae/hyphae.pdf
   - MetaMask & Trezor also don't have VCs built in; while they could sign transactions, they're oriented toward cryptocurrencies so we don't envision their use for VCs.
 
   - We must give a shout-out to blockchains because they brought user-managed cryptography to the mainstream (and still pushing the boundaries for self-sovereign asset management). They're public, so they're not good candidates for any private data.
-
 
 ## Selected History
 
