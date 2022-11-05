@@ -85,7 +85,7 @@ https://patternsinthevoid.net/hyphae/hyphae.pdf
 
 ## Selected History
 
-- Always appreciate how far we've come. :-) For example, this used to be [based on uPort](https://github.com/trentlarson/uport-demo/blob/5c3d7fcb751ad34ed10ebb7adab650b2cfebb7d1/src/components/Welcome.js#L96). The [first shared transaction was on Jan 2019](https://endorser.ch/claim?claimId=01D25AVGQG1N8E9JNGK7C7DZRD) (before the Verified Credentials Working Draft was submitted).
+- Always appreciate how far we've come. :-) For example, this used to be [based on uPort](https://github.com/trentlarson/uport-demo/blob/5c3d7fcb751ad34ed10ebb7adab650b2cfebb7d1/src/components/Welcome.js#L96). The [first shared transaction was on Jan 2019](https://endorser.ch/reportClaim?claimId=01D25AVGQG1N8E9JNGK7C7DZRD) (before the Verified Credentials Working Draft was submitted).
 
 `
 
