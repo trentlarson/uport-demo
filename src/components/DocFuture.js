@@ -75,7 +75,7 @@ https://patternsinthevoid.net/hyphae/hyphae.pdf
 
   - [Other wallets](https://github.com/Gimly-Blockchain/ssi-wallets) allow creation of VCs but are typically for organizational use.
 
-  - The paper [Bottom-up Trust Registry in Self Sovereign Identity](https://arxiv.org/pdf/2208.04624.pdf) explains one way to create a registry for issuers.
+  - The paper [Bottom-up Trust Registry in Self Sovereign Identity](https://arxiv.org/pdf/2208.04624.pdf) explains one way to create a registry for issuers, but we care more about managing your personal trust network.
 
   - Yingme.co has some time-banking, but it's still working on the onboarding and how to share the technology.
 
