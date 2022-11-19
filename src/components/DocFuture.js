@@ -75,6 +75,8 @@ https://patternsinthevoid.net/hyphae/hyphae.pdf
 
   - [Other wallets](https://github.com/Gimly-Blockchain/ssi-wallets) allow creation of VCs but are typically for organizational use.
 
+  - The paper [Bottom-up Trust Registry in Self Sovereign Identity](https://arxiv.org/pdf/2208.04624.pdf) explains one way to create a registry for issuers.
+
   - Yingme.co has some time-banking, but it's still working on the onboarding and how to share the technology.
 
   - Keybase aims to be a general-purpose identity wallet. It doesn't have VCs built-in, but it could be a viable approach. Their sigchains could be useful.
