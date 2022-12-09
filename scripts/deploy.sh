@@ -52,7 +52,7 @@ DEPLOY_DIR=uport-demo
 
 cp -r ../endorser-mobile-assets/endorser.ch/demo* public
 
-cp -r ../endorser-doc/build public/doc
+cp -r ../endorser-docs/build public/doc
 
 rsync -azv --exclude .git --exclude-from .gitignore -e "ssh -i $3" . $USERNAME@endorser.ch:$DEPLOY_DIR
 

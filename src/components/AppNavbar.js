@@ -77,9 +77,9 @@ class AppNavbar extends Component {
             <DemoText>Home</DemoText>
           </Link>
           &nbsp;&nbsp;&nbsp;
-          <Link to="/docs">
-            <DemoText>Docs</DemoText>
-          </Link>
+            <a href="/doc/html/">
+              <DemoText>Docs</DemoText>
+            </a>
         </LeftArea>
 
         <RightArea>
