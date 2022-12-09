@@ -8,6 +8,8 @@ coverage
 
 # production
 build
+public/demo*
+public/doc
 
 # misc
 .DS_Store

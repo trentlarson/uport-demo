@@ -50,8 +50,10 @@ fi
 USERNAME=$1
 DEPLOY_DIR=uport-demo
 
+rm -r public/demo*
 cp -r ../endorser-mobile-assets/endorser.ch/demo* public
 
+rm -r public/doc
 cp -r ../endorser-docs/build public/doc
 
 rsync -azv --exclude .git --exclude-from .gitignore -e "ssh -i $3" . $USERNAME@endorser.ch:$DEPLOY_DIR
