@@ -58,6 +58,9 @@ class Welcome extends Component {
                 Use the Endorser mobile app to record claims. <Link to="/doc-tutorial">Like this.</Link>
                 <br/>
                 <br/>
+                Note that you'll have to get a registered person to register you.
+                <br/>
+                <br/>
                 <a href="https://apps.apple.com/us/app/endorser-mobile/id1556368693" target="_blank">
                   <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae108bd47cd15_app-store-badge.svg" alt=""/>
                 </a>
