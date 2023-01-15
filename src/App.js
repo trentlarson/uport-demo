@@ -137,7 +137,14 @@ class App extends ErrorBoundary {
           <Route path='/bvc/voteIgnite' component={BvcVoteIgniteSpeakers}/>
           <Route path='/bvc/attendedSat' component={BvcAttendedSaturdayMorning}/>
           <Route path='/bvc/attendedFirearm' component={BvcAttendedFirearmTraining}/>
-          <Route path='/tasks' render={() => window.location = "https://raw.githubusercontent.com/trentlarson/endorser-ch/master/tasks.yml"}/>
+
+          <Route path='/project' render={() => {
+            window.location = "https://endorser.ch:3000/api" + window.location.pathname
+          }}/>
+
+          <Route path='/tasks' render={() => {
+            window.location = "https://raw.githubusercontent.com/trentlarson/endorser-ch/master/tasks.yaml"
+          }}/>
 
           <Route path='/transaction' component={SignTransaction}/>
           <Route path='/credentials' component={CollectCredentials}/>
