@@ -56,6 +56,27 @@ cp -r ../endorser-mobile-assets/endorser.ch/demo* public
 rm -r public/doc
 cp -r ../endorser-docs/build public/doc
 
+echo ""
+echo "Will erase the server backup & override. If this is your second deploy today, stop until you're sure!"
+echo "Will erase in 5..."
+sleep 1
+echo "4..."
+sleep 1
+echo "3..."
+sleep 1
+echo "2..."
+sleep 1
+echo "1..."
+sleep 1
+echo "Continuing with deploy."
+
+ssh -i $3 $USERNAME@endorser.ch << EOF
+
+  rm -rf $DEPLOY_DIR.bak
+  cp -rP $DEPLOY_DIR $DEPLOY_DIR.bak
+
+EOF
+
 rsync -azv --exclude .git --exclude-from .gitignore -e "ssh -i $3" . $USERNAME@endorser.ch:$DEPLOY_DIR
 
 ssh -i $3 $USERNAME@endorser.ch << EOF
