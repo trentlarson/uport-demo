@@ -38,10 +38,6 @@ import BvcVoteIgniteSpeakers from './components/bvc/VoteIgniteSpeakers'
 import BvcAttendedFirearmTraining from './components/bvc/AttendedFirearmTraining'
 import BvcAttendedSaturdayMorning from './components/bvc/AttendedSaturdayMorning'
 
-import SignTransaction from './components/SignTransaction'
-import CollectCredentials from './components/CollectCredentials'
-import RegisterYourApp from './components/RegisterYourApp'
-
 import { uportConnect } from './utilities/uportSetup'
 
 const AppWrap = styled.div`
@@ -138,17 +134,38 @@ class App extends ErrorBoundary {
           <Route path='/bvc/attendedSat' component={BvcAttendedSaturdayMorning}/>
           <Route path='/bvc/attendedFirearm' component={BvcAttendedFirearmTraining}/>
 
-          <Route path='/project' render={() => {
-            window.location = "https://endorser.ch:3000/api" + window.location.pathname
-          }}/>
-
           <Route path='/tasks' render={() => {
             window.location = "https://raw.githubusercontent.com/trentlarson/endorser-ch/master/tasks.yaml"
           }}/>
 
-          <Route path='/transaction' component={SignTransaction}/>
-          <Route path='/credentials' component={CollectCredentials}/>
-          <Route path='/register' component={RegisterYourApp}/>
+          {/**
+            Reserve some global URLs as data endpoints for unique IRIs.
+
+            This technically isn't necessary: these paths on endorser.ch are just identifiers...
+            there is no need for them to handle requests. But it's kind of a nice touch.
+           **/}
+
+          {/** These direct to IDs on this server. **/}
+          <Route path='/claim'    render={() => { window.location = "https://endorser.ch:3000/api/" + window.location.pathname }}/>
+
+          {/** These direct to IDs that may have been assigned externally but have been stored in our data. **/}
+          {/** Note the "/ext" in the target destination. **/}
+          <Route path='/plan'     render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
+          <Route path='/project'  render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
+
+          {/** The behavior of these are undefined as of yet (but should probably be external IDs). **/}
+          <Route path='/action'   render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
+          <Route path='/accept'   render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
+          <Route path='/agree'    render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
+          <Route path='/contract' render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
+          <Route path='/event'    render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
+          <Route path='/give'     render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
+          <Route path='/offer'    render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
+          <Route path='/org'      render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
+          <Route path='/pledge'   render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
+          <Route path='/tenure'   render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
+          <Route path='/vote'     render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
+
         </AppBody>
       </AppWrap>
     )
