@@ -150,10 +150,11 @@ class App extends ErrorBoundary {
 
           {/** These direct to IDs that may have been assigned externally but have been stored in our data. **/}
           {/** Note the "/ext" in the target destination. **/}
-          <Route path='/plan'     render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
-          <Route path='/project'  render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
+          <Route path='/entity'   render={() => { window.location = "https://endorser.ch:3000/api/claim/byHandle" + window.location.pathname.split('/').reverse()[0] }}/>
 
           {/** The behavior of these are undefined as of yet (but should probably be external IDs). **/}
+          <Route path='/plan'     render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
+          <Route path='/project'  render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
           <Route path='/action'   render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
           <Route path='/accept'   render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
           <Route path='/agree'    render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
