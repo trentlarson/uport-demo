@@ -58,7 +58,17 @@ cp -r ../endorser-docs/build public/doc
 
 echo ""
 echo "Will erase the server backup & override. If this is your second deploy today, stop until you're sure!"
-echo "Will erase in 5..."
+echo "Will erase in 10..."
+sleep 1
+echo "9..."
+sleep 1
+echo "8..."
+sleep 1
+echo "7..."
+sleep 1
+echo "6..."
+sleep 1
+echo "5..."
 sleep 1
 echo "4..."
 sleep 1
