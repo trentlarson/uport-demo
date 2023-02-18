@@ -150,7 +150,7 @@ class App extends ErrorBoundary {
           <Route path='/claim'    render={() => { window.location = "https://endorser.ch:3000/api" + window.location.pathname }}/>
 
           {/** These direct to IDs that may have been assigned externally but have been stored in our data. **/}
-          <Route path='/entity'   render={() => { window.location = "https://endorser.ch:3000/api/claim/byHandle/" + window.location.pathname.split('/').reverse()[0] }}/>
+          <Route path='/entity'   render={() => { window.location = "https://endorser.ch:3000/api/claim/byHandle/" + encodeURIComponent(window.location.pathname.split('/').reverse()[0]) }}/>
 
           {/** The behavior of these are undefined as of yet (but should probably be external IDs). **/}
           {/** Note that pathname is the "/" after the domain and everything after it. **/}
