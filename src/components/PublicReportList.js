@@ -11,6 +11,9 @@ const WelcomeWrap = styled.section``
 const NextButton = styled.button`
   margin-top: 20px;
 `
+const ColumnsSection = styled.button`
+  flex: 1;
+`
 const LeftSection = styled.section`
   float: left;
 `
@@ -24,25 +27,29 @@ class ReportList extends Component {
     return (
       <WelcomeWrap>
         <h4>Reports</h4>
-        <div>
+        <ColumnsSection>
 
           <LeftSection>
-          <Link to="/reportBestAttendance">
-          <NextButton>Best Attendance</NextButton>
-          </Link>
+            <Link to="/reportBestAttendance">
+            <NextButton>Best Attendance</NextButton>
+            </Link>
           </LeftSection>
 
+          <a href="https://livesofgifts.org/projects/">
+            <NextButton>Projects</NextButton>
+          </a>
+
           <Link to="/reportResidences">
-          <NextButton>Residences</NextButton>
+            <NextButton>Residences</NextButton>
           </Link>
 
           <RightSection>
-          <Link to="/reportSearch">
-          <NextButton>Search</NextButton>
-          </Link>
+            <Link to="/reportSearch">
+              <NextButton>Search</NextButton>
+            </Link>
           </RightSection>
 
-        </div>
+        </ColumnsSection>
       </WelcomeWrap>
     )
   }
