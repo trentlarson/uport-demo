@@ -18,7 +18,7 @@ export default class PrivacyPolicy extends Component {
       <TextBody>
         <h4>Privacy Policy</h4>
 
-        <h2>Endorser.ch Service</h2>
+        <h2>Endorser Search Service</h2>
 <p>
 
       This service stores data sent to its APIs.  The data is not used to profile, track, or otherwise identify users.  The data is copied for backup purposes, and sometimes it is queried in order to troubleshoot the service and the associated client applications.
