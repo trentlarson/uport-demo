@@ -147,26 +147,26 @@ class App extends ErrorBoundary {
 
           {/** These direct to IDs on this server. **/}
           {/** Note that pathname is the "/" after the domain and everything after it. **/}
-          <Route path='/claim'    render={() => { window.location = "https://endorser.ch:3000/api" + window.location.pathname }}/>
+          <Route path='/claim'    render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api" + window.location.pathname }}/>
 
           {/** These direct to IDs that may have been assigned externally but have been stored in our data. **/}
-          <Route path='/entity'   render={() => { window.location = "https://endorser.ch:3000/api/claim/byHandle/" + encodeURIComponent(window.location.pathname.split('/').reverse()[0]) }}/>
+          <Route path='/entity'   render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api/claim/byHandle/" + encodeURIComponent(window.location.pathname.split('/').reverse()[0]) }}/>
 
           {/** The behavior of these are undefined as of yet (but should probably be external IDs). **/}
           {/** Note that pathname is the "/" after the domain and everything after it. **/}
-          <Route path='/plan'     render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
-          <Route path='/project'  render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
-          <Route path='/action'   render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
-          <Route path='/accept'   render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
-          <Route path='/agree'    render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
-          <Route path='/contract' render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
-          <Route path='/event'    render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
-          <Route path='/give'     render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
-          <Route path='/offer'    render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
-          <Route path='/org'      render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
-          <Route path='/pledge'   render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
-          <Route path='/tenure'   render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
-          <Route path='/vote'     render={() => { window.location = "https://endorser.ch:3000/api/ext" + window.location.pathname }}/>
+          <Route path='/plan'     render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api/ext" + window.location.pathname }}/>
+          <Route path='/project'  render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api/ext" + window.location.pathname }}/>
+          <Route path='/action'   render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api/ext" + window.location.pathname }}/>
+          <Route path='/accept'   render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api/ext" + window.location.pathname }}/>
+          <Route path='/agree'    render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api/ext" + window.location.pathname }}/>
+          <Route path='/contract' render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api/ext" + window.location.pathname }}/>
+          <Route path='/event'    render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api/ext" + window.location.pathname }}/>
+          <Route path='/give'     render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api/ext" + window.location.pathname }}/>
+          <Route path='/offer'    render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api/ext" + window.location.pathname }}/>
+          <Route path='/org'      render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api/ext" + window.location.pathname }}/>
+          <Route path='/pledge'   render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api/ext" + window.location.pathname }}/>
+          <Route path='/tenure'   render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api/ext" + window.location.pathname }}/>
+          <Route path='/vote'     render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api/ext" + window.location.pathname }}/>
 
         </AppBody>
       </AppWrap>
