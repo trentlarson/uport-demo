@@ -19,22 +19,22 @@ export default class PrivacyPolicy extends Component {
         <h4>Privacy Policy</h4>
 
         <h2>Endorser Search Service</h2>
-<p>
+        <p>
 
-      This service stores data sent to its APIs.  The data is not used to profile, track, or otherwise identify users.  The data is copied for backup purposes, and sometimes it is queried in order to troubleshoot the service and the associated client applications.
+      This service stores data sent to its APIs.  The data is not used to profile, track, or otherwise identify users -- except in cases where they are determined to be abusing the service. The data is copied for backup purposes, and sometimes it is queried in order to troubleshoot the service and the associated client applications.
 
-</p>
-<p>
+        </p>
+        <p>
 
-This service makes the data available to other users in the following ways:
+      This service makes the data available to other users in the following ways:
 
-</p>
-<p>
+        </p>
+        <p>
 
         <ul>
 
         <li>
-        Fields that contain Decentralized Identifiers (DIDs) and nothing else will be shown to other users if:
+        Fields with Decentralized Identifiers (DIDs) will be shown to other users if:
 
         <ol>
         <li>the holder of that DID has made a cleim about the DID of the other user, or</li>
@@ -46,16 +46,16 @@ This service makes the data available to other users in the following ways:
         </li>
 
         <li>
-        Fields that contain other data will be visible in their entirety to the world.
+        Fields with other data will be visible in their entirety to the world.
         </li>
 
         </ul>
 
-We have never delivered the non-public back-end data to anyone; only our system administrators have seen the contents and only for the purposes described above.
+      We have never delivered the non-public back-end data to anyone; only our system administrators have seen the contents, and only for the purposes described above.
 
-</p>
+        </p>
 
-      <h2>Collaborating Apps</h2>
+        <h2>Collaborating Apps</h2>
         <p>
         Other apps are written to coordinate with this service.  They may store data as well, but any interaction with this service will obey the policies in the Service section.
         </p>
@@ -64,25 +64,38 @@ We have never delivered the non-public back-end data to anyone; only our system 
         <ul>
 
         <li>
-        This service integrates with the uPort client app, and will send and receive data to and from that app.
+        The Endorser Mobile native app client and the Time Safari web app clients are affiliated with this service, and they offer full visibility of what is sent.
         </li>
 
         <li>
-        The Endorser Mobile client app will send data to and receive data from this service.
+        It is possible for others to independently create apps to interact with this service.
         </li>
 
         </ul>
 
-In all client apps, the user can see and review all data before it is sent.
-Other data on the client apps -- such as the user's name and contacts -- are not sent to this service.
+      Data on the affiliated client apps -- such as the user's name and contacts -- are not sent to this service. Other apps are recommended to do the same, but this service does not vet unaffiliated apps.
         </p>
 
-<h2>Data Removal</h2>
-<p>
-As a rule, the data in this service is open for publication and searching. However, since it is possible to publish sensitive data about people who don't want it to be public, there may be times when data is selectively erased from the server. In addition, the original submitter of data may afterward want their claims erased. These will be addressed on a case-by-case basis (and we expect that rules will evolve over time). This is different from offensive or false data, which generally won't be erased; rather than be a curator of data, this service aims to be a minimal platform for owning and selectively sharing data that is vetted by users.
-</p>
+        <h2>Data Removal</h2>
 
-Endorser.ch Privacy Policy v1
+        <p>
+As a rule, the data in this service is open for worldwide publication and searching. However, since it is possible to publish sensitive data about oneself, there may be times when someone wants to erase data that they created, and we will support such requests. This is different from offensive or false data, which generally won't be erased; rather than be a curator of data, this service is a minimal platform for owning and selectively sharing data that is vetted by other users.
+        </p>
+
+        <p>
+        In addition, the service operators may choose to erase data for their own reasons. Due to these situations, it is always wise to keep a backup of your data as well as important data from others (since they may choose to erase theirs).
+        </p>
+
+        <p>
+        To request to remove all the data you previously submitted, email <a href="mailto:CommunityEndorser@gmail.com">CommunityEndorser@gmail.com</a>. Note that the process will require account validation, the easiest method being via signed approval through the affiliated Endorser Mobile app.
+        </p>
+
+        <br />
+        <br />
+        <br />
+        Endorser.ch Privacy Policy v2
+
+        <p>Changes in v2: added disclaimer for service abuse;  updated collaborating apps; reworded removal policy for personal deletion; added email for data removal</p>
 
       </TextBody>
     )

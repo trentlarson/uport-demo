@@ -25,7 +25,17 @@ then
     git status
     echo ""
     echo "Note that you've got those uncommitted changes.  They'll be pushed in the deploy."
-    echo "Will continue in 5..."
+    echo "Will continue in 10..."
+    sleep 1
+    echo "9..."
+    sleep 1
+    echo "8..."
+    sleep 1
+    echo "7..."
+    sleep 1
+    echo "6..."
+    sleep 1
+    echo "5..."
     sleep 1
     echo "4..."
     sleep 1

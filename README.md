@@ -31,7 +31,11 @@ Note that new deployments can remove the "legacy Confirmation" code.
 
 ###### Release
 
-Create a release in GitHub, `git pull`, then: `./scripts/deploy.sh ubuntutest release-endorser.ch.XXX ~/.ssh/id_rsa` ... and change "ubuntutest" to "ubuntu" when deploying to production
+Create a release in GitHub, `git pull`, then do one of the following:
+
+- Manually follow the steps in `./scripts/deploy.sh` (because doing them automatically has borked the server in the past, hanging with 99% CPU usage by kswapd0).
+
+- ... or, if you're feeling lucky, run `./scripts/deploy.sh ubuntutest release-endorser.ch.XXX ~/.ssh/key` ... and change "ubuntutest" to "ubuntu" when deploying to production.
 
 
 
