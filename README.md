@@ -7,6 +7,7 @@ However, instead of uPort and this web app, we now recommend using just our mobi
 
 This project is for use with https://github.com/trentlarson/endorser-ch
 
+
 ###### Getting started
 ```
 # install dependencies
@@ -15,6 +16,7 @@ npm ci
 # set up the environment
 cp .env.local .env
 ```
+
 
 ###### Development
 ```
@@ -29,6 +31,7 @@ Cloned from [uPort Demo](https://github.com/uport-project/demo)
 
 Note that new deployments can remove the "legacy Confirmation" code.
 
+
 ###### Release
 
 Create a release in GitHub, `git pull`, then do one of the following:
@@ -37,8 +40,16 @@ Create a release in GitHub, `git pull`, then do one of the following:
 
 - ... or, if you're feeling lucky, run `./scripts/deploy.sh ubuntutest release-endorser.ch.XXX ~/.ssh/key` ... and change "ubuntutest" to "ubuntu" when deploying to production.
 
+Note that `npm run build` does most things right but not some paths, eg `/privacy-policy` and `doc-discovery`.
 
 
+###### Pointers
+
+Some external systems point to URLs managed here. See them in the `src/App.js` file.
+
+- Google links to the `/privacy-policy` page. Maybe Apple, too.
+
+- The API service creates "handle" IDs with `/entity` in them.
 
 
 
