@@ -79,15 +79,19 @@ export default class PrivacyPolicy extends Component {
         <h2>Data Removal</h2>
 
         <p>
-As a rule, the data in this service is open for worldwide publication and searching. However, since it is possible to publish sensitive data about oneself, there may be times when someone wants to erase data that they created, and we will support such requests. This is different from offensive or false data, which generally won't be erased; rather than be a curator of data, this service is a minimal platform for owning and selectively sharing data that is vetted by other users.
+As a rule, the data in this service is open for worldwide publication and searching. However, since it is possible to publish sensitive data about oneself, there may be times when someone wants to erase data that they created, and we will support such requests. This is different from offensive or false data, which generally won't be erased; rather than be a curator of data, this service is a minimal platform for owning and selectively sharing data, where other users in your network are your best judges.
         </p>
 
         <p>
-        In addition, the service operators may choose to erase data for their own reasons. Due to these situations, it is always wise to keep a backup of your data as well as important data from others (since they may choose to erase theirs).
+The service operators may choose to erase or hide data for their own reasons. They do not want to support activities they find offensive and damaging; they value free speech, but they expect that they don't have to define all offensive behavior... they're supporting this for people in their network who generally value good society, and they expect that anyone who doesn't like their choices can choose another platform. So they reserve the right to remove such data from their servers. They will make reasonable attempts to communicate with offending parties and work out any disputes with them, since this is a service for people who are connected to one another, but they currently don't define all the boundaries that exist in their heads and hearts.
         </p>
 
         <p>
-        To request to remove all the data you previously submitted, email <a href="mailto:CommunityEndorser@gmail.com">CommunityEndorser@gmail.com</a>. Note that the process will require account validation, the easiest method being via signed approval through the affiliated Endorser Mobile app.
+        Due to these situations, it is always wise to keep a backup of your data as well as important data from others (since they may choose to erase theirs).
+        </p>
+
+        <p>
+        To request that operators remove all the data you previously submitted, email <a href="mailto:CommunityEndorser@gmail.com">CommunityEndorser@gmail.com</a>. Note that the process will require account validation, the easiest method being via signed approval through the affiliated Endorser Mobile app.
         </p>
 
         <br />
