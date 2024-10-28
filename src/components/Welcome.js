@@ -70,7 +70,7 @@ class Welcome extends Component {
                 <br/>
                 Note that you'll have to get a registered person to register you.
                 <br/>
-                <a href="/privacy-policy">See policies.</a>
+                <Link to="/privacyPolicy">See policies.</Link>
                 <br/>
                 <a href="https://CommunityCred.org">Contact us.</a>
                 <br/>

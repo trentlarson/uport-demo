@@ -34,13 +34,19 @@ Note that new deployments can remove the "legacy Confirmation" code.
 
 ###### Release
 
+After `npm run build`, copy the contents of the `build` folder to the server, eg `rsync -azvu -e "ssh -i ~/.ssh/..." build ubuntu@endorser.ch:uport-demo/`. That's it.
+
+- Note that there are videos and html doc files that need to be copied.
+
+The following was the approach when we ran `npm run start` on the server:
+
 Create a release in GitHub, `git pull`, then do one of the following:
 
 - Manually follow the steps in `./scripts/deploy.sh` (because doing them automatically has borked the server in the past, hanging with 99% CPU usage by kswapd0).
 
 - ... or, if you're feeling lucky, run `./scripts/deploy.sh ubuntutest release-endorser.ch.XXX ~/.ssh/key` ... and change "ubuntutest" to "ubuntu" when deploying to production.
 
-Note that `npm run build` does most things right but not some paths, eg `/privacy-policy` and `doc-discovery`.
+Note that `npm run build` creates static pages that work when using a "Link" but not an "href".
 
 
 ###### Pointers
@@ -49,7 +55,8 @@ Some external systems point to URLs managed here. See them in the `src/App.js` f
 
 - Google links to the `/privacy-policy` page. Maybe Apple, too.
 
-- The API service creates "handle" IDs with `/entity` in them.
+- The API service creates "handle" IDs with `/entity/...` in them, and contact details are in a URL with `/contact?jwt=...` in them.
+
 
 
 

@@ -21,7 +21,7 @@ const RightSection = styled.section`
   float: right;
 `
 
-class ReportList extends Component {
+class PublicReportList extends Component {
 
   render () {
     return (
@@ -64,4 +64,4 @@ const mapDispatchToProps = (dispatch) => {
   return { actions: bindActionCreators(AppActions, dispatch) }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ReportList))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PublicReportList))
