@@ -8,7 +8,8 @@ However, instead of uPort and this web app, we now recommend using just our mobi
 This project is for use with https://github.com/trentlarson/endorser-ch
 
 
-###### Getting started
+
+###### Get started
 ```
 # install dependencies
 npm ci
@@ -18,11 +19,12 @@ cp .env.local .env
 ```
 
 
-###### Development
+###### Develop
 ```
 npm start
 ```
 
+If you have problems with the build, try changing the node version.
 
 To run as a particular test user, edit src/utilities/claimsTest.js and set TEST_USER_NUM to a valid number from the test data.
 
@@ -32,21 +34,30 @@ Cloned from [uPort Demo](https://github.com/uport-project/demo)
 Note that new deployments can remove the "legacy Confirmation" code.
 
 
+
+
 ###### Release
 
-After `npm run build`, copy the contents of the `build` folder to the server, eg `rsync -azvu -e "ssh -i ~/.ssh/..." build ubuntu@endorser.ch:uport-demo/`. That's it.
+- Create a .env.production file. Look at .env.local for the values to set.
+
+- `npm run build`
+
+- Copy the contents of the `build` folder to the server, eg `rsync -azvu -e "ssh -i ~/.ssh/..." build ubuntu@endorser.ch:uport-demo/`.
+
+- Check the map and the entity redirect, eg. (this one)[https://endorser.ch/entity/01HWWXKYTK0P086D8B1C3TNB7S].
 
 - Note that there are videos and html doc files that need to be copied.
 
+- Note that `npm run build` creates static pages that work when using a "Link" but not an "href".
+
 The following was the approach when we ran `npm run start` on the server:
 
-Create a release in GitHub, `git pull`, then do one of the following:
+- Create a release in GitHub, `git pull`, then do one of the following:
 
-- Manually follow the steps in `./scripts/deploy.sh` (because doing them automatically has borked the server in the past, hanging with 99% CPU usage by kswapd0).
+  - Manually follow the steps in `./scripts/deploy.sh` (because doing them automatically has borked the server in the past, hanging with 99% CPU usage by kswapd0).
 
-- ... or, if you're feeling lucky, run `./scripts/deploy.sh ubuntutest release-endorser.ch.XXX ~/.ssh/key` ... and change "ubuntutest" to "ubuntu" when deploying to production.
+  - ... or, if you're feeling lucky, run `./scripts/deploy.sh ubuntutest release-endorser.ch.XXX ~/.ssh/key` ... and change "ubuntutest" to "ubuntu" when deploying to production.
 
-Note that `npm run build` creates static pages that work when using a "Link" but not an "href".
 
 
 ###### Pointers
