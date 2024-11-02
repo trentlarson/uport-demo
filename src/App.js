@@ -135,7 +135,7 @@ class App extends ErrorBoundary {
           <Route path='/bvc/attendedFirearm' component={BvcAttendedFirearmTraining}/>
 
           <Route path='/tasks' render={() => {
-            window.location = "https://raw.githubusercontent.com/trentlarson/endorser-ch/master/tasks.yaml"
+            window.location = "https://raw.githubusercontent.com/trentlarson/endorser-ch/master/project.task.yaml"
           }}/>
 
           {/**
@@ -145,11 +145,11 @@ class App extends ErrorBoundary {
             there is no need for them to handle requests. But it's kind of a nice touch.
            **/}
 
-          {/** These direct to IDs on this server. **/}
+          {/** These reroute to IDs on this server. **/}
           {/** Note that pathname is the "/" after the domain and everything after it. **/}
           <Route path='/claim'    render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api" + window.location.pathname }}/>
 
-          {/** These direct to IDs that may have been assigned externally but have been stored in our data. **/}
+          {/** These reroute to IDs that may have been assigned externally but have been stored in our data. **/}
           <Route path='/entity'   render={() => { window.location = process.env.REACT_APP_ENDORSER_CH_HOST_PORT + "/api/claim/byHandle/" + encodeURIComponent(window.location.pathname.split('/').reverse()[0]) }}/>
 
           {/** The behavior of these are undefined as of yet (but should probably be external IDs). **/}

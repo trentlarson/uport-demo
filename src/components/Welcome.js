@@ -60,11 +60,14 @@ class Welcome extends Component {
                 <br/>
 
                 <a href="https://apps.apple.com/us/app/endorser-mobile/id1556368693" target="_blank">
-                <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae108bd47cd15_app-store-badge.svg" alt=""/>
+                  <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae108bd47cd15_app-store-badge.svg" alt=""/>
                 </a>
+                &nbsp;&nbsp; (Ask for Android.)
+                {/**
                 <a href="https://play.google.com/store/apps/details?id=ch.endorser.mobile" target="_blank">
-                <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae15b7047cd13_google-play-badge.svg" alt=""/>
+                  <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae15b7047cd13_google-play-badge.svg" alt=""/>
                 </a>
+                **/}
 
                 <br/>
                 <br/>

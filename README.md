@@ -38,17 +38,33 @@ Note that new deployments can remove the "legacy Confirmation" code.
 
 ###### Release
 
-- Create a .env.production file. Look at .env.local for the values to set.
+- `REACT_APP_GOOGLE_MAPS_API_KEY=... REACT_APP_ENDORSER_CH_HOST_PORT=https://api.endorser.ch npm run build`
 
-- `npm run build`
+- `rsync -azvu -e "ssh -i ~/.ssh/..." build ubuntu@endorser.ch:uport-demo/`
 
-- Copy the contents of the `build` folder to the server, eg `rsync -azvu -e "ssh -i ~/.ssh/..." build ubuntu@endorser.ch:uport-demo/`.
+- Check the map and the entity redirect:
 
-- Check the map and the entity redirect, eg. (this one)[https://endorser.ch/entity/01HWWXKYTK0P086D8B1C3TNB7S].
+  - ... on local:
+
+    - [entity](http://localhost:8081/entity/01HWWXKYTK0P086D8B1C3TNB7S)
+
+    - [best attend](http://127.0.0.1:8081/reportBestAttendance)
+
+    - [map](http://localhost:8081/reportResidences)
+
+  - ... on prod:
+
+    - [entity](https://endorser.ch/entity/01HWWXKYTK0P086D8B1C3TNB7S)
+
+    - [best attend](https://endorser.ch/reportBestAttendance)
+
+    - [map](https://endorser.ch/reportResidences)
 
 - Note that there are videos and html doc files that need to be copied.
 
-- Note that `npm run build` creates static pages that work when using a "Link" but not an "href".
+- Note that `npm run build` creates static pages with internal links that work when using a "Link" but not an "href".
+
+- It seems like a .env.production file (based on .env.local) worked once.
 
 The following was the approach when we ran `npm run start` on the server:
 
