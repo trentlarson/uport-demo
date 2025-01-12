@@ -55,12 +55,16 @@ class Welcome extends Component {
                 <br/>
                 <br/>
                 <br/>
-                Use the Endorser mobile app to record claims. <Link to="/doc-tutorial">Like this.</Link>
+                <br/>
+                    See the most popular app at <a href="https://TimeSafari.org">TimeSafari.org</a>
+                <br/>
+                <br/>
+                    For more power, use the Endorser mobile app to record claims. <Link to="/doc-tutorial">Like this.</Link>
                 <br/>
                 <br/>
 
                 <a href="https://apps.apple.com/us/app/endorser-mobile/id1556368693" target="_blank">
-                  <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae108bd47cd15_app-store-badge.svg" alt=""/>
+                    <img src="https://uploads-ssl.webflow.com/5aac5d32ca4ae1564547cd0b/5aac5d32ca4ae108bd47cd15_app-store-badge.svg" alt=""/>
                 </a>
                 &nbsp;&nbsp; (Ask for Android.)
                 {/**
