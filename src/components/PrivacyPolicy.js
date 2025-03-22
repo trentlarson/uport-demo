@@ -83,7 +83,7 @@ As a rule, the data in this service is open for worldwide publication and search
         </p>
 
         <p>
-The service operators may choose to erase or hide data for their own reasons. They do not want to support activities they find offensive and damaging; they value free speech, but they expect that they don't have to define all offensive behavior... they're supporting this for people in their network who generally value good society, and they expect that anyone who doesn't like their choices can choose another platform. So they reserve the right to remove such data from their servers. They will make reasonable attempts to communicate with offending parties and work out any disputes with them, since this is a service for people who are connected to one another, but they currently don't define all the boundaries that exist in their heads and hearts.
+The service operators may choose to erase or hide data for their own reasons. They do not want to support activities they find offensive and damaging; they value free speech, but they expect that they don't have to define all offensive behavior... they're supporting this for people in their network who generally value good society, and they expect that anyone who doesn't like their choices can choose another platform. One prime example is child sexual abuse material. So they reserve the right to remove such data from their servers. They will make reasonable attempts to communicate with offending parties and work out any disputes with them, since this is a service for people who are connected to one another, but they currently don't define all the boundaries that exist in their heads and hearts.
         </p>
 
         <p>
