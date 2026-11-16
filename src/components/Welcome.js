@@ -56,7 +56,7 @@ class Welcome extends Component {
                 <br/>
                 <br/>
                 <br/>
-                    See the most popular app at <a href="https://TimeSafari.org">TimeSafari.org</a>
+                    See the most popular app via these <a href="https://Giftopia.tech">Giftopia Tech links</a>
                 <br/>
                 <br/>
                     For more power, use the Endorser mobile app to record claims. <Link to="/doc-tutorial">Like this.</Link>

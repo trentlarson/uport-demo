@@ -51,7 +51,7 @@ export default class PrivacyPolicy extends Component {
 
         </ul>
 
-      We have never delivered the non-public back-end data to anyone; only our system administrators have seen the contents, and only for the purposes described above.
+      We have never delivered the non-public back-end data to anyone else; only our system administrators have seen the contents, and only for the purposes described above.
 
         </p>
 
